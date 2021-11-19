@@ -1,0 +1,26 @@
+name: honey_cli
+description: Command line utilities for honey
+version: 1.0.0
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter_tools:
+    sdk: flutter
+  honey_core:
+    path: ../honey_core
+  honey_parser:
+    path: ../honey_parser
+  freezed_annotation:
+  json_annotation: ^4.3.0
+
+dev_dependencies:
+  lints: ^1.0.0
+  test: ^1.16.0
+  build_runner:
+  freezed:
+  json_serializable:
+
+executables:
+  honeydaemon: honey_daemon

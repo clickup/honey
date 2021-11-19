@@ -1,0 +1,27 @@
+name: honey
+description: The sweet side of testing
+version: 0.0.0
+homepage: https://honey.dev
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  honey_core:
+    path: ../honey_core
+  freezed_annotation:
+  json_annotation:
+  http:
+  characters:
+  intl: any
+  package_info_plus: any
+
+dev_dependencies:
+  build_runner:
+  freezed:
+  json_serializable:
+
+flutter:

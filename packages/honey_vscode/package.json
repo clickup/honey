@@ -1,0 +1,110 @@
+{
+    "name": "honey",
+    "displayName": "Honey",
+    "description": "Visual Studio Code Extension for the Honey test framwork.",
+    "publisher": "honey",
+    "version": "0.0.1",
+    "author": {
+        "name": "Simon Leier"
+    },
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "activationEvents": [
+        "onLanguage:honeytalk",
+        "workspaceContains:*.ht",
+        "workspaceContains:*/*.ht",
+        "workspaceContains:*/*/*.ht"
+    ],
+    "categories": [
+        "Testing",
+        "Programming Languages",
+        "Debuggers"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/leisim/honey.git"
+    },
+    "main": "./dist/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "honeytalk",
+                "aliases": [
+                    "HoneyTalk",
+                    "honeytalk"
+                ],
+                "extensions": [
+                    ".ht"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "honeytalk",
+                "scopeName": "source.ht",
+                "path": "./syntaxes/honeytalk.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "honey.selectDevice",
+                "title": "Select Device",
+                "category": "Honey"
+            },
+            {
+                "command": "honey.refreshTests",
+                "icon": "$(refresh)",
+                "title": "Refresh Tests",
+                "category": "Honey"
+            },
+            {
+                "command": "honey.toggleOverlay",
+                "title": "Toggle Overlay",
+                "category": "Honey"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "honey.refreshTests",
+                    "when": "view == workbench.view.testing && !refreshingTests && !virtualWorkspace && shellExecutionSupported",
+                    "group": "navigation@0"
+                }
+            ]
+        },
+        "breakpoints": [
+            {
+                "language": "honeytalk"
+            }
+        ],
+        "debuggers": [
+            {
+                "type": "honey",
+                "languages": [
+                    "honeytalk"
+                ],
+                "label": "Honey Debug"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "lint": "eslint src --ext ts"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.62.0",
+        "@types/node": "14.x",
+        "@typescript-eslint/eslint-plugin": "^5.1.0",
+        "@typescript-eslint/parser": "^5.1.0",
+        "eslint": "^8.1.0",
+        "typescript": "^4.4.4",
+        "ts-loader": "^9.2.5",
+        "webpack": "^5.52.1",
+        "webpack-cli": "^4.8.0",
+        "vscode-debugadapter": "^1.50.0"
+    }
+}

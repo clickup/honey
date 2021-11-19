@@ -1,0 +1,13 @@
+name: honey_parser
+
+environment:
+  sdk: '>=2.14.4 <3.0.0'
+
+dependencies:
+  antlr4: ^4.9.3-dev.1
+  honey_core:
+    path: ../honey_core
+
+dev_dependencies:
+  test: any
+  lints: ^1.0.0

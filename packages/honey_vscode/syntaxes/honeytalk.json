@@ -1,0 +1,150 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "HoneyTalk",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#actions"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#widgetTypes"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#numbers"
+		}
+	],
+	"repository": {
+		"actions": {
+			"patterns": [
+				{
+					"name": "entity.name.function.honeytalk",
+					"match": "^\\s*(?i:verify(\\sthat)?|see|look\\sat)\\b"
+				},
+				{
+					"name": "entity.name.function",
+					"match": "^\\s*(?i:((left|double|long|right)\\s)?(click|tap|press|push|hit|slam))\\b"
+				},
+				{
+					"name": "entity.name.function",
+					"match": "^\\s*(?i:enter|type|set|put|store|print|output|message|wait(\\sfor)?)\\b"
+				},
+				{
+					"name": "entity.name.function",
+					"match": "^\\s*(?i:(restart|reset)(\\sapp)?)\\b"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.comparison.honeytalk",
+					"match": "(?i:!?=|equals|equal(\\sto)?|n?eq)"
+				},
+				{
+					"name": "keyword.operator.comparison.honeytalk",
+					"match": "(?i:>=?|gte?|greater(\\sthan)?((\\sor)?\\sequal)?)"
+				},
+				{
+					"name": "keyword.operator.comparison.honeytalk",
+					"match": "(?i:<=?|lte?|less(\\sthan)?((\\sor)?\\sequal)?)"
+				},
+				{
+					"name": "keyword.operator.arithmetic.honeytalk",
+					"match": "(?i:\\-|\\+|\\*|\\/|\\^|&&?|%|percent)"
+				},
+				{
+					"name": "keyword.operator.logical.honeytalk",
+					"match": "(?i:and|or|not)"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.honeytalk",
+					"match": "\\b(?i:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last)\\b"
+				},
+				{
+					"name": "keyword.control.honeytalk",
+					"match": "\\b(?i:exactly|parent|where|with|whose)\\b"
+				}
+			]
+		},
+		"widgetTypes": {
+			"patterns": [
+				{
+					"name": "support.class.honeytalk",
+					"match": "\\b(?i:widget|buttons?|btns?|links?|sliders?|images?|lists?|switch(es)?|headers?)\\b"
+				},
+				{
+					"name": "support.class.honeytalk",
+					"match": "\\b(?i:(text|input)\\sfields?|edit\\stexts?|textfields?|inputfields?|edittexts?)\\b"
+				},
+				{
+					"name": "support.class.honeytalk",
+					"match": "\\b(?i:check\\sbox(es)?|checkbox(es)?)"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.honeytalk",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.honeytalk",
+					"match": "\\\\."
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.honeytalk",
+					"match": "\\b\\d+(\\.\\d+)?\\b"
+				},
+				{
+					"name": "constant.numeric.honeytalk",
+					"match": "\\b(zero|one|two|three|four|five|six|seven|eight|nine|ten)\\b"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"include": "#comments-block"
+				},
+				{
+					"match": "((//|#).*)$",
+					"name": "comment.line.honeytalk"
+				}
+			]
+		},
+		"comments-block": {
+			"patterns": [
+				{
+					"name": "comment.block.hypertalk",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#comments-block"
+						}
+					]
+				}
+			]
+		}
+	},
+	"scopeName": "source.ht"
+}
