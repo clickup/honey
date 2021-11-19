@@ -14,7 +14,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Statement _$StatementFromJson(Map<String, dynamic> json) {
-  switch (json['type'] as String?) {
+  switch (json['type']) {
     case 'expression':
       return ExpressionStatement.fromJson(json);
     case 'if':
@@ -33,55 +33,33 @@ class _$StatementTearOff {
   const _$StatementTearOff();
 
   ExpressionStatement expression(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
+      required bool optional,
       @ExpConverter() required Expression expression}) {
     return ExpressionStatement(
-      source: source,
-      startLine: startLine,
-      startColumn: startColumn,
-      endLine: endLine,
-      endColumn: endColumn,
+      sourceInfo: sourceInfo,
+      optional: optional,
       expression: expression,
     );
   }
 
   IfStatement sIf(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
       @ExpConverter() required Expression condition,
       required List<Statement> statements}) {
     return IfStatement(
-      source: source,
-      startLine: startLine,
-      startColumn: startColumn,
-      endLine: endLine,
-      endColumn: endColumn,
+      sourceInfo: sourceInfo,
       condition: condition,
       statements: statements,
     );
   }
 
   WhileStatement sWhile(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
       @ExpConverter() required Expression condition,
       required List<Statement> statements}) {
     return WhileStatement(
-      source: source,
-      startLine: startLine,
-      startColumn: startColumn,
-      endLine: endLine,
-      endColumn: endColumn,
+      sourceInfo: sourceInfo,
       condition: condition,
       statements: statements,
     );
@@ -97,84 +75,44 @@ const $Statement = _$StatementTearOff();
 
 /// @nodoc
 mixin _$Statement {
-  String get source => throw _privateConstructorUsedError;
-  int get startLine => throw _privateConstructorUsedError;
-  int get startColumn => throw _privateConstructorUsedError;
-  int get endLine => throw _privateConstructorUsedError;
-  int get endColumn => throw _privateConstructorUsedError;
+  SourceInfo get sourceInfo => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String source, int startLine, int startColumn,
-            int endLine, int endColumn, @ExpConverter() Expression expression)
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
         expression,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
     required TResult orElse(),
   }) =>
@@ -211,12 +149,9 @@ mixin _$Statement {
 abstract class $StatementCopyWith<$Res> {
   factory $StatementCopyWith(Statement value, $Res Function(Statement) then) =
       _$StatementCopyWithImpl<$Res>;
-  $Res call(
-      {String source,
-      int startLine,
-      int startColumn,
-      int endLine,
-      int endColumn});
+  $Res call({SourceInfo sourceInfo});
+
+  $SourceInfoCopyWith<$Res> get sourceInfo;
 }
 
 /// @nodoc
@@ -229,34 +164,21 @@ class _$StatementCopyWithImpl<$Res> implements $StatementCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? source = freezed,
-    Object? startLine = freezed,
-    Object? startColumn = freezed,
-    Object? endLine = freezed,
-    Object? endColumn = freezed,
+    Object? sourceInfo = freezed,
   }) {
     return _then(_value.copyWith(
-      source: source == freezed
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-      startLine: startLine == freezed
-          ? _value.startLine
-          : startLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      startColumn: startColumn == freezed
-          ? _value.startColumn
-          : startColumn // ignore: cast_nullable_to_non_nullable
-              as int,
-      endLine: endLine == freezed
-          ? _value.endLine
-          : endLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      endColumn: endColumn == freezed
-          ? _value.endColumn
-          : endColumn // ignore: cast_nullable_to_non_nullable
-              as int,
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
     ));
+  }
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo {
+    return $SourceInfoCopyWith<$Res>(_value.sourceInfo, (value) {
+      return _then(_value.copyWith(sourceInfo: value));
+    });
   }
 }
 
@@ -268,12 +190,12 @@ abstract class $ExpressionStatementCopyWith<$Res>
       _$ExpressionStatementCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String source,
-      int startLine,
-      int startColumn,
-      int endLine,
-      int endColumn,
+      {SourceInfo sourceInfo,
+      bool optional,
       @ExpConverter() Expression expression});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
 }
 
 /// @nodoc
@@ -289,34 +211,19 @@ class _$ExpressionStatementCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? source = freezed,
-    Object? startLine = freezed,
-    Object? startColumn = freezed,
-    Object? endLine = freezed,
-    Object? endColumn = freezed,
+    Object? sourceInfo = freezed,
+    Object? optional = freezed,
     Object? expression = freezed,
   }) {
     return _then(ExpressionStatement(
-      source: source == freezed
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-      startLine: startLine == freezed
-          ? _value.startLine
-          : startLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      startColumn: startColumn == freezed
-          ? _value.startColumn
-          : startColumn // ignore: cast_nullable_to_non_nullable
-              as int,
-      endLine: endLine == freezed
-          ? _value.endLine
-          : endLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      endColumn: endColumn == freezed
-          ? _value.endColumn
-          : endColumn // ignore: cast_nullable_to_non_nullable
-              as int,
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
+      optional: optional == freezed
+          ? _value.optional
+          : optional // ignore: cast_nullable_to_non_nullable
+              as bool,
       expression: expression == freezed
           ? _value.expression
           : expression // ignore: cast_nullable_to_non_nullable
@@ -331,33 +238,29 @@ class _$ExpressionStatementCopyWithImpl<$Res>
 @FreezedUnionValue('expression')
 class _$ExpressionStatement implements ExpressionStatement {
   const _$ExpressionStatement(
-      {required this.source,
-      required this.startLine,
-      required this.startColumn,
-      required this.endLine,
-      required this.endColumn,
-      @ExpConverter() required this.expression});
+      {required this.sourceInfo,
+      required this.optional,
+      @ExpConverter() required this.expression,
+      String? $type})
+      : $type = $type ?? 'expression';
 
   factory _$ExpressionStatement.fromJson(Map<String, dynamic> json) =>
       _$$ExpressionStatementFromJson(json);
 
   @override
-  final String source;
+  final SourceInfo sourceInfo;
   @override
-  final int startLine;
-  @override
-  final int startColumn;
-  @override
-  final int endLine;
-  @override
-  final int endColumn;
+  final bool optional;
   @override
   @ExpConverter()
   final Expression expression;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
-    return 'Statement.expression(source: $source, startLine: $startLine, startColumn: $startColumn, endLine: $endLine, endColumn: $endColumn, expression: $expression)';
+    return 'Statement.expression(sourceInfo: $sourceInfo, optional: $optional, expression: $expression)';
   }
 
   @override
@@ -365,21 +268,17 @@ class _$ExpressionStatement implements ExpressionStatement {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ExpressionStatement &&
-            (identical(other.source, source) || other.source == source) &&
-            (identical(other.startLine, startLine) ||
-                other.startLine == startLine) &&
-            (identical(other.startColumn, startColumn) ||
-                other.startColumn == startColumn) &&
-            (identical(other.endLine, endLine) || other.endLine == endLine) &&
-            (identical(other.endColumn, endColumn) ||
-                other.endColumn == endColumn) &&
+            (identical(other.sourceInfo, sourceInfo) ||
+                other.sourceInfo == sourceInfo) &&
+            (identical(other.optional, optional) ||
+                other.optional == optional) &&
             (identical(other.expression, expression) ||
                 other.expression == expression));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, source, startLine, startColumn,
-      endLine, endColumn, expression);
+  int get hashCode =>
+      Object.hash(runtimeType, sourceInfo, optional, expression);
 
   @JsonKey(ignore: true)
   @override
@@ -389,90 +288,51 @@ class _$ExpressionStatement implements ExpressionStatement {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String source, int startLine, int startColumn,
-            int endLine, int endColumn, @ExpConverter() Expression expression)
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
         expression,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
   }) {
-    return expression(
-        source, startLine, startColumn, endLine, endColumn, this.expression);
+    return expression(sourceInfo, optional, this.expression);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
   }) {
-    return expression?.call(
-        source, startLine, startColumn, endLine, endColumn, this.expression);
+    return expression?.call(sourceInfo, optional, this.expression);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
     required TResult orElse(),
   }) {
     if (expression != null) {
-      return expression(
-          source, startLine, startColumn, endLine, endColumn, this.expression);
+      return expression(sourceInfo, optional, this.expression);
     }
     return orElse();
   }
@@ -513,32 +373,22 @@ class _$ExpressionStatement implements ExpressionStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ExpressionStatementToJson(this)..['type'] = 'expression';
+    return _$$ExpressionStatementToJson(this);
   }
 }
 
 abstract class ExpressionStatement implements Statement {
   const factory ExpressionStatement(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
+      required bool optional,
       @ExpConverter() required Expression expression}) = _$ExpressionStatement;
 
   factory ExpressionStatement.fromJson(Map<String, dynamic> json) =
       _$ExpressionStatement.fromJson;
 
   @override
-  String get source;
-  @override
-  int get startLine;
-  @override
-  int get startColumn;
-  @override
-  int get endLine;
-  @override
-  int get endColumn;
+  SourceInfo get sourceInfo;
+  bool get optional;
   @ExpConverter()
   Expression get expression;
   @override
@@ -554,13 +404,12 @@ abstract class $IfStatementCopyWith<$Res> implements $StatementCopyWith<$Res> {
       _$IfStatementCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String source,
-      int startLine,
-      int startColumn,
-      int endLine,
-      int endColumn,
+      {SourceInfo sourceInfo,
       @ExpConverter() Expression condition,
       List<Statement> statements});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
 }
 
 /// @nodoc
@@ -575,35 +424,15 @@ class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? source = freezed,
-    Object? startLine = freezed,
-    Object? startColumn = freezed,
-    Object? endLine = freezed,
-    Object? endColumn = freezed,
+    Object? sourceInfo = freezed,
     Object? condition = freezed,
     Object? statements = freezed,
   }) {
     return _then(IfStatement(
-      source: source == freezed
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-      startLine: startLine == freezed
-          ? _value.startLine
-          : startLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      startColumn: startColumn == freezed
-          ? _value.startColumn
-          : startColumn // ignore: cast_nullable_to_non_nullable
-              as int,
-      endLine: endLine == freezed
-          ? _value.endLine
-          : endLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      endColumn: endColumn == freezed
-          ? _value.endColumn
-          : endColumn // ignore: cast_nullable_to_non_nullable
-              as int,
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
       condition: condition == freezed
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
@@ -622,36 +451,29 @@ class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 @FreezedUnionValue('if')
 class _$IfStatement implements IfStatement {
   const _$IfStatement(
-      {required this.source,
-      required this.startLine,
-      required this.startColumn,
-      required this.endLine,
-      required this.endColumn,
+      {required this.sourceInfo,
       @ExpConverter() required this.condition,
-      required this.statements});
+      required this.statements,
+      String? $type})
+      : $type = $type ?? 'if';
 
   factory _$IfStatement.fromJson(Map<String, dynamic> json) =>
       _$$IfStatementFromJson(json);
 
   @override
-  final String source;
-  @override
-  final int startLine;
-  @override
-  final int startColumn;
-  @override
-  final int endLine;
-  @override
-  final int endColumn;
+  final SourceInfo sourceInfo;
   @override
   @ExpConverter()
   final Expression condition;
   @override
   final List<Statement> statements;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
-    return 'Statement.sIf(source: $source, startLine: $startLine, startColumn: $startColumn, endLine: $endLine, endColumn: $endColumn, condition: $condition, statements: $statements)';
+    return 'Statement.sIf(sourceInfo: $sourceInfo, condition: $condition, statements: $statements)';
   }
 
   @override
@@ -659,14 +481,8 @@ class _$IfStatement implements IfStatement {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is IfStatement &&
-            (identical(other.source, source) || other.source == source) &&
-            (identical(other.startLine, startLine) ||
-                other.startLine == startLine) &&
-            (identical(other.startColumn, startColumn) ||
-                other.startColumn == startColumn) &&
-            (identical(other.endLine, endLine) || other.endLine == endLine) &&
-            (identical(other.endColumn, endColumn) ||
-                other.endColumn == endColumn) &&
+            (identical(other.sourceInfo, sourceInfo) ||
+                other.sourceInfo == sourceInfo) &&
             (identical(other.condition, condition) ||
                 other.condition == condition) &&
             const DeepCollectionEquality()
@@ -674,14 +490,7 @@ class _$IfStatement implements IfStatement {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      source,
-      startLine,
-      startColumn,
-      endLine,
-      endColumn,
-      condition,
+  int get hashCode => Object.hash(runtimeType, sourceInfo, condition,
       const DeepCollectionEquality().hash(statements));
 
   @JsonKey(ignore: true)
@@ -692,90 +501,51 @@ class _$IfStatement implements IfStatement {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String source, int startLine, int startColumn,
-            int endLine, int endColumn, @ExpConverter() Expression expression)
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
         expression,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
   }) {
-    return sIf(source, startLine, startColumn, endLine, endColumn, condition,
-        statements);
+    return sIf(sourceInfo, condition, statements);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
   }) {
-    return sIf?.call(source, startLine, startColumn, endLine, endColumn,
-        condition, statements);
+    return sIf?.call(sourceInfo, condition, statements);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
     required TResult orElse(),
   }) {
     if (sIf != null) {
-      return sIf(source, startLine, startColumn, endLine, endColumn, condition,
-          statements);
+      return sIf(sourceInfo, condition, statements);
     }
     return orElse();
   }
@@ -816,17 +586,13 @@ class _$IfStatement implements IfStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IfStatementToJson(this)..['type'] = 'if';
+    return _$$IfStatementToJson(this);
   }
 }
 
 abstract class IfStatement implements Statement {
   const factory IfStatement(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
       @ExpConverter() required Expression condition,
       required List<Statement> statements}) = _$IfStatement;
 
@@ -834,15 +600,7 @@ abstract class IfStatement implements Statement {
       _$IfStatement.fromJson;
 
   @override
-  String get source;
-  @override
-  int get startLine;
-  @override
-  int get startColumn;
-  @override
-  int get endLine;
-  @override
-  int get endColumn;
+  SourceInfo get sourceInfo;
   @ExpConverter()
   Expression get condition;
   List<Statement> get statements;
@@ -860,13 +618,12 @@ abstract class $WhileStatementCopyWith<$Res>
       _$WhileStatementCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String source,
-      int startLine,
-      int startColumn,
-      int endLine,
-      int endColumn,
+      {SourceInfo sourceInfo,
       @ExpConverter() Expression condition,
       List<Statement> statements});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
 }
 
 /// @nodoc
@@ -881,35 +638,15 @@ class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? source = freezed,
-    Object? startLine = freezed,
-    Object? startColumn = freezed,
-    Object? endLine = freezed,
-    Object? endColumn = freezed,
+    Object? sourceInfo = freezed,
     Object? condition = freezed,
     Object? statements = freezed,
   }) {
     return _then(WhileStatement(
-      source: source == freezed
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-      startLine: startLine == freezed
-          ? _value.startLine
-          : startLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      startColumn: startColumn == freezed
-          ? _value.startColumn
-          : startColumn // ignore: cast_nullable_to_non_nullable
-              as int,
-      endLine: endLine == freezed
-          ? _value.endLine
-          : endLine // ignore: cast_nullable_to_non_nullable
-              as int,
-      endColumn: endColumn == freezed
-          ? _value.endColumn
-          : endColumn // ignore: cast_nullable_to_non_nullable
-              as int,
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
       condition: condition == freezed
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
@@ -928,36 +665,29 @@ class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 @FreezedUnionValue('while')
 class _$WhileStatement implements WhileStatement {
   const _$WhileStatement(
-      {required this.source,
-      required this.startLine,
-      required this.startColumn,
-      required this.endLine,
-      required this.endColumn,
+      {required this.sourceInfo,
       @ExpConverter() required this.condition,
-      required this.statements});
+      required this.statements,
+      String? $type})
+      : $type = $type ?? 'while';
 
   factory _$WhileStatement.fromJson(Map<String, dynamic> json) =>
       _$$WhileStatementFromJson(json);
 
   @override
-  final String source;
-  @override
-  final int startLine;
-  @override
-  final int startColumn;
-  @override
-  final int endLine;
-  @override
-  final int endColumn;
+  final SourceInfo sourceInfo;
   @override
   @ExpConverter()
   final Expression condition;
   @override
   final List<Statement> statements;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
-    return 'Statement.sWhile(source: $source, startLine: $startLine, startColumn: $startColumn, endLine: $endLine, endColumn: $endColumn, condition: $condition, statements: $statements)';
+    return 'Statement.sWhile(sourceInfo: $sourceInfo, condition: $condition, statements: $statements)';
   }
 
   @override
@@ -965,14 +695,8 @@ class _$WhileStatement implements WhileStatement {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is WhileStatement &&
-            (identical(other.source, source) || other.source == source) &&
-            (identical(other.startLine, startLine) ||
-                other.startLine == startLine) &&
-            (identical(other.startColumn, startColumn) ||
-                other.startColumn == startColumn) &&
-            (identical(other.endLine, endLine) || other.endLine == endLine) &&
-            (identical(other.endColumn, endColumn) ||
-                other.endColumn == endColumn) &&
+            (identical(other.sourceInfo, sourceInfo) ||
+                other.sourceInfo == sourceInfo) &&
             (identical(other.condition, condition) ||
                 other.condition == condition) &&
             const DeepCollectionEquality()
@@ -980,14 +704,7 @@ class _$WhileStatement implements WhileStatement {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      source,
-      startLine,
-      startColumn,
-      endLine,
-      endColumn,
-      condition,
+  int get hashCode => Object.hash(runtimeType, sourceInfo, condition,
       const DeepCollectionEquality().hash(statements));
 
   @JsonKey(ignore: true)
@@ -998,90 +715,51 @@ class _$WhileStatement implements WhileStatement {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String source, int startLine, int startColumn,
-            int endLine, int endColumn, @ExpConverter() Expression expression)
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
         expression,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
-    required TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
   }) {
-    return sWhile(source, startLine, startColumn, endLine, endColumn, condition,
-        statements);
+    return sWhile(sourceInfo, condition, statements);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
   }) {
-    return sWhile?.call(source, startLine, startColumn, endLine, endColumn,
-        condition, statements);
+    return sWhile?.call(sourceInfo, condition, statements);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String source, int startLine, int startColumn, int endLine,
-            int endColumn, @ExpConverter() Expression expression)?
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
         expression,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
-    TResult Function(
-            String source,
-            int startLine,
-            int startColumn,
-            int endLine,
-            int endColumn,
-            @ExpConverter() Expression condition,
-            List<Statement> statements)?
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
     required TResult orElse(),
   }) {
     if (sWhile != null) {
-      return sWhile(source, startLine, startColumn, endLine, endColumn,
-          condition, statements);
+      return sWhile(sourceInfo, condition, statements);
     }
     return orElse();
   }
@@ -1122,22 +800,256 @@ class _$WhileStatement implements WhileStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$WhileStatementToJson(this)..['type'] = 'while';
+    return _$$WhileStatementToJson(this);
   }
 }
 
 abstract class WhileStatement implements Statement {
   const factory WhileStatement(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn,
+      {required SourceInfo sourceInfo,
       @ExpConverter() required Expression condition,
       required List<Statement> statements}) = _$WhileStatement;
 
   factory WhileStatement.fromJson(Map<String, dynamic> json) =
       _$WhileStatement.fromJson;
+
+  @override
+  SourceInfo get sourceInfo;
+  @ExpConverter()
+  Expression get condition;
+  List<Statement> get statements;
+  @override
+  @JsonKey(ignore: true)
+  $WhileStatementCopyWith<WhileStatement> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SourceInfo _$SourceInfoFromJson(Map<String, dynamic> json) {
+  return _SourceInfo.fromJson(json);
+}
+
+/// @nodoc
+class _$SourceInfoTearOff {
+  const _$SourceInfoTearOff();
+
+  _SourceInfo call(
+      {required String source,
+      required int startLine,
+      required int startColumn,
+      required int endLine,
+      required int endColumn}) {
+    return _SourceInfo(
+      source: source,
+      startLine: startLine,
+      startColumn: startColumn,
+      endLine: endLine,
+      endColumn: endColumn,
+    );
+  }
+
+  SourceInfo fromJson(Map<String, Object?> json) {
+    return SourceInfo.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $SourceInfo = _$SourceInfoTearOff();
+
+/// @nodoc
+mixin _$SourceInfo {
+  String get source => throw _privateConstructorUsedError;
+  int get startLine => throw _privateConstructorUsedError;
+  int get startColumn => throw _privateConstructorUsedError;
+  int get endLine => throw _privateConstructorUsedError;
+  int get endColumn => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SourceInfoCopyWith<SourceInfo> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SourceInfoCopyWith<$Res> {
+  factory $SourceInfoCopyWith(
+          SourceInfo value, $Res Function(SourceInfo) then) =
+      _$SourceInfoCopyWithImpl<$Res>;
+  $Res call(
+      {String source,
+      int startLine,
+      int startColumn,
+      int endLine,
+      int endColumn});
+}
+
+/// @nodoc
+class _$SourceInfoCopyWithImpl<$Res> implements $SourceInfoCopyWith<$Res> {
+  _$SourceInfoCopyWithImpl(this._value, this._then);
+
+  final SourceInfo _value;
+  // ignore: unused_field
+  final $Res Function(SourceInfo) _then;
+
+  @override
+  $Res call({
+    Object? source = freezed,
+    Object? startLine = freezed,
+    Object? startColumn = freezed,
+    Object? endLine = freezed,
+    Object? endColumn = freezed,
+  }) {
+    return _then(_value.copyWith(
+      source: source == freezed
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as String,
+      startLine: startLine == freezed
+          ? _value.startLine
+          : startLine // ignore: cast_nullable_to_non_nullable
+              as int,
+      startColumn: startColumn == freezed
+          ? _value.startColumn
+          : startColumn // ignore: cast_nullable_to_non_nullable
+              as int,
+      endLine: endLine == freezed
+          ? _value.endLine
+          : endLine // ignore: cast_nullable_to_non_nullable
+              as int,
+      endColumn: endColumn == freezed
+          ? _value.endColumn
+          : endColumn // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$SourceInfoCopyWith<$Res> implements $SourceInfoCopyWith<$Res> {
+  factory _$SourceInfoCopyWith(
+          _SourceInfo value, $Res Function(_SourceInfo) then) =
+      __$SourceInfoCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String source,
+      int startLine,
+      int startColumn,
+      int endLine,
+      int endColumn});
+}
+
+/// @nodoc
+class __$SourceInfoCopyWithImpl<$Res> extends _$SourceInfoCopyWithImpl<$Res>
+    implements _$SourceInfoCopyWith<$Res> {
+  __$SourceInfoCopyWithImpl(
+      _SourceInfo _value, $Res Function(_SourceInfo) _then)
+      : super(_value, (v) => _then(v as _SourceInfo));
+
+  @override
+  _SourceInfo get _value => super._value as _SourceInfo;
+
+  @override
+  $Res call({
+    Object? source = freezed,
+    Object? startLine = freezed,
+    Object? startColumn = freezed,
+    Object? endLine = freezed,
+    Object? endColumn = freezed,
+  }) {
+    return _then(_SourceInfo(
+      source: source == freezed
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as String,
+      startLine: startLine == freezed
+          ? _value.startLine
+          : startLine // ignore: cast_nullable_to_non_nullable
+              as int,
+      startColumn: startColumn == freezed
+          ? _value.startColumn
+          : startColumn // ignore: cast_nullable_to_non_nullable
+              as int,
+      endLine: endLine == freezed
+          ? _value.endLine
+          : endLine // ignore: cast_nullable_to_non_nullable
+              as int,
+      endColumn: endColumn == freezed
+          ? _value.endColumn
+          : endColumn // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$_SourceInfo implements _SourceInfo {
+  const _$_SourceInfo(
+      {required this.source,
+      required this.startLine,
+      required this.startColumn,
+      required this.endLine,
+      required this.endColumn});
+
+  factory _$_SourceInfo.fromJson(Map<String, dynamic> json) =>
+      _$$_SourceInfoFromJson(json);
+
+  @override
+  final String source;
+  @override
+  final int startLine;
+  @override
+  final int startColumn;
+  @override
+  final int endLine;
+  @override
+  final int endColumn;
+
+  @override
+  String toString() {
+    return 'SourceInfo(source: $source, startLine: $startLine, startColumn: $startColumn, endLine: $endLine, endColumn: $endColumn)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SourceInfo &&
+            (identical(other.source, source) || other.source == source) &&
+            (identical(other.startLine, startLine) ||
+                other.startLine == startLine) &&
+            (identical(other.startColumn, startColumn) ||
+                other.startColumn == startColumn) &&
+            (identical(other.endLine, endLine) || other.endLine == endLine) &&
+            (identical(other.endColumn, endColumn) ||
+                other.endColumn == endColumn));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, source, startLine, startColumn, endLine, endColumn);
+
+  @JsonKey(ignore: true)
+  @override
+  _$SourceInfoCopyWith<_SourceInfo> get copyWith =>
+      __$SourceInfoCopyWithImpl<_SourceInfo>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_SourceInfoToJson(this);
+  }
+}
+
+abstract class _SourceInfo implements SourceInfo {
+  const factory _SourceInfo(
+      {required String source,
+      required int startLine,
+      required int startColumn,
+      required int endLine,
+      required int endColumn}) = _$_SourceInfo;
+
+  factory _SourceInfo.fromJson(Map<String, dynamic> json) =
+      _$_SourceInfo.fromJson;
 
   @override
   String get source;
@@ -1149,11 +1061,8 @@ abstract class WhileStatement implements Statement {
   int get endLine;
   @override
   int get endColumn;
-  @ExpConverter()
-  Expression get condition;
-  List<Statement> get statements;
   @override
   @JsonKey(ignore: true)
-  $WhileStatementCopyWith<WhileStatement> get copyWith =>
+  _$SourceInfoCopyWith<_SourceInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }

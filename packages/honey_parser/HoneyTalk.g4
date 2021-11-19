@@ -3,8 +3,10 @@ grammar HoneyTalk;
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
 statement:
-	actionStatement ('if' expression)?	# statementAction
-	| expression						# statementExpression;
+	maybe? actionStatement ('if' expression)?	# statementAction
+	| maybe? expression							# statementExpression;
+
+maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
 actionStatement:
 	'verify' 'that'? expression			# actionVerify

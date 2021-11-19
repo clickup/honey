@@ -6,6 +6,10 @@ type CompiledHoneyTalk = {
 }
 
 type Statement = {
+    sourceInfo: SourceInfo
+}
+
+type SourceInfo = {
     source: string
     startLine: number
     startColumn: number

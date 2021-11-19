@@ -46,9 +46,9 @@ class TestRunner {
       final step = TestStep(
         time: DateTime.now().difference(startTime).inMilliseconds,
         index: stepIndex++,
-        step: statement.source,
+        step: statement.sourceInfo.source,
         message: result is HoneyError ? result.message : _ctx.message,
-        error: result is HoneyError,
+        error: result is HoneyError && !statement.optional,
         variables: Map.of(_ctx.variables),
       );
       if (!_canceled) {

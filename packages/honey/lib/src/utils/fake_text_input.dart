@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:honey/src/honey_binding.dart';
 
 class FakeTextInput {
   /// Create a fake keyboard backend.
@@ -8,11 +9,14 @@ class FakeTextInput {
   /// The [onCleared] argument may be set to be notified of when the keyboard
   /// is dismissed.
   FakeTextInput() {
-    //SystemChannels.textInput.setMockMethodCallHandler(_handleTextInputCall);
+    final messenger = HoneyBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(
+        SystemChannels.textInput, _handleTextInputCall);
   }
 
   void dispose() {
-    //SystemChannels.textInput.setMockMethodCallHandler(null);
+    final messenger = HoneyBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.textInput, null);
   }
 
   /// The messenger which sends the bytes for this channel, not null.

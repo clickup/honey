@@ -27,6 +27,11 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitStatementExpression(StatementExpressionContext ctx);
 
+  /// Visit a parse tree produced by [HoneyTalkParser.maybe].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitMaybe(MaybeContext ctx);
+
   /// Visit a parse tree produced by the {@code actionVerify}
   /// labeled alternative in {@link HoneyTalkParser#actionStatement}.
   /// [ctx] the parse tree.

@@ -95,8 +95,13 @@ export class TestRunner implements vs.Disposable {
             } else if (compiledTest.statements) {
                 testItem.children.replace([])
                 for (var [si, s] of compiledTest.statements.entries()) {
-                    const item = this.testController.createTestItem(si.toString(), s.source, vs.Uri.file(t))
-                    item.range = new vs.Range(s.startLine, s.startColumn, s.endLine, s.endColumn)
+                    const item = this.testController.createTestItem(si.toString(), s.sourceInfo.source, vs.Uri.file(t))
+                    item.range = new vs.Range(
+                        s.sourceInfo.startLine,
+                        s.sourceInfo.startColumn,
+                        s.sourceInfo.endLine,
+                        s.sourceInfo.endColumn
+                    )
                     testItem.children.add(item)
                     if (si === 0) {
                         item.busy = true

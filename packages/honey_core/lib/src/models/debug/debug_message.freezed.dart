@@ -14,7 +14,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 DebugMessage _$DebugMessageFromJson(Map<String, dynamic> json) {
-  switch (json['type'] as String?) {
+  switch (json['type']) {
     case 'device_status':
       return DeviceStatus.fromJson(json);
     case 'start_test':
@@ -277,8 +277,10 @@ class _$DeviceStatus extends DeviceStatus {
       required this.appBuild,
       required this.overlayEnabled,
       required this.testRunning,
-      required this.recording})
-      : super._();
+      required this.recording,
+      String? $type})
+      : $type = $type ?? 'device_status',
+        super._();
 
   factory _$DeviceStatus.fromJson(Map<String, dynamic> json) =>
       _$$DeviceStatusFromJson(json);
@@ -293,6 +295,9 @@ class _$DeviceStatus extends DeviceStatus {
   final bool testRunning;
   @override
   final bool recording;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -439,7 +444,7 @@ class _$DeviceStatus extends DeviceStatus {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DeviceStatusToJson(this)..['type'] = 'device_status';
+    return _$$DeviceStatusToJson(this);
   }
 }
 
@@ -514,8 +519,10 @@ class _$StartTest extends StartTest {
   const _$StartTest(
       {required this.runId,
       required this.statements,
-      @ExpConverter() this.variables = const {}})
-      : super._();
+      @ExpConverter() this.variables = const {},
+      String? $type})
+      : $type = $type ?? 'start_test',
+        super._();
 
   factory _$StartTest.fromJson(Map<String, dynamic> json) =>
       _$$StartTestFromJson(json);
@@ -528,6 +535,9 @@ class _$StartTest extends StartTest {
   @override
   @ExpConverter()
   final Map<String, Expression> variables;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -669,7 +679,7 @@ class _$StartTest extends StartTest {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StartTestToJson(this)..['type'] = 'start_test';
+    return _$$StartTestToJson(this);
   }
 }
 
@@ -738,7 +748,9 @@ class _$StepCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('test_step')
 class _$Step extends Step {
-  const _$Step({required this.runId, required this.step}) : super._();
+  const _$Step({required this.runId, required this.step, String? $type})
+      : $type = $type ?? 'test_step',
+        super._();
 
   factory _$Step.fromJson(Map<String, dynamic> json) => _$$StepFromJson(json);
 
@@ -746,6 +758,9 @@ class _$Step extends Step {
   final int runId;
   @override
   final TestStep step;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -881,7 +896,7 @@ class _$Step extends Step {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StepToJson(this)..['type'] = 'test_step';
+    return _$$StepToJson(this);
   }
 }
 
@@ -919,10 +934,15 @@ class _$CancelTestsCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('cancel_tests')
 class _$CancelTests extends CancelTests {
-  const _$CancelTests() : super._();
+  const _$CancelTests({String? $type})
+      : $type = $type ?? 'cancel_tests',
+        super._();
 
   factory _$CancelTests.fromJson(Map<String, dynamic> json) =>
       _$$CancelTestsFromJson(json);
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -1050,7 +1070,7 @@ class _$CancelTests extends CancelTests {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CancelTestsToJson(this)..['type'] = 'cancel_tests';
+    return _$$CancelTestsToJson(this);
   }
 }
 
@@ -1084,10 +1104,15 @@ class _$ToggleOverlayCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('toggle_overlay')
 class _$ToggleOverlay extends ToggleOverlay {
-  const _$ToggleOverlay() : super._();
+  const _$ToggleOverlay({String? $type})
+      : $type = $type ?? 'toggle_overlay',
+        super._();
 
   factory _$ToggleOverlay.fromJson(Map<String, dynamic> json) =>
       _$$ToggleOverlayFromJson(json);
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -1215,7 +1240,7 @@ class _$ToggleOverlay extends ToggleOverlay {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ToggleOverlayToJson(this)..['type'] = 'toggle_overlay';
+    return _$$ToggleOverlayToJson(this);
   }
 }
 
@@ -1250,10 +1275,15 @@ class _$ToggleRecordingCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('toggle_recording')
 class _$ToggleRecording extends ToggleRecording {
-  const _$ToggleRecording() : super._();
+  const _$ToggleRecording({String? $type})
+      : $type = $type ?? 'toggle_recording',
+        super._();
 
   factory _$ToggleRecording.fromJson(Map<String, dynamic> json) =>
       _$$ToggleRecordingFromJson(json);
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -1381,7 +1411,7 @@ class _$ToggleRecording extends ToggleRecording {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ToggleRecordingToJson(this)..['type'] = 'toggle_recording';
+    return _$$ToggleRecordingToJson(this);
   }
 }
 
@@ -1429,13 +1459,18 @@ class _$RecordedStatementCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('recoreded_statement')
 class _$RecordedStatement extends RecordedStatement {
-  const _$RecordedStatement({required this.statement}) : super._();
+  const _$RecordedStatement({required this.statement, String? $type})
+      : $type = $type ?? 'recoreded_statement',
+        super._();
 
   factory _$RecordedStatement.fromJson(Map<String, dynamic> json) =>
       _$$RecordedStatementFromJson(json);
 
   @override
   final String statement;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -1571,7 +1606,7 @@ class _$RecordedStatement extends RecordedStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RecordedStatementToJson(this)..['type'] = 'recoreded_statement';
+    return _$$RecordedStatementToJson(this);
   }
 }
 
@@ -1609,10 +1644,15 @@ class _$ResetAppCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 @JsonSerializable()
 @FreezedUnionValue('reset_app')
 class _$ResetApp extends ResetApp {
-  const _$ResetApp() : super._();
+  const _$ResetApp({String? $type})
+      : $type = $type ?? 'reset_app',
+        super._();
 
   factory _$ResetApp.fromJson(Map<String, dynamic> json) =>
       _$$ResetAppFromJson(json);
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -1740,7 +1780,7 @@ class _$ResetApp extends ResetApp {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ResetAppToJson(this)..['type'] = 'reset_app';
+    return _$$ResetAppToJson(this);
   }
 }
 

@@ -8,6 +8,7 @@ import 'package:honey_core/honey_core.dart';
 
 import 'debug_connection.dart';
 import 'honey_app.dart';
+import 'utils/honey_binary_messenger.dart';
 
 enum HoneyStatus {
   Idle,
@@ -151,4 +152,13 @@ class HoneyBinding extends WidgetsFlutterBinding {
   }
 
   static HoneyBinding get instance => WidgetsBinding.instance as HoneyBinding;
+
+  @override
+  HoneyBinaryMessenger get defaultBinaryMessenger =>
+      super.defaultBinaryMessenger as HoneyBinaryMessenger;
+
+  @override
+  HoneyBinaryMessenger createBinaryMessenger() {
+    return HoneyBinaryMessenger(super.createBinaryMessenger());
+  }
 }
