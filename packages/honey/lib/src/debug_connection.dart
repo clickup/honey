@@ -41,14 +41,15 @@ class DebugConnection {
       disconnect();
       final socketId = _socketId;
       _socket = socket;
-      _socket!.pingInterval = const Duration(seconds: 5);
-      _socket!.listen(
+      socket.pingInterval = const Duration(seconds: 5);
+      socket.listen(
         _handleMessage,
         onDone: () {
           if (socketId == _socketId) {
             disconnect();
           }
         },
+        cancelOnError: true,
       );
       _onStatusChanged();
     });

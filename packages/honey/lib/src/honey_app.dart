@@ -23,7 +23,6 @@ void honey({
   Map<String, CustomFunction> customFunctions = const {},
 }) {
   if (kHoneyMode) {
-    print('honey mode');
     final binding = HoneyBinding(
       main: main,
       resetApp: resetApp,

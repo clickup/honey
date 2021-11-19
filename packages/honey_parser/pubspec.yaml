@@ -1,13 +1,16 @@
 name: honey_parser
+description: Parser for HoneyTalk.
+version: 0.0.1
+homepage: https://honey.dev
+repository: https://github.com/leisim/honey
 
 environment:
   sdk: '>=2.14.4 <3.0.0'
 
 dependencies:
-  antlr4: ^4.9.3-dev.1
-  honey_core:
-    path: ../honey_core
+  antlr4: ^4.9.3
+  honey_core: ^0.0.1
 
 dev_dependencies:
-  test: any
+  test: ^1.19.3
   lints: ^1.0.0

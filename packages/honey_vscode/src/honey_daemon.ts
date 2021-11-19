@@ -33,6 +33,7 @@ export class HoneyDaemon implements vs.Disposable {
         }
 
         const process = child_process.spawn("dart", ['pub', 'global', 'run', 'honey_cli:honey_daemon'], {shell: true})
+        this.channel.appendLine(`Starting daemon process ${process.pid}`)
         runProcessInOutputChannel(process, this.channel)
         const stdout = createInterface(process.stdout!)
         stdout.on("line", (line) => this.handleStdout(line))
@@ -61,8 +62,8 @@ export class HoneyDaemon implements vs.Disposable {
             return false;
         }
 
-        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-s", "path", "/Users/simon/Documents/GitHub/h123/packages/honey_cli"]);
-        runProcessInOutputChannel(dart, this.channel)
+        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-sgit" "https://github.com/leisim/honey_cli.git"]);
+        runProcessInOutputChannel(installHoneyDaemon, this.channel)
         const daemonActivated = (await waitUntilExit(installHoneyDaemon)) == 0
         if (!daemonActivated) {
             vs.window.showWarningMessage("Could not activate honey cli.", "Show Log").then((action) => {
