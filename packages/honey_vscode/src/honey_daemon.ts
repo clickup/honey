@@ -62,7 +62,7 @@ export class HoneyDaemon implements vs.Disposable {
             return false;
         }
 
-        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-sgit" "https://github.com/leisim/honey_cli.git"]);
+        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-sgit", "https://github.com/leisim/honey_cli.git", "--overwrite"]);
         runProcessInOutputChannel(installHoneyDaemon, this.channel)
         const daemonActivated = (await waitUntilExit(installHoneyDaemon)) == 0
         if (!daemonActivated) {
