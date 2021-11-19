@@ -158,15 +158,12 @@ export class TestRunner implements vs.Disposable {
         this.testController.createRunProfile('honey', vs.TestRunProfileKind.Debug, (request) => {
             function getTestItems(items: vs.TestItem[]): vs.TestItem[] {
                 return items.flatMap(item => {
-                    if (item.children.size > 0) {
-                        const children: vs.TestItem[] = []
-                        item.children.forEach((child) => {
-                            children.push(child)
-                        })
-                        return getTestItems(children)
-                    } else {
-                        return item
-                    }
+                    const children: vs.TestItem[] = []
+                    item.children.forEach((child) => {
+                        children.push(child)
+                    })
+                    const childItems = getTestItems(children)
+                    return [item, ...childItems]
                 })
             }
             const testItems = getTestItems(request.include ?? [])

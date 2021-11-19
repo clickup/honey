@@ -85,7 +85,14 @@
                 "languages": [
                     "honeytalk"
                 ],
-                "label": "Honey Debug"
+                "label": "Honey Debug",
+                "initialConfigurations": [
+                    {
+                        "type": "honey",
+                        "request": "launch",
+                        "name": "Honey"
+                    }
+                ]
             }
         ]
     },

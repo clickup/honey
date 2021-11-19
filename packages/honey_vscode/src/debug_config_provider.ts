@@ -30,6 +30,11 @@ export class DebugConfigProvider implements vs.DebugConfigurationProvider {
             return undefined
         }
 
+        if (config?.tests?.length === 0 || activeDoc?.languageId != 'honeytalk') { 
+            vs.window.showErrorMessage('No HoneyTalk file selected.')
+            return undefined
+        }
+
         return {
             name: 'Honey',
             type: 'honey',
