@@ -8,5 +8,6 @@ dist/
 tsconfig.lsif.json
 *.lsif
 *.db
+*.vsix
 
 syntaxes/*.json

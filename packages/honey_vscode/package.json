@@ -3,7 +3,7 @@
     "displayName": "Honey",
     "description": "Visual Studio Code Extension for the Honey test framwork.",
     "publisher": "honey",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "author": {
         "name": "Simon Leier"
     },
