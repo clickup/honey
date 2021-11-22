@@ -112,6 +112,8 @@
         "ts-loader": "^9.2.5",
         "webpack": "^5.52.1",
         "webpack-cli": "^4.8.0",
-        "vscode-debugadapter": "^1.50.0"
+        "vscode-debugadapter": "^1.50.0",
+        "js-yaml": "^4.1.0",
+        "@types/js-yaml": "^4.0.5"
     }
 }

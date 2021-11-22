@@ -11,3 +11,6 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+
+syntaxes/*.ts
+syntaxes/*.yaml

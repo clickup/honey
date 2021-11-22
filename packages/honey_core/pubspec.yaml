@@ -1,6 +1,6 @@
 name: honey_core
 description: Core library for Honey. This library contains models and utility used by other Honey packages.
-version: 0.0.1
+version: 0.0.2
 homepage: https://honey.dev
 repository: https://github.com/leisim/honey
 
