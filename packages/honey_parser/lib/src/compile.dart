@@ -22,6 +22,7 @@ CompilationResult compileHoneyTalk(String script) {
   final parser = HoneyTalkParser(tokens);
 
   CompilationResult? error;
+  parser.removeErrorListeners();
   parser.addErrorListener(HoneyErrorListener((e) {
     error = e;
   }));
@@ -78,4 +79,6 @@ class CompilationResult {
     this.errorColumn,
     this.errorToken,
   });
+
+  bool get hasError => errorLine != null;
 }

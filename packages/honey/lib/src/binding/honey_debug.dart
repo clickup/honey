@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:honey/honey.dart';
+import 'package:honey/src/debug_connection.dart';
 import 'package:honey/src/runner/function_registry.dart';
 import 'package:honey/src/runner/test_runner.dart';
 import 'package:honey_core/honey_core.dart';
 
-import 'debug_connection.dart';
-import 'honey_app.dart';
-import 'utils/honey_binary_messenger.dart';
+import 'honey_binding.dart';
 
 enum HoneyStatus {
   Idle,
@@ -18,59 +17,49 @@ enum HoneyStatus {
   Recording,
 }
 
-class HoneyBinding extends WidgetsFlutterBinding {
-  final Future Function() _main;
-  final Future Function() _resetApp;
-  final functionRegistry = FunctionRegistry();
-  final _semanticTagProperties = <String, Map<String, dynamic>>{};
+class HoneyDebug {
+  static HoneyDebug? _instance;
+  static HoneyDebug get instance => _instance!;
+
+  final FutureOr Function() _main;
+  final FutureOr Function()? _resetApp;
+  final FunctionRegistry _functionRegistry;
 
   final _stream = StreamController.broadcast();
 
   late final DebugConnection _debugConnection;
 
   TestRunner? _testRunner;
-  var _widgetKey = GlobalKey(debugLabel: 'honeyKey');
   var _overlayEnabled = false;
   var _testRunning = false;
   var _recording = false;
 
-  HoneyBinding({
-    required Future Function() main,
-    required Future Function() resetApp,
+  HoneyDebug({
+    required FutureOr Function() main,
+    FutureOr Function()? resetApp,
     required Map<String, CustomFunction> customFunctions,
   })  : _main = main,
-        _resetApp = resetApp {
-    for (var name in customFunctions.keys) {
-      functionRegistry.register(name, customFunctions[name]!);
-    }
-
+        _resetApp = resetApp,
+        _functionRegistry = FunctionRegistry(customFunctions: customFunctions) {
+    _instance = this;
+    HoneyBinding.instance.debugMode = true;
     _debugConnection = DebugConnection(() => _stream.add(null));
   }
 
   Future resetApp() async {
-    attachRootWidget(Container(key: UniqueKey()));
+    HoneyBinding.instance.attachRootWidget(Container(key: UniqueKey()));
     await Future.delayed(Duration(milliseconds: 500));
-    await waitUntilSettled(Duration(seconds: 3));
-    await _resetApp();
+    await HoneyBinding.instance.waitUntilSettled(Duration(seconds: 3));
+    await _resetApp?.call();
     await restartApp();
   }
 
   Future restartApp() async {
-    attachRootWidget(Container(key: UniqueKey()));
+    HoneyBinding.instance.attachRootWidget(Container(key: UniqueKey()));
     await Future.delayed(Duration(milliseconds: 500));
-    await waitUntilSettled(Duration(seconds: 3));
-    _widgetKey = GlobalKey(debugLabel: 'honeyKey');
+    await HoneyBinding.instance.waitUntilSettled(Duration(seconds: 3));
+    HoneyBinding.instance.resetWidgetKey();
     await _main();
-  }
-
-  @override
-  void scheduleAttachRootWidget(Widget rootWidget) {
-    super.scheduleAttachRootWidget(HoneyApp(
-      child: KeyedSubtree(
-        key: _widgetKey,
-        child: rootWidget,
-      ),
-    ));
   }
 
   Stream<TestStep> runTest(List<Statement> statements) async* {
@@ -83,8 +72,7 @@ class HoneyBinding extends WidgetsFlutterBinding {
       await resetApp();
       _testRunner = TestRunner(
         statements,
-        functionRegistry,
-        Duration(seconds: 15),
+        _functionRegistry,
       );
 
       await Future.delayed(Duration(seconds: 3));
@@ -99,14 +87,6 @@ class HoneyBinding extends WidgetsFlutterBinding {
     _setStatus(testRunning: false);
 
     _testRunner = null;
-  }
-
-  Future waitUntilSettled(Duration timeout) async {
-    final s = Stopwatch()..start();
-    do {
-      scheduleFrame();
-      await endOfFrame;
-    } while (hasScheduledFrame && s.elapsed < timeout);
   }
 
   void _setStatus({bool? overlayEnabled, bool? testRunning, bool? recording}) {
@@ -136,29 +116,5 @@ class HoneyBinding extends WidgetsFlutterBinding {
 
   void toggleRecording() {
     _setStatus(recording: !_recording);
-  }
-
-  void updateSemanticsProperties(
-      SemanticsTag tag, Map<String, dynamic>? properties) {
-    if (properties != null) {
-      _semanticTagProperties[tag.name] = properties;
-    } else {
-      _semanticTagProperties.remove(tag.name);
-    }
-  }
-
-  Map<String, dynamic>? getSemanticsProperties(SemanticsTag tag) {
-    return _semanticTagProperties[tag];
-  }
-
-  static HoneyBinding get instance => WidgetsBinding.instance as HoneyBinding;
-
-  @override
-  HoneyBinaryMessenger get defaultBinaryMessenger =>
-      super.defaultBinaryMessenger as HoneyBinaryMessenger;
-
-  @override
-  HoneyBinaryMessenger createBinaryMessenger() {
-    return HoneyBinaryMessenger(super.createBinaryMessenger());
   }
 }

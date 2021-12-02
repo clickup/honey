@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/binding/honey_binding.dart';
 
 class FakeTextInput {
   /// Create a fake keyboard backend.

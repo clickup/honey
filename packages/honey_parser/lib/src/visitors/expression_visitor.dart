@@ -102,6 +102,39 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
   }
 
   @override
+  Expression visitExpressionStartsWith(ExpressionStartsWithContext ctx) {
+    final value = ctx.expression(0)!.accept(this)!;
+    final prefix = ctx.expression(1)!.accept(this)!;
+    final regex =
+        ValueExp.str('^${RegExp.escape(prefix.asString)}', regexFlags: '');
+    return Builtin.matches(value, regex);
+  }
+
+  @override
+  Expression visitExpressionEndsWith(ExpressionEndsWithContext ctx) {
+    final value = ctx.expression(0)!.accept(this)!;
+    final postfix = ctx.expression(1)!.accept(this)!;
+    final regex =
+        ValueExp.str('${RegExp.escape(postfix.asString)}\$', regexFlags: '');
+    return Builtin.matches(value, regex);
+  }
+
+  @override
+  Expression visitExpressionContains(ExpressionContainsContext ctx) {
+    final value = ctx.expression(0)!.accept(this)!;
+    final substr = ctx.expression(1)!.accept(this)!;
+    final regex = ValueExp.str(RegExp.escape(substr.asString), regexFlags: '');
+    return Builtin.matches(value, regex);
+  }
+
+  @override
+  Expression? visitExpressionMatches(ExpressionMatchesContext ctx) {
+    final value = ctx.expression(0)!.accept(this)!;
+    final regex = ctx.expression(1)!.accept(this)!;
+    return Builtin.matches(value, regex);
+  }
+
+  @override
   Expression visitExpressionIsAttr(ExpressionIsAttrContext ctx) {
     final target = ctx.expression()!.accept(this)!;
     final property = ctx.property()!.accept(propertyVisitor)!;
@@ -133,7 +166,7 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
 
   @override
   Expression visitTermLiteral(TermLiteralContext ctx) {
-    return ValueExp(ctx.literal()!.accept(literalVisitor)!);
+    return ctx.literal()!.accept(literalVisitor)!;
   }
 
   @override

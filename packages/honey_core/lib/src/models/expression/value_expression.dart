@@ -27,6 +27,8 @@ class ValueExp extends Expression with _$ValueExp implements Comparable {
   factory ValueExp.empty({bool retry = false}) =>
       ValueExp.str('', retry: retry);
 
+  bool get isRegExp => regexFlags != null;
+
   RegExp get asRegExp {
     final multiline = regexFlags?.contains('m') ?? false;
     final caseInsensitive = regexFlags?.contains('i') ?? false;

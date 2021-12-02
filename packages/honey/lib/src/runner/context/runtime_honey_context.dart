@@ -1,6 +1,6 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/binding/honey_binding.dart';
 import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/function_params.dart';
@@ -18,18 +18,19 @@ class RuntimeHoneyContext with HoneyContext {
   final FunctionRegistry functions;
   final FakeTextInput fakeTextInput;
   final variables = <String, Expression>{};
-  final cache = <Expression, Expression>{};
+  final defaultVariables = getDefaultVariables();
 
   WidgetExp? referenceWidget;
 
-  RuntimeHoneyContext(this.functions, this.fakeTextInput) {
-    variables.addAll(getDefaultVariables());
-  }
+  RuntimeHoneyContext(this.functions, this.fakeTextInput);
 
   Future<Expression> getVariable(String name) {
+    name = name.toLowerCase();
     final widgetVal = referenceWidget?.getProperty(name);
-    final value =
-        widgetVal ?? variables[name.toLowerCase()] ?? ValueExp.empty();
+    final value = widgetVal ??
+        variables[name] ??
+        defaultVariables[name] ??
+        ValueExp.empty();
     return eval(value);
   }
 
@@ -38,9 +39,9 @@ class RuntimeHoneyContext with HoneyContext {
     if (!evaluatedValue.retry) {
       value = evaluatedValue;
     }
-    if (value is! ValueExp && value is! ListExp) {
+    if (value is! ValueExp && value is! ListExp && value is! FunctionExp) {
       throw HoneyError(
-        'Only list and value expressions can be stored in variables',
+        'Only list, value abd function expressions can be stored in variables',
         value.retry,
       );
     }
@@ -52,25 +53,20 @@ class RuntimeHoneyContext with HoneyContext {
   }
 
   bool hasVariable(String name) {
+    name = name.toLowerCase();
     final widgetVal = referenceWidget?.getProperty(name);
-    return widgetVal != null || variables.containsKey(name.toLowerCase());
+    return widgetVal != null ||
+        variables.containsKey(name) ||
+        defaultVariables.containsKey(name);
   }
 
   SemanticsNode get semanticsTree {
-    return WidgetsBinding
-        .instance!.pipelineOwner.semanticsOwner!.rootSemanticsNode!;
+    return HoneyBinding
+        .instance.pipelineOwner.semanticsOwner!.rootSemanticsNode!;
   }
 
   void dispatchPointerEvent(PointerEvent e) {
     WidgetsBinding.instance!.handlePointerEvent(e);
-  }
-
-  Future restartApp({bool reset = false}) async {
-    if (reset) {
-      await HoneyBinding.instance.resetApp();
-    } else {
-      await HoneyBinding.instance.restartApp();
-    }
   }
 
   Future delay(Duration duration) async {
@@ -90,13 +86,11 @@ class RuntimeHoneyContext with HoneyContext {
     }
   }
 
-  Future<Expression> eval(Expression expression) {
-    if (cache.containsKey(expression)) {
-      return Future.value(cache[expression]!);
-    }
+  Future<Expression> eval(Expression expression) async {
     if (expression is FunctionExp) {
       final params = FunctionParams(expression.params);
-      return functions.run(this, expression.name, params);
+      final result = await functions.run(this, expression.name, params);
+      return result;
     } else {
       return Future.value(expression);
     }
@@ -104,7 +98,6 @@ class RuntimeHoneyContext with HoneyContext {
 
   RuntimeHoneyContext clone() {
     return RuntimeHoneyContext(functions, fakeTextInput)
-      ..variables.addAll(variables)
-      ..cache.addAll(cache);
+      ..variables.addAll(variables);
   }
 }

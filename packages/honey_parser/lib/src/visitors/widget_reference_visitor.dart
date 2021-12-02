@@ -15,8 +15,8 @@ class WidgetReferenceVisitor extends HoneyTalkBaseVisitor<WidgetReference> {
 
 class WidgetReferencePositionVisitor
     extends HoneyTalkBaseVisitor<WidgetReference> {
-  static const DS = 0.1;
-  static const DL = 0.3;
+  static const ds = 0.1;
+  static const dl = 0.3;
 
   final Expression widget;
 
@@ -50,41 +50,41 @@ class WidgetReferencePositionVisitor
     final direction = ctx.singleDirection()!.accept(singleDirectionVisitor)!;
     final parent = ctx.parent != null;
     switch (direction) {
-      case Direction.Top:
+      case Direction.top:
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: -DS,
-          topLeftY: -DS,
-          bottomRightX: 1 + DS,
-          bottomRightY: DS,
+          topLeftX: -ds,
+          topLeftY: -ds,
+          bottomRightX: 1 + ds,
+          bottomRightY: ds,
         );
-      case Direction.Left:
+      case Direction.left:
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: -DS,
-          topLeftY: -DS,
-          bottomRightX: DS,
-          bottomRightY: 1 + DS,
+          topLeftX: -ds,
+          topLeftY: -ds,
+          bottomRightX: ds,
+          bottomRightY: 1 + ds,
         );
-      case Direction.Bottom:
+      case Direction.bottom:
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: -DS,
-          topLeftY: 1 - DS,
-          bottomRightX: 1 + DS,
-          bottomRightY: 1 + DS,
+          topLeftX: -ds,
+          topLeftY: 1 - ds,
+          bottomRightX: 1 + ds,
+          bottomRightY: 1 + ds,
         );
-      case Direction.Right:
+      case Direction.right:
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: 1 - DS,
-          topLeftY: -DS,
-          bottomRightX: 1 + DS,
-          bottomRightY: 1 + DS,
+          topLeftX: 1 - ds,
+          topLeftY: -ds,
+          bottomRightX: 1 + ds,
+          bottomRightY: 1 + ds,
         );
     }
   }
@@ -93,44 +93,44 @@ class WidgetReferencePositionVisitor
   WidgetReference visitWidgetReferenceCorner(WidgetReferenceCornerContext ctx) {
     final direction = ctx.doubleDirection()!.accept(doubleDirectionVisitor)!;
     final parent = ctx.parent != null;
-    if (direction.direction1 == Direction.Top) {
-      if (direction.direction2 == Direction.Left) {
+    if (direction.direction1 == Direction.top) {
+      if (direction.direction2 == Direction.left) {
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: -DS,
-          topLeftY: -DS,
-          bottomRightX: DS,
-          bottomRightY: DS,
+          topLeftX: -ds,
+          topLeftY: -ds,
+          bottomRightX: ds,
+          bottomRightY: ds,
         );
       } else {
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: 1 - DS,
-          topLeftY: -DS,
-          bottomRightX: 1 + DS,
-          bottomRightY: DS,
+          topLeftX: 1 - ds,
+          topLeftY: -ds,
+          bottomRightX: 1 + ds,
+          bottomRightY: ds,
         );
       }
     } else {
-      if (direction.direction2 == Direction.Left) {
+      if (direction.direction2 == Direction.left) {
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: -DS,
-          topLeftY: 1 - DS,
-          bottomRightX: DS,
-          bottomRightY: 1 + DS,
+          topLeftX: -ds,
+          topLeftY: 1 - ds,
+          bottomRightX: ds,
+          bottomRightY: 1 + ds,
         );
       } else {
         return WidgetReference(
           widget: widget,
           parent: parent,
-          topLeftX: 1 - DS,
-          topLeftY: 1 - DS,
-          bottomRightX: 1 + DS,
-          bottomRightY: 1 + DS,
+          topLeftX: 1 - ds,
+          topLeftY: 1 - ds,
+          bottomRightX: 1 + ds,
+          bottomRightY: 1 + ds,
         );
       }
     }
@@ -141,13 +141,13 @@ class WidgetReferencePositionVisitor
     final direction = ctx.singleDirection()!.accept(singleDirectionVisitor)!;
     final parent = ctx.parent != null;
     switch (direction) {
-      case Direction.Top:
+      case Direction.top:
         return _referenceFraction(false, 0.5, 0, parent);
-      case Direction.Left:
+      case Direction.left:
         return _referenceFraction(true, 0.5, 0, parent);
-      case Direction.Bottom:
+      case Direction.bottom:
         return _referenceFraction(false, 0.5, 1, parent);
-      case Direction.Right:
+      case Direction.right:
         return _referenceFraction(true, 0.5, 1, parent);
     }
   }
@@ -160,13 +160,13 @@ class WidgetReferencePositionVisitor
     final index = 1;
     final parent = ctx.parent != null;
     switch (direction) {
-      case Direction.Top:
+      case Direction.top:
         return _referenceFraction(false, fraction, index, parent);
-      case Direction.Left:
+      case Direction.left:
         return _referenceFraction(false, fraction, index, parent);
-      case Direction.Bottom:
+      case Direction.bottom:
         return _referenceFraction(false, fraction, index, parent);
-      case Direction.Right:
+      case Direction.right:
         return _referenceFraction(false, fraction, index, parent);
     }
   }
@@ -175,15 +175,15 @@ class WidgetReferencePositionVisitor
   WidgetReference visitWidgetReferencePercentage(
       WidgetReferencePercentageContext ctx) {
     final direction = ctx.singleDirection()!.accept(singleDirectionVisitor)!;
-    final percentage = int.parse(ctx.literal()!.accept(literalVisitor)!);
+    final percentage = int.parse(ctx.literal()!.accept(literalVisitor)!.value);
     final parent = ctx.parent != null;
     switch (direction) {
-      case Direction.Top:
-      case Direction.Bottom:
+      case Direction.top:
+      case Direction.bottom:
         return _referenceFraction(
             false, percentage.toDouble() / 100, 0, parent);
-      case Direction.Left:
-      case Direction.Right:
+      case Direction.left:
+      case Direction.right:
         return _referenceFraction(true, percentage.toDouble() / 100, 0, parent);
     }
   }
@@ -208,47 +208,47 @@ class WidgetReferencePositionVisitor
         ctx.singleDirection()?.accept(singleDirectionVisitor);
     final doubleDirection =
         ctx.doubleDirection()?.accept(doubleDirectionVisitor);
-    if (ctx.above != null || singleDirection == Direction.Top) {
+    if (ctx.above != null || singleDirection == Direction.top) {
       return WidgetReference(
         widget: widget,
         parent: parent,
-        topLeftX: -DL,
+        topLeftX: -dl,
         topLeftY: double.negativeInfinity,
-        bottomRightX: 1 + DL,
+        bottomRightX: 1 + dl,
         bottomRightY: 0,
       );
-    } else if (ctx.below != null || singleDirection == Direction.Bottom) {
+    } else if (ctx.below != null || singleDirection == Direction.bottom) {
       return WidgetReference(
         widget: widget,
         parent: parent,
-        topLeftX: -DL,
+        topLeftX: -dl,
         topLeftY: 0,
-        bottomRightX: 1 + DL,
+        bottomRightX: 1 + dl,
         bottomRightY: double.infinity,
       );
     } else if (singleDirection != null) {
-      if (singleDirection == Direction.Left) {
+      if (singleDirection == Direction.left) {
         return WidgetReference(
           widget: widget,
           parent: parent,
           topLeftX: double.negativeInfinity,
-          topLeftY: -DL,
+          topLeftY: -dl,
           bottomRightX: 0,
-          bottomRightY: 1 + DL,
+          bottomRightY: 1 + dl,
         );
       } else {
         return WidgetReference(
           widget: widget,
           parent: parent,
           topLeftX: 1,
-          topLeftY: -DL,
+          topLeftY: -dl,
           bottomRightX: double.infinity,
-          bottomRightY: 1 + DL,
+          bottomRightY: 1 + dl,
         );
       }
     } else {
-      if (doubleDirection!.direction1 == Direction.Top) {
-        if (doubleDirection.direction2 == Direction.Left) {
+      if (doubleDirection!.direction1 == Direction.top) {
+        if (doubleDirection.direction2 == Direction.left) {
           return WidgetReference(
             widget: widget,
             parent: parent,
@@ -268,7 +268,7 @@ class WidgetReferencePositionVisitor
           );
         }
       } else {
-        if (doubleDirection.direction2 == Direction.Left) {
+        if (doubleDirection.direction2 == Direction.left) {
           return WidgetReference(
             widget: widget,
             parent: parent,

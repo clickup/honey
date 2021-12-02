@@ -103,17 +103,17 @@
         "lint": "eslint src --ext ts"
     },
     "devDependencies": {
-        "@types/vscode": "^1.62.0",
+        "@types/js-yaml": "^4.0.5",
         "@types/node": "14.x",
+        "@types/vscode": "^1.62.0",
         "@typescript-eslint/eslint-plugin": "^5.1.0",
         "@typescript-eslint/parser": "^5.1.0",
         "eslint": "^8.1.0",
-        "typescript": "^4.4.4",
-        "ts-loader": "^9.2.5",
-        "webpack": "^5.52.1",
-        "webpack-cli": "^4.8.0",
-        "vscode-debugadapter": "^1.50.0",
         "js-yaml": "^4.1.0",
-        "@types/js-yaml": "^4.0.5"
+        "ts-loader": "^9.2.5",
+        "typescript": "^4.4.4",
+        "vscode-debugadapter": "^1.50.0",
+        "webpack": "^5.52.1",
+        "webpack-cli": "^4.9.1"
     }
 }

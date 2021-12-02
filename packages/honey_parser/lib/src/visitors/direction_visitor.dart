@@ -1,26 +1,26 @@
 import 'package:honey_parser/src/antlr.dart';
 
-enum Direction { Top, Left, Bottom, Right }
+enum Direction { top, left, bottom, right }
 
 class SingleDirectionVisitor extends HoneyTalkBaseVisitor<Direction> {
   @override
   Direction visitSingleDirectionTop(SingleDirectionTopContext ctx) {
-    return Direction.Top;
+    return Direction.top;
   }
 
   @override
   Direction visitSingleDirectionLeft(SingleDirectionLeftContext ctx) {
-    return Direction.Left;
+    return Direction.left;
   }
 
   @override
   Direction visitSingleDirectionBottom(SingleDirectionBottomContext ctx) {
-    return Direction.Bottom;
+    return Direction.bottom;
   }
 
   @override
   Direction visitSingleDirectionRight(SingleDirectionRightContext ctx) {
-    return Direction.Right;
+    return Direction.right;
   }
 }
 
@@ -35,24 +35,24 @@ class DoubleDirectionVisitor extends HoneyTalkBaseVisitor<DoubleDirection> {
   @override
   DoubleDirection visitDoubleDirectionTopLeft(
       DoubleDirectionTopLeftContext ctx) {
-    return DoubleDirection(Direction.Top, Direction.Left);
+    return DoubleDirection(Direction.top, Direction.left);
   }
 
   @override
   DoubleDirection? visitDoubleDirectionTopRight(
       DoubleDirectionTopRightContext ctx) {
-    return DoubleDirection(Direction.Top, Direction.Right);
+    return DoubleDirection(Direction.top, Direction.right);
   }
 
   @override
   DoubleDirection visitDoubleDirectionBottomLeft(
       DoubleDirectionBottomLeftContext ctx) {
-    return DoubleDirection(Direction.Bottom, Direction.Left);
+    return DoubleDirection(Direction.bottom, Direction.left);
   }
 
   @override
   DoubleDirection visitDoubleDirectionBottomRight(
       DoubleDirectionBottomRightContext ctx) {
-    return DoubleDirection(Direction.Bottom, Direction.Right);
+    return DoubleDirection(Direction.bottom, Direction.right);
   }
 }

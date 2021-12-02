@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:honey/src/honey_binding.dart';
 import 'package:honey_core/honey_core.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import 'binding/honey_debug.dart';
 
 class DebugConnection {
   final VoidCallback _onStatusChanged;
@@ -18,17 +19,17 @@ class DebugConnection {
   DebugConnection(this._onStatusChanged) {
     _startServer();
 
-    final binding = HoneyBinding.instance;
-    binding.stream.listen((_) async {
+    final debug = HoneyDebug.instance;
+    debug.stream.listen((_) async {
       if (_packageInfo == null) {
         _packageInfo = await PackageInfo.fromPlatform();
       }
       _send(DebugMessage.deviceStatus(
         appName: _packageInfo!.appName,
         appBuild: _packageInfo!.buildNumber,
-        overlayEnabled: binding.overlayEnabled,
-        testRunning: binding.testRunning,
-        recording: binding.recording,
+        overlayEnabled: debug.overlayEnabled,
+        testRunning: debug.testRunning,
+        recording: debug.recording,
       ));
     });
   }
@@ -60,7 +61,7 @@ class DebugConnection {
   void _startPortBroadcast() async {
     void send([dynamic _]) {
       if (_socket == null) {
-        print('Honey listening on port ${_server.port}');
+        print('$honeyPortMarker ${_server.port}');
       }
     }
 
@@ -84,7 +85,7 @@ class DebugConnection {
       final msg = DebugMessage.fromJson(jsonDecode(data));
       msg.maybeMap(
         startTest: (run) async {
-          HoneyBinding.instance.runTest(run.statements).listen((step) {
+          HoneyDebug.instance.runTest(run.statements).listen((step) {
             _send(DebugMessage.testStep(
               runId: run.runId,
               step: step,
@@ -92,16 +93,16 @@ class DebugConnection {
           });
         },
         cancelTests: (_) {
-          HoneyBinding.instance.cancelTests();
+          HoneyDebug.instance.cancelTests();
         },
         toggleOverlay: (_) {
-          HoneyBinding.instance.toggleOverlay();
+          HoneyDebug.instance.toggleOverlay();
         },
         toggleRecording: (_) {
-          HoneyBinding.instance.toggleRecording();
+          HoneyDebug.instance.toggleRecording();
         },
         resetApp: (_) {
-          HoneyBinding.instance.resetApp();
+          HoneyDebug.instance.resetApp();
         },
         orElse: () {},
       );

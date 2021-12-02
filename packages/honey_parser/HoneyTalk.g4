@@ -9,8 +9,8 @@ statement:
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
 actionStatement:
-    'verify' 'that'? expression        # actionVerify
-    | ('see' | 'look' 'at') expression # actionSee
+    ('verify' | 'check' | 'assert' | 'expect' | 'test') 'that'? expression # actionVerify
+    | ('see' | 'look' 'at') expression                                     # actionSee
     | clickType 'on'? target = expression (
         ('at' | 'with'? 'offset') offset = expression
     )? # actionClick
@@ -21,8 +21,6 @@ actionStatement:
     | ('enter' | 'type') value = expression                      # actionEnter
     | 'set' variable = ID ('to' | 'as') expression               # actionSetVariable
     | ('put' | 'store') expression ('in' | 'into') variable = ID # actionSetVariable
-    | 'restart' ( 'app')?                                        # actionRestart
-    | 'reset' ( 'app')?                                          # actionReset
     | 'wait' 'for'? expression                                   # actionWait
     | ('print' | 'output' | 'message') expression                # actionPrint;
 
@@ -33,11 +31,11 @@ clickType:
     | 'right' click  # clickTypeRight;
 
 expression:
-    '(' expression ')'                            # expressionExpression
-    | term                                        # expressionTerm
-    | 'not' expression                            # expressionNot
-    | '-' expression                              # expressionNegate
-    | (THERE_IS_A | not = THERE_IS_NO) expression # expressionExists
+    '(' expression ')'                     # expressionExpression
+    | term                                 # expressionTerm
+    | 'not' expression                     # expressionNot
+    | '-' expression                       # expressionNegate
+    | 'there' 'is' not = 'not'? expression # expressionExists
     | expression (isAre | isAreNot) (
         'visible'
         | 'exist'
@@ -48,6 +46,10 @@ expression:
     | expression op = ('+' | '-') expression  # expressionBinaryOp
     | expression op = ('&&' | '&') expression # expressionBinaryOp
     | expression op = comparisonOp expression # expressionComparison
+    | expression ('starts' 'with') expression # expressionStartsWith
+    | expression ('ends' 'with') expression   # expressionEndsWith
+    | expression ('contains') expression      # expressionContains
+    | expression 'matches' expression         # expressionMatches
     | expression (isAre | isAreNot) property  # expressionIsAttr
     | expression 'and' expression             # expressionAnd
     | expression 'or' expression              # expressionOr;
@@ -104,11 +106,15 @@ function:
     | ID '(' (term (','? term)*?)? ')' # functionCustom
     | ID 'with' (term (','? term)*?)   # functionCustom;
 
+handler:
+    'on' name = ID ()
+
 literal:
-    cardinalValue    # literalCardinal
-    | STRING_LITERAL # literalString
-    | NUMBER_LITERAL # literalNumber
-    | BOOL_LITERAL   # literalBool;
+    cardinalValue                   # literalCardinal
+    | STRING_LITERAL                # literalString
+    | REGEX_LITERAL REGEX_MODIFIER? # literalRegex
+    | NUMBER_LITERAL                # literalNumber
+    | BOOL_LITERAL                  # literalBool;
 
 cardinalValue:
     'zero'
@@ -137,19 +143,18 @@ ordinal:
     | 'last';
 
 widgetIdent:
-    (attr += ID)* widgetName widgetType
-    | (attr += ID)* widgetType widgetName?;
-
-widgetName:
-    widgetNameModifier? name += literal ('or' name += literal)*;
+    (attr += ID)* widgetNameModifier name += literal (
+        'or' name += literal
+    )* widgetType?
+    | (attr += ID)* name += literal ('or' name += literal)* widgetType
+    | (attr += ID)* widgetNameModifier? widgetType (
+        name += literal ('or' name += literal)*
+    )?;
 
 widgetNameModifier:
-    'exactly'                                                                      # widgetNameExactly
-    | ('starts' | 'starting' | 'begins' | 'beginning') 'with' exactly = 'exactly'? #
-        widgetNameStartingWith
-    | ('ends' | 'ending') 'with' exactly = 'exactly'?  # widgetNameEndingWith
-    | ('contains' | 'containing') exactly = 'exactly'? # widgetNameContaining
-    | ('matches' | 'matching')                         # widgetNameMatching;
+    'exactly'              # widgetNameExactly
+    | 'case' 'sensitive'   # widgetNameCaseSensitive
+    | 'case' 'insensitive' # widgetNameCaseInsensitive;
 
 widgetReference:
     widgetReferencePosition '(' term ')'
@@ -242,17 +247,19 @@ isAreNot:
     | 'does' 'not'
     | 'doesn\'t';
 
-INTEGER_LITERAL: DIGIT+;
-
 NUMBER_LITERAL:
-    INTEGER_LITERAL
-    | '.' INTEGER_LITERAL
-    | INTEGER_LITERAL '.'
-    | INTEGER_LITERAL '.' INTEGER_LITERAL;
+    DIGIT+
+    | '.' DIGIT+
+    | DIGIT+ '.'
+    | DIGIT+ '.' DIGIT+;
 
 BOOL_LITERAL: 'true' | 'false';
 
 STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
+
+REGEX_LITERAL: '/' ( '\\/' | ~[/\n])* '/';
+
+REGEX_MODIFIER: ('a' .. 'z' | 'A' .. 'Z');
 
 THE: 'the' -> channel(HIDDEN);
 
@@ -271,16 +278,5 @@ MULTILINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 NEWLINE: ('\n' | '\r')+;
 
 WHITESPACE: (' ' | '\t')+ -> channel(HIDDEN);
-
-THERE_IS_A:
-    'there' WHITESPACE 'is'
-    | 'there' WHITESPACE 'is' WHITESPACE 'a'
-    | 'there' WHITESPACE 'is' WHITESPACE 'an';
-
-THERE_IS_NO:
-    'there' WHITESPACE 'is' WHITESPACE 'no'
-    | 'there' WHITESPACE 'is' WHITESPACE 'not'
-    | 'there' WHITESPACE 'is' WHITESPACE 'not' WHITESPACE 'a'
-    | 'there' WHITESPACE 'is' WHITESPACE 'not' WHITESPACE 'an';
 
 UNLEXED_CHAR: .;

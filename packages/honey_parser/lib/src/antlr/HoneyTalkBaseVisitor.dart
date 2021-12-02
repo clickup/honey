@@ -51,14 +51,6 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitActionRestart(ActionRestartContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
-  T? visitActionReset(ActionResetContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
   T? visitActionWait(ActionWaitContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
@@ -80,6 +72,26 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// [visitChildren] on [ctx].
   @override
   T? visitClickTypeRight(ClickTypeRightContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitExpressionContains(ExpressionContainsContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitExpressionNegate(ExpressionNegateContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitExpressionPow(ExpressionPowContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitExpressionTerm(ExpressionTermContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitExpressionIsAttr(ExpressionIsAttrContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
@@ -107,11 +119,7 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitExpressionNegate(ExpressionNegateContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
-  T? visitExpressionPow(ExpressionPowContext ctx) => visitChildren(ctx);
+  T? visitExpressionEndsWith(ExpressionEndsWithContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
@@ -119,11 +127,11 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitExpressionTerm(ExpressionTermContext ctx) => visitChildren(ctx);
+  T? visitExpressionStartsWith(ExpressionStartsWithContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitExpressionIsAttr(ExpressionIsAttrContext ctx) => visitChildren(ctx);
+  T? visitExpressionMatches(ExpressionMatchesContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
@@ -231,6 +239,10 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
+  T? visitLiteralRegex(LiteralRegexContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
   T? visitLiteralNumber(LiteralNumberContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
@@ -251,27 +263,15 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitWidgetName(WidgetNameContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
   T? visitWidgetNameExactly(WidgetNameExactlyContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitWidgetNameStartingWith(WidgetNameStartingWithContext ctx) => visitChildren(ctx);
+  T? visitWidgetNameCaseSensitive(WidgetNameCaseSensitiveContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitWidgetNameEndingWith(WidgetNameEndingWithContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
-  T? visitWidgetNameContaining(WidgetNameContainingContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
-  T? visitWidgetNameMatching(WidgetNameMatchingContext ctx) => visitChildren(ctx);
+  T? visitWidgetNameCaseInsensitive(WidgetNameCaseInsensitiveContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override

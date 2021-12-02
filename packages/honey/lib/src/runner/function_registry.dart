@@ -1,5 +1,5 @@
+import 'package:honey/src/honey.dart';
 import 'package:honey_core/honey_core.dart';
-import 'package:honey/src/honey_app.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/functions/action_functions.dart';
 import 'package:honey/src/runner/functions/date_functions.dart';
@@ -22,6 +22,12 @@ class FunctionRegistry {
     ...WidgetFunctions.functions,
   };
 
+  FunctionRegistry({Map<String, CustomFunction> customFunctions = const {}}) {
+    for (var key in customFunctions.keys) {
+      _custom[key.toLowerCase()] = customFunctions[key]!;
+    }
+  }
+
   Future<Expression> run(HoneyContext ctx, String name, FunctionParams params) {
     final lcName = name.toLowerCase();
     final function = _custom[lcName] ?? _core[lcName];
@@ -30,9 +36,5 @@ class FunctionRegistry {
     } else {
       throw HoneyError('Unknown function $name', false);
     }
-  }
-
-  void register(String name, CustomFunction function) {
-    _custom[name.toLowerCase()] = function;
   }
 }

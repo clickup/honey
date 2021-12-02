@@ -1,6 +1,6 @@
 import * as vs from 'vscode';
 import * as child_process from "child_process";
-import {createInterface} from "readline";
+import { createInterface } from "readline";
 import { getOutputChannel, runProcessInOutputChannel, waitUntilExit } from './utils';
 
 export class HoneyDaemon implements vs.Disposable {
@@ -12,7 +12,7 @@ export class HoneyDaemon implements vs.Disposable {
 
     private devicesEmitter = new vs.EventEmitter<Device[]>()
     public onDevices = this.devicesEmitter.event
-    
+
     private messageEmitter = new vs.EventEmitter<[string, HoneyMessage]>()
     public onMessage = this.messageEmitter.event
 
@@ -32,12 +32,12 @@ export class HoneyDaemon implements vs.Disposable {
             }
         }
 
-        const process = child_process.spawn("dart", ['pub', 'global', 'run', 'honey_cli:honey_daemon'], {shell: true})
+        const process = child_process.spawn("dart", ['pub', 'global', 'run', 'honey_cli:honey', 'daemon'], { shell: true })
         this.channel.appendLine(`Starting daemon process ${process.pid}`)
         runProcessInOutputChannel(process, this.channel)
         const stdout = createInterface(process.stdout!)
         stdout.on("line", (line) => this.handleStdout(line))
-		process.on("exit", () => this.handleExit())
+        process.on("exit", () => this.handleExit())
         this.process = process
 
         return true
@@ -50,7 +50,7 @@ export class HoneyDaemon implements vs.Disposable {
     }
 
     private async prepare(): Promise<boolean> {
-        const dart = child_process.spawn("dart", ["--version"], {shell: true})
+        const dart = child_process.spawn("dart", ["--version"], { shell: true })
         runProcessInOutputChannel(dart, this.channel)
         const dartExists = (await waitUntilExit(dart)) == 0
         if (!dartExists) {
@@ -62,7 +62,7 @@ export class HoneyDaemon implements vs.Disposable {
             return false;
         }
 
-        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-sgit", "https://github.com/leisim/honey_cli.git", "--overwrite"]);
+        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-spath", "C:\\Users\\simon\\Desktop\\honey\\packages\\honey_cli", "--overwrite"], { shell: true });
         runProcessInOutputChannel(installHoneyDaemon, this.channel)
         const daemonActivated = (await waitUntilExit(installHoneyDaemon)) == 0
         if (!daemonActivated) {
@@ -78,7 +78,7 @@ export class HoneyDaemon implements vs.Disposable {
     }
 
     private handleStdout(line: string) {
-		const message: DaemonMessage = JSON.parse(line)
+        const message: DaemonMessage = JSON.parse(line)
         switch (message.type) {
             case "devices":
                 this.devicesEmitter.fire(message.devices)
@@ -90,7 +90,7 @@ export class HoneyDaemon implements vs.Disposable {
                 this.handleCompileResult(message.requestId, message.results)
                 break;
         }
-	}
+    }
 
     private handleCompileResult(requestId: number, results: CompiledHoneyTalk[]) {
         const callback = this.compileRequests.get(requestId)
@@ -127,7 +127,7 @@ export class HoneyDaemon implements vs.Disposable {
         })
     }
 
-	private handleExit() {
+    private handleExit() {
         this.process = undefined
         this.devicesEmitter.fire([])
         vs.window.showWarningMessage("Honey daemon terminated.", "Restart").then((action) => {
@@ -135,6 +135,6 @@ export class HoneyDaemon implements vs.Disposable {
                 this.start()
             }
         })
-	}
+    }
 }
 

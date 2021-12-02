@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:honey/src/binding/honey_binding.dart';
 import 'package:honey_core/honey_core.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
-import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/runner/function_registry.dart';
 
 import 'context/runtime_honey_context.dart';
@@ -13,12 +13,11 @@ import 'errors/unknown_error.dart';
 class TestRunner {
   final List<Statement> statements;
   final FunctionRegistry functions;
-  final Duration timeout;
   final _fakeInput = FakeTextInput();
   var _canceled = false;
   late var _ctx = RuntimeHoneyContext(functions, _fakeInput);
 
-  TestRunner(this.statements, this.functions, this.timeout);
+  TestRunner(this.statements, this.functions);
 
   Stream<TestStep> executeAll() async* {
     final queue = ListQueue.of(statements.reversed);
@@ -30,7 +29,6 @@ class TestRunner {
       if (statement is IfStatement) {
         result = await runRepeatedly(
           statement.condition,
-          timeout,
           untilTrue: true,
         );
         if (result is Expression && result.asBool) {
@@ -39,7 +37,6 @@ class TestRunner {
       } else if (statement is ExpressionStatement) {
         result = await runRepeatedly(
           statement.expression,
-          timeout,
         );
       }
 
@@ -62,8 +59,7 @@ class TestRunner {
   }
 
   Future<dynamic> runRepeatedly(
-    Expression expression,
-    Duration timeout, {
+    Expression expression, {
     bool untilTrue = false,
   }) async {
     await HoneyBinding.instance.waitUntilSettled(Duration(seconds: 10));
@@ -71,6 +67,7 @@ class TestRunner {
 
     final s = Stopwatch()..start();
     while (true) {
+      final timeout = (await _ctx.getVariable('timeout')).asNum;
       await Future.delayed(Duration(milliseconds: 100));
 
       _ctx = startCtx.clone();
@@ -78,10 +75,10 @@ class TestRunner {
       Expression? value;
       try {
         value = await _ctx.eval(expression);
-      } on HoneyError catch (e) {
+      } on HoneyError catch (e, s) {
         error = e;
-      } catch (e) {
-        error = UnknownError(e.toString());
+      } catch (e, s) {
+        error = UnknownError(e.toString() + ' ' + s.toString());
       }
 
       if (error != null) {
@@ -94,7 +91,7 @@ class TestRunner {
         return value;
       }
 
-      if (s.elapsed > timeout || _canceled) {
+      if (s.elapsed.inMilliseconds > timeout || _canceled) {
         return error ?? value;
       }
     }

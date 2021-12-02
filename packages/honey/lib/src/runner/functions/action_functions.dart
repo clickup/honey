@@ -12,8 +12,6 @@ abstract class ActionFunctions {
     'click': click,
     'verify': verify,
     'enter': enter,
-    'restart': restartApp,
-    'reset': resetApp,
     'wait': wait,
     'print': print,
   };
@@ -63,17 +61,6 @@ abstract class ActionFunctions {
     } else {
       throw HoneyError('no string value given', value.retry);
     }
-    return ValueExp.empty();
-  }
-
-  static Future<Expression> restartApp(
-      HoneyContext ctx, FunctionParams _) async {
-    await ctx.restartApp();
-    return ValueExp.empty();
-  }
-
-  static Future<Expression> resetApp(HoneyContext ctx, FunctionParams _) async {
-    await ctx.restartApp(reset: true);
     return ValueExp.empty();
   }
 

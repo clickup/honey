@@ -45,7 +45,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
     final expressionCtx = ctx.expression()!;
     final expression = expressionCtx.accept(expressionVisitor)!;
     return Statement.expression(
-      sourceInfo: _getSourceInfo(expressionCtx),
+      sourceInfo: _getSourceInfo(ctx),
       optional: ctx.maybe() != null,
       expression: expression,
     );

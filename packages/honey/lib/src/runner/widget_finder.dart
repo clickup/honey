@@ -1,8 +1,5 @@
 import 'package:flutter/semantics.dart';
-import 'package:honey_core/honey_core.dart';
-import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
-import 'package:collection/collection.dart';
 import 'context/honey_context.dart';
 import '../models/widget_expression.dart';
 

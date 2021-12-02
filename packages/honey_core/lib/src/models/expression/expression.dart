@@ -27,16 +27,16 @@ abstract class Expression {
     return value == 'true' || value == 'false';
   }
 
+  bool get asBool {
+    return value == 'true' || asNum > 0;
+  }
+
   bool get isNum {
     if (value != null) {
       return num.tryParse(value!) != null;
     } else {
       return false;
     }
-  }
-
-  bool get asBool {
-    return value == 'true' || asNum > 0;
   }
 
   num get asNum {
@@ -47,6 +47,10 @@ abstract class Expression {
     } else {
       return (value != null ? num.tryParse(value!) : null) ?? 0;
     }
+  }
+
+  String get asString {
+    return value ?? '';
   }
 
   bool get isDate {

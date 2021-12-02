@@ -9,8 +9,9 @@ const _WEEK = _DAY * 7;
 const _MONTH = _DAY * 30;
 const _YEAR = _DAY * 365;
 
-Map<String, ValueExp> getDefaultVariables() {
+Map<String, Expression> getDefaultVariables() {
   return {
+    'timeout': ValueExp(defaultStepTimeout.inMilliseconds, retry: false),
     'milliseconds': ValueExp(_MS, retry: false),
     'seconds': ValueExp(_S, retry: false),
     'minutes': ValueExp(_MIN, retry: false),

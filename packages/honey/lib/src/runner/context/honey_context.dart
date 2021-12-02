@@ -35,8 +35,6 @@ abstract class HoneyContext {
 
   void dispatchPointerEvent(PointerEvent e);
 
-  Future restartApp({bool reset = false});
-
   Future delay(Duration duration);
 
   Future click({
@@ -51,7 +49,6 @@ abstract class HoneyContext {
       }
       offset = rect.shift(offset).center;
     }
-    print('CLICK: ${offset ?? rect.center}');
     final downEvent = PointerDownEvent(position: offset ?? rect.center);
     dispatchPointerEvent(downEvent);
     final upEvent = PointerUpEvent();

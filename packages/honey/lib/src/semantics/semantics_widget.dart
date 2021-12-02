@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/binding/honey_binding.dart';
 
 typedef _SemanticsBuilder = Widget Function(SemanticsTag? tag);
 

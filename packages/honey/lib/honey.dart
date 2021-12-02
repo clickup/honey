@@ -1,6 +1,6 @@
 library honey;
 
-export 'src/honey_app.dart' show honey, CustomFunction;
+export 'src/honey.dart' show honey, CustomFunction;
 export 'src/runner/context/honey_context.dart';
 export 'src/runner/function_params.dart';
 

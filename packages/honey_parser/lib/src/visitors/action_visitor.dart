@@ -43,16 +43,6 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
   }
 
   @override
-  FunctionExp visitActionRestart(ActionRestartContext ctx) {
-    return Builtin.restart();
-  }
-
-  @override
-  FunctionExp visitActionReset(ActionResetContext ctx) {
-    return Builtin.reset();
-  }
-
-  @override
   FunctionExp visitActionWait(ActionWaitContext ctx) {
     final value = ctx.expression()!.accept(expressionVisitor)!;
     return Builtin.wait(value);

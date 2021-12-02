@@ -15,6 +15,6 @@ dev_dependencies:
   test: ^1.19.3
   lints: ^1.0.0
 
-#dependency_overrides:
-#  honey_core: 
-#    path: ../honey_core
+dependency_overrides:
+  honey_core: 
+    path: ../honey_core

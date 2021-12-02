@@ -62,18 +62,6 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitActionSetVariable(ActionSetVariableContext ctx);
 
-  /// Visit a parse tree produced by the {@code actionRestart}
-  /// labeled alternative in {@link HoneyTalkParser#actionStatement}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitActionRestart(ActionRestartContext ctx);
-
-  /// Visit a parse tree produced by the {@code actionReset}
-  /// labeled alternative in {@link HoneyTalkParser#actionStatement}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitActionReset(ActionResetContext ctx);
-
   /// Visit a parse tree produced by the {@code actionWait}
   /// labeled alternative in {@link HoneyTalkParser#actionStatement}.
   /// [ctx] the parse tree.
@@ -109,6 +97,36 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitClickTypeRight(ClickTypeRightContext ctx);
+
+  /// Visit a parse tree produced by the {@code expressionContains}
+  /// labeled alternative in {@link HoneyTalkParser#expression}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitExpressionContains(ExpressionContainsContext ctx);
+
+  /// Visit a parse tree produced by the {@code expressionNegate}
+  /// labeled alternative in {@link HoneyTalkParser#expression}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitExpressionNegate(ExpressionNegateContext ctx);
+
+  /// Visit a parse tree produced by the {@code expressionPow}
+  /// labeled alternative in {@link HoneyTalkParser#expression}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitExpressionPow(ExpressionPowContext ctx);
+
+  /// Visit a parse tree produced by the {@code expressionTerm}
+  /// labeled alternative in {@link HoneyTalkParser#expression}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitExpressionTerm(ExpressionTermContext ctx);
+
+  /// Visit a parse tree produced by the {@code expressionIsAttr}
+  /// labeled alternative in {@link HoneyTalkParser#expression}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitExpressionIsAttr(ExpressionIsAttrContext ctx);
 
   /// Visit a parse tree produced by the {@code expressionExists}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
@@ -146,17 +164,11 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitExpressionAnd(ExpressionAndContext ctx);
 
-  /// Visit a parse tree produced by the {@code expressionNegate}
+  /// Visit a parse tree produced by the {@code expressionEndsWith}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
-  T? visitExpressionNegate(ExpressionNegateContext ctx);
-
-  /// Visit a parse tree produced by the {@code expressionPow}
-  /// labeled alternative in {@link HoneyTalkParser#expression}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitExpressionPow(ExpressionPowContext ctx);
+  T? visitExpressionEndsWith(ExpressionEndsWithContext ctx);
 
   /// Visit a parse tree produced by the {@code expressionOr}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
@@ -164,17 +176,17 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitExpressionOr(ExpressionOrContext ctx);
 
-  /// Visit a parse tree produced by the {@code expressionTerm}
+  /// Visit a parse tree produced by the {@code expressionStartsWith}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
-  T? visitExpressionTerm(ExpressionTermContext ctx);
+  T? visitExpressionStartsWith(ExpressionStartsWithContext ctx);
 
-  /// Visit a parse tree produced by the {@code expressionIsAttr}
+  /// Visit a parse tree produced by the {@code expressionMatches}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
-  T? visitExpressionIsAttr(ExpressionIsAttrContext ctx);
+  T? visitExpressionMatches(ExpressionMatchesContext ctx);
 
   /// Visit a parse tree produced by the {@code comparisonOpEq}
   /// labeled alternative in {@link HoneyTalkParser#comparisonOp}.
@@ -332,6 +344,12 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitLiteralString(LiteralStringContext ctx);
 
+  /// Visit a parse tree produced by the {@code literalRegex}
+  /// labeled alternative in {@link HoneyTalkParser#literal}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitLiteralRegex(LiteralRegexContext ctx);
+
   /// Visit a parse tree produced by the {@code literalNumber}
   /// labeled alternative in {@link HoneyTalkParser#literal}.
   /// [ctx] the parse tree.
@@ -359,40 +377,23 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitWidgetIdent(WidgetIdentContext ctx);
 
-  /// Visit a parse tree produced by [HoneyTalkParser.widgetName].
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitWidgetName(WidgetNameContext ctx);
-
   /// Visit a parse tree produced by the {@code widgetNameExactly}
   /// labeled alternative in {@link HoneyTalkParser#widgetNameModifier}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitWidgetNameExactly(WidgetNameExactlyContext ctx);
 
-  /// Visit a parse tree produced by the {@code widgetNameStartingWith}
+  /// Visit a parse tree produced by the {@code widgetNameCaseSensitive}
   /// labeled alternative in {@link HoneyTalkParser#widgetNameModifier}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
-  T? visitWidgetNameStartingWith(WidgetNameStartingWithContext ctx);
+  T? visitWidgetNameCaseSensitive(WidgetNameCaseSensitiveContext ctx);
 
-  /// Visit a parse tree produced by the {@code widgetNameEndingWith}
+  /// Visit a parse tree produced by the {@code widgetNameCaseInsensitive}
   /// labeled alternative in {@link HoneyTalkParser#widgetNameModifier}.
   /// [ctx] the parse tree.
   /// Return the visitor result.
-  T? visitWidgetNameEndingWith(WidgetNameEndingWithContext ctx);
-
-  /// Visit a parse tree produced by the {@code widgetNameContaining}
-  /// labeled alternative in {@link HoneyTalkParser#widgetNameModifier}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitWidgetNameContaining(WidgetNameContainingContext ctx);
-
-  /// Visit a parse tree produced by the {@code widgetNameMatching}
-  /// labeled alternative in {@link HoneyTalkParser#widgetNameModifier}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitWidgetNameMatching(WidgetNameMatchingContext ctx);
+  T? visitWidgetNameCaseInsensitive(WidgetNameCaseInsensitiveContext ctx);
 
   /// Visit a parse tree produced by [HoneyTalkParser.widgetReference].
   /// [ctx] the parse tree.

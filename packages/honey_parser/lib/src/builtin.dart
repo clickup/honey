@@ -70,6 +70,10 @@ class Builtin {
     return FunctionExp("concat", [l, right]);
   }
 
+  static FunctionExp matches(Expression value, Expression regex) {
+    return FunctionExp('matches', [value, regex]);
+  }
+
   static FunctionExp format(
       Expression date, Expression? sourceFormat, Expression? targetFormat) {
     return FunctionExp("format", [
@@ -114,14 +118,6 @@ class Builtin {
 
   static FunctionExp enter(Expression value) {
     return FunctionExp("enter", [value]);
-  }
-
-  static FunctionExp restart() {
-    return FunctionExp("restart", []);
-  }
-
-  static FunctionExp reset() {
-    return FunctionExp("reset", []);
   }
 
   static FunctionExp wait(Expression value) {
