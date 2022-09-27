@@ -3,7 +3,7 @@
     "displayName": "Honey",
     "description": "Visual Studio Code Extension for the Honey test framwork.",
     "publisher": "honey",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "author": {
         "name": "Simon Leier"
     },
@@ -65,6 +65,19 @@
                 "category": "Honey"
             }
         ],
+        "configuration": {
+            "title": "Honey",
+            "properties": {
+                "honey.cliSource": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "The source of the honey_cli package."
+                }
+            }
+        },
         "menus": {
             "view/title": [
                 {

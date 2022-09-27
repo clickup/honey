@@ -21,34 +21,25 @@ void honey({
   FutureOr Function()? resetApp,
   Map<String, CustomFunction> customFunctions = const {},
 }) async {
-  print('new honeyYY $kHoneyMode');
   if (!kHoneyMode) {
+    print('Honey not active');
     main();
   } else {
+    print('Honey active');
     HoneyBinding();
 
-    /*File? testFile;
-    if (Platform.isAndroid) {
-      final externalDir = await getExternalStorageDirectory();
-      testFile = File(p.join(externalDir!.path, '.honeytest'));
-    } else if (Platform.isIOS) {
-      final docsDir = await getApplicationDocumentsDirectory();
-      testFile = File(p.join(docsDir.path, '.honeytest'));
-    }*/
     final clipboard = (await Clipboard.getData('text/plain'))?.text ?? '';
     print(clipboard);
     final testMatch = honeyTestRegex.firstMatch(clipboard);
 
     if (testMatch != null) {
       final testJson = testMatch.group(1)!;
-      print('FILE EXISTS $testJson');
       final honeyDebug = HoneyTest(
         main: main,
         customFunctions: customFunctions,
       );
       honeyDebug.runTest(testJson);
     } else {
-      print('FILE EXISTS NOT');
       final binding = HoneyDebug(
         main: main,
         resetApp: resetApp,

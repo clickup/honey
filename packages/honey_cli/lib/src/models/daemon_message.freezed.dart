@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'daemon_message.dart';
@@ -11,10 +12,10 @@ part of 'daemon_message.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 DaemonMessage _$DaemonMessageFromJson(Map<String, dynamic> json) {
-  switch (json['type'] as String?) {
+  switch (json['type']) {
     case 'devices':
       return DaemonDevices.fromJson(json);
     case 'message':
@@ -31,54 +32,6 @@ DaemonMessage _$DaemonMessageFromJson(Map<String, dynamic> json) {
           'Invalid union type "${json['type']}"!');
   }
 }
-
-/// @nodoc
-class _$DaemonMessageTearOff {
-  const _$DaemonMessageTearOff();
-
-  DaemonDevices devices({required List<DaemonDevice> devices}) {
-    return DaemonDevices(
-      devices: devices,
-    );
-  }
-
-  DaemonDeviceMessage message(
-      {required String deviceId, required DebugMessage message}) {
-    return DaemonDeviceMessage(
-      deviceId: deviceId,
-      message: message,
-    );
-  }
-
-  DaemonCompile compile(
-      {required int requestId, required List<String> sources}) {
-    return DaemonCompile(
-      requestId: requestId,
-      sources: sources,
-    );
-  }
-
-  DaemonCompileResult compileResult(
-      {required int requestId, required List<CompiledHoneyTalk> results}) {
-    return DaemonCompileResult(
-      requestId: requestId,
-      results: results,
-    );
-  }
-
-  DaemonError error({required String error}) {
-    return DaemonError(
-      error: error,
-    );
-  }
-
-  DaemonMessage fromJson(Map<String, Object> json) {
-    return DaemonMessage.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $DaemonMessage = _$DaemonMessageTearOff();
 
 /// @nodoc
 mixin _$DaemonMessage {
@@ -162,31 +115,31 @@ class _$DaemonMessageCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class $DaemonDevicesCopyWith<$Res> {
-  factory $DaemonDevicesCopyWith(
-          DaemonDevices value, $Res Function(DaemonDevices) then) =
-      _$DaemonDevicesCopyWithImpl<$Res>;
+abstract class _$$DaemonDevicesCopyWith<$Res> {
+  factory _$$DaemonDevicesCopyWith(
+          _$DaemonDevices value, $Res Function(_$DaemonDevices) then) =
+      __$$DaemonDevicesCopyWithImpl<$Res>;
   $Res call({List<DaemonDevice> devices});
 }
 
 /// @nodoc
-class _$DaemonDevicesCopyWithImpl<$Res>
+class __$$DaemonDevicesCopyWithImpl<$Res>
     extends _$DaemonMessageCopyWithImpl<$Res>
-    implements $DaemonDevicesCopyWith<$Res> {
-  _$DaemonDevicesCopyWithImpl(
-      DaemonDevices _value, $Res Function(DaemonDevices) _then)
-      : super(_value, (v) => _then(v as DaemonDevices));
+    implements _$$DaemonDevicesCopyWith<$Res> {
+  __$$DaemonDevicesCopyWithImpl(
+      _$DaemonDevices _value, $Res Function(_$DaemonDevices) _then)
+      : super(_value, (v) => _then(v as _$DaemonDevices));
 
   @override
-  DaemonDevices get _value => super._value as DaemonDevices;
+  _$DaemonDevices get _value => super._value as _$DaemonDevices;
 
   @override
   $Res call({
     Object? devices = freezed,
   }) {
-    return _then(DaemonDevices(
+    return _then(_$DaemonDevices(
       devices: devices == freezed
-          ? _value.devices
+          ? _value._devices
           : devices // ignore: cast_nullable_to_non_nullable
               as List<DaemonDevice>,
     ));
@@ -195,15 +148,24 @@ class _$DaemonDevicesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('devices')
-class _$DaemonDevices extends DaemonDevices {
-  const _$DaemonDevices({required this.devices}) : super._();
+class _$DaemonDevices implements DaemonDevices {
+  const _$DaemonDevices(
+      {required final List<DaemonDevice> devices, final String? $type})
+      : _devices = devices,
+        $type = $type ?? 'devices';
 
   factory _$DaemonDevices.fromJson(Map<String, dynamic> json) =>
       _$$DaemonDevicesFromJson(json);
 
+  final List<DaemonDevice> _devices;
   @override
-  final List<DaemonDevice> devices;
+  List<DaemonDevice> get devices {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_devices);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -213,19 +175,20 @@ class _$DaemonDevices extends DaemonDevices {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DaemonDevices &&
-            (identical(other.devices, devices) ||
-                const DeepCollectionEquality().equals(other.devices, devices)));
+        (other.runtimeType == runtimeType &&
+            other is _$DaemonDevices &&
+            const DeepCollectionEquality().equals(other._devices, _devices));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(devices);
 
   @JsonKey(ignore: true)
   @override
-  $DaemonDevicesCopyWith<DaemonDevices> get copyWith =>
-      _$DaemonDevicesCopyWithImpl<DaemonDevices>(this, _$identity);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_devices));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DaemonDevicesCopyWith<_$DaemonDevices> get copyWith =>
+      __$$DaemonDevicesCopyWithImpl<_$DaemonDevices>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -312,51 +275,52 @@ class _$DaemonDevices extends DaemonDevices {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DaemonDevicesToJson(this)..['type'] = 'devices';
+    return _$$DaemonDevicesToJson(
+      this,
+    );
   }
 }
 
-abstract class DaemonDevices extends DaemonMessage {
-  const factory DaemonDevices({required List<DaemonDevice> devices}) =
+abstract class DaemonDevices implements DaemonMessage {
+  const factory DaemonDevices({required final List<DaemonDevice> devices}) =
       _$DaemonDevices;
-  const DaemonDevices._() : super._();
 
   factory DaemonDevices.fromJson(Map<String, dynamic> json) =
       _$DaemonDevices.fromJson;
 
-  List<DaemonDevice> get devices => throw _privateConstructorUsedError;
+  List<DaemonDevice> get devices;
   @JsonKey(ignore: true)
-  $DaemonDevicesCopyWith<DaemonDevices> get copyWith =>
+  _$$DaemonDevicesCopyWith<_$DaemonDevices> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DaemonDeviceMessageCopyWith<$Res> {
-  factory $DaemonDeviceMessageCopyWith(
-          DaemonDeviceMessage value, $Res Function(DaemonDeviceMessage) then) =
-      _$DaemonDeviceMessageCopyWithImpl<$Res>;
+abstract class _$$DaemonDeviceMessageCopyWith<$Res> {
+  factory _$$DaemonDeviceMessageCopyWith(_$DaemonDeviceMessage value,
+          $Res Function(_$DaemonDeviceMessage) then) =
+      __$$DaemonDeviceMessageCopyWithImpl<$Res>;
   $Res call({String deviceId, DebugMessage message});
 
   $DebugMessageCopyWith<$Res> get message;
 }
 
 /// @nodoc
-class _$DaemonDeviceMessageCopyWithImpl<$Res>
+class __$$DaemonDeviceMessageCopyWithImpl<$Res>
     extends _$DaemonMessageCopyWithImpl<$Res>
-    implements $DaemonDeviceMessageCopyWith<$Res> {
-  _$DaemonDeviceMessageCopyWithImpl(
-      DaemonDeviceMessage _value, $Res Function(DaemonDeviceMessage) _then)
-      : super(_value, (v) => _then(v as DaemonDeviceMessage));
+    implements _$$DaemonDeviceMessageCopyWith<$Res> {
+  __$$DaemonDeviceMessageCopyWithImpl(
+      _$DaemonDeviceMessage _value, $Res Function(_$DaemonDeviceMessage) _then)
+      : super(_value, (v) => _then(v as _$DaemonDeviceMessage));
 
   @override
-  DaemonDeviceMessage get _value => super._value as DaemonDeviceMessage;
+  _$DaemonDeviceMessage get _value => super._value as _$DaemonDeviceMessage;
 
   @override
   $Res call({
     Object? deviceId = freezed,
     Object? message = freezed,
   }) {
-    return _then(DaemonDeviceMessage(
+    return _then(_$DaemonDeviceMessage(
       deviceId: deviceId == freezed
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
@@ -378,10 +342,10 @@ class _$DaemonDeviceMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('message')
-class _$DaemonDeviceMessage extends DaemonDeviceMessage {
-  const _$DaemonDeviceMessage({required this.deviceId, required this.message})
-      : super._();
+class _$DaemonDeviceMessage implements DaemonDeviceMessage {
+  const _$DaemonDeviceMessage(
+      {required this.deviceId, required this.message, final String? $type})
+      : $type = $type ?? 'message';
 
   factory _$DaemonDeviceMessage.fromJson(Map<String, dynamic> json) =>
       _$$DaemonDeviceMessageFromJson(json);
@@ -391,6 +355,9 @@ class _$DaemonDeviceMessage extends DaemonDeviceMessage {
   @override
   final DebugMessage message;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
     return 'DaemonMessage.message(deviceId: $deviceId, message: $message)';
@@ -399,24 +366,24 @@ class _$DaemonDeviceMessage extends DaemonDeviceMessage {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DaemonDeviceMessage &&
-            (identical(other.deviceId, deviceId) ||
-                const DeepCollectionEquality()
-                    .equals(other.deviceId, deviceId)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+        (other.runtimeType == runtimeType &&
+            other is _$DaemonDeviceMessage &&
+            const DeepCollectionEquality().equals(other.deviceId, deviceId) &&
+            const DeepCollectionEquality().equals(other.message, message));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(deviceId) ^
-      const DeepCollectionEquality().hash(message);
 
   @JsonKey(ignore: true)
   @override
-  $DaemonDeviceMessageCopyWith<DaemonDeviceMessage> get copyWith =>
-      _$DaemonDeviceMessageCopyWithImpl<DaemonDeviceMessage>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(deviceId),
+      const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DaemonDeviceMessageCopyWith<_$DaemonDeviceMessage> get copyWith =>
+      __$$DaemonDeviceMessageCopyWithImpl<_$DaemonDeviceMessage>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -503,57 +470,58 @@ class _$DaemonDeviceMessage extends DaemonDeviceMessage {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DaemonDeviceMessageToJson(this)..['type'] = 'message';
+    return _$$DaemonDeviceMessageToJson(
+      this,
+    );
   }
 }
 
-abstract class DaemonDeviceMessage extends DaemonMessage {
+abstract class DaemonDeviceMessage implements DaemonMessage {
   const factory DaemonDeviceMessage(
-      {required String deviceId,
-      required DebugMessage message}) = _$DaemonDeviceMessage;
-  const DaemonDeviceMessage._() : super._();
+      {required final String deviceId,
+      required final DebugMessage message}) = _$DaemonDeviceMessage;
 
   factory DaemonDeviceMessage.fromJson(Map<String, dynamic> json) =
       _$DaemonDeviceMessage.fromJson;
 
-  String get deviceId => throw _privateConstructorUsedError;
-  DebugMessage get message => throw _privateConstructorUsedError;
+  String get deviceId;
+  DebugMessage get message;
   @JsonKey(ignore: true)
-  $DaemonDeviceMessageCopyWith<DaemonDeviceMessage> get copyWith =>
+  _$$DaemonDeviceMessageCopyWith<_$DaemonDeviceMessage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DaemonCompileCopyWith<$Res> {
-  factory $DaemonCompileCopyWith(
-          DaemonCompile value, $Res Function(DaemonCompile) then) =
-      _$DaemonCompileCopyWithImpl<$Res>;
+abstract class _$$DaemonCompileCopyWith<$Res> {
+  factory _$$DaemonCompileCopyWith(
+          _$DaemonCompile value, $Res Function(_$DaemonCompile) then) =
+      __$$DaemonCompileCopyWithImpl<$Res>;
   $Res call({int requestId, List<String> sources});
 }
 
 /// @nodoc
-class _$DaemonCompileCopyWithImpl<$Res>
+class __$$DaemonCompileCopyWithImpl<$Res>
     extends _$DaemonMessageCopyWithImpl<$Res>
-    implements $DaemonCompileCopyWith<$Res> {
-  _$DaemonCompileCopyWithImpl(
-      DaemonCompile _value, $Res Function(DaemonCompile) _then)
-      : super(_value, (v) => _then(v as DaemonCompile));
+    implements _$$DaemonCompileCopyWith<$Res> {
+  __$$DaemonCompileCopyWithImpl(
+      _$DaemonCompile _value, $Res Function(_$DaemonCompile) _then)
+      : super(_value, (v) => _then(v as _$DaemonCompile));
 
   @override
-  DaemonCompile get _value => super._value as DaemonCompile;
+  _$DaemonCompile get _value => super._value as _$DaemonCompile;
 
   @override
   $Res call({
     Object? requestId = freezed,
     Object? sources = freezed,
   }) {
-    return _then(DaemonCompile(
+    return _then(_$DaemonCompile(
       requestId: requestId == freezed
           ? _value.requestId
           : requestId // ignore: cast_nullable_to_non_nullable
               as int,
       sources: sources == freezed
-          ? _value.sources
+          ? _value._sources
           : sources // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
@@ -562,18 +530,28 @@ class _$DaemonCompileCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('compile')
-class _$DaemonCompile extends DaemonCompile {
-  const _$DaemonCompile({required this.requestId, required this.sources})
-      : super._();
+class _$DaemonCompile implements DaemonCompile {
+  const _$DaemonCompile(
+      {required this.requestId,
+      required final List<String> sources,
+      final String? $type})
+      : _sources = sources,
+        $type = $type ?? 'compile';
 
   factory _$DaemonCompile.fromJson(Map<String, dynamic> json) =>
       _$$DaemonCompileFromJson(json);
 
   @override
   final int requestId;
+  final List<String> _sources;
   @override
-  final List<String> sources;
+  List<String> get sources {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sources);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -583,24 +561,23 @@ class _$DaemonCompile extends DaemonCompile {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DaemonCompile &&
-            (identical(other.requestId, requestId) ||
-                const DeepCollectionEquality()
-                    .equals(other.requestId, requestId)) &&
-            (identical(other.sources, sources) ||
-                const DeepCollectionEquality().equals(other.sources, sources)));
+        (other.runtimeType == runtimeType &&
+            other is _$DaemonCompile &&
+            const DeepCollectionEquality().equals(other.requestId, requestId) &&
+            const DeepCollectionEquality().equals(other._sources, _sources));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(requestId) ^
-      const DeepCollectionEquality().hash(sources);
 
   @JsonKey(ignore: true)
   @override
-  $DaemonCompileCopyWith<DaemonCompile> get copyWith =>
-      _$DaemonCompileCopyWithImpl<DaemonCompile>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(requestId),
+      const DeepCollectionEquality().hash(_sources));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DaemonCompileCopyWith<_$DaemonCompile> get copyWith =>
+      __$$DaemonCompileCopyWithImpl<_$DaemonCompile>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -687,57 +664,58 @@ class _$DaemonCompile extends DaemonCompile {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DaemonCompileToJson(this)..['type'] = 'compile';
+    return _$$DaemonCompileToJson(
+      this,
+    );
   }
 }
 
-abstract class DaemonCompile extends DaemonMessage {
+abstract class DaemonCompile implements DaemonMessage {
   const factory DaemonCompile(
-      {required int requestId,
-      required List<String> sources}) = _$DaemonCompile;
-  const DaemonCompile._() : super._();
+      {required final int requestId,
+      required final List<String> sources}) = _$DaemonCompile;
 
   factory DaemonCompile.fromJson(Map<String, dynamic> json) =
       _$DaemonCompile.fromJson;
 
-  int get requestId => throw _privateConstructorUsedError;
-  List<String> get sources => throw _privateConstructorUsedError;
+  int get requestId;
+  List<String> get sources;
   @JsonKey(ignore: true)
-  $DaemonCompileCopyWith<DaemonCompile> get copyWith =>
+  _$$DaemonCompileCopyWith<_$DaemonCompile> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DaemonCompileResultCopyWith<$Res> {
-  factory $DaemonCompileResultCopyWith(
-          DaemonCompileResult value, $Res Function(DaemonCompileResult) then) =
-      _$DaemonCompileResultCopyWithImpl<$Res>;
+abstract class _$$DaemonCompileResultCopyWith<$Res> {
+  factory _$$DaemonCompileResultCopyWith(_$DaemonCompileResult value,
+          $Res Function(_$DaemonCompileResult) then) =
+      __$$DaemonCompileResultCopyWithImpl<$Res>;
   $Res call({int requestId, List<CompiledHoneyTalk> results});
 }
 
 /// @nodoc
-class _$DaemonCompileResultCopyWithImpl<$Res>
+class __$$DaemonCompileResultCopyWithImpl<$Res>
     extends _$DaemonMessageCopyWithImpl<$Res>
-    implements $DaemonCompileResultCopyWith<$Res> {
-  _$DaemonCompileResultCopyWithImpl(
-      DaemonCompileResult _value, $Res Function(DaemonCompileResult) _then)
-      : super(_value, (v) => _then(v as DaemonCompileResult));
+    implements _$$DaemonCompileResultCopyWith<$Res> {
+  __$$DaemonCompileResultCopyWithImpl(
+      _$DaemonCompileResult _value, $Res Function(_$DaemonCompileResult) _then)
+      : super(_value, (v) => _then(v as _$DaemonCompileResult));
 
   @override
-  DaemonCompileResult get _value => super._value as DaemonCompileResult;
+  _$DaemonCompileResult get _value => super._value as _$DaemonCompileResult;
 
   @override
   $Res call({
     Object? requestId = freezed,
     Object? results = freezed,
   }) {
-    return _then(DaemonCompileResult(
+    return _then(_$DaemonCompileResult(
       requestId: requestId == freezed
           ? _value.requestId
           : requestId // ignore: cast_nullable_to_non_nullable
               as int,
       results: results == freezed
-          ? _value.results
+          ? _value._results
           : results // ignore: cast_nullable_to_non_nullable
               as List<CompiledHoneyTalk>,
     ));
@@ -746,18 +724,28 @@ class _$DaemonCompileResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('compile_result')
-class _$DaemonCompileResult extends DaemonCompileResult {
-  const _$DaemonCompileResult({required this.requestId, required this.results})
-      : super._();
+class _$DaemonCompileResult implements DaemonCompileResult {
+  const _$DaemonCompileResult(
+      {required this.requestId,
+      required final List<CompiledHoneyTalk> results,
+      final String? $type})
+      : _results = results,
+        $type = $type ?? 'compile_result';
 
   factory _$DaemonCompileResult.fromJson(Map<String, dynamic> json) =>
       _$$DaemonCompileResultFromJson(json);
 
   @override
   final int requestId;
+  final List<CompiledHoneyTalk> _results;
   @override
-  final List<CompiledHoneyTalk> results;
+  List<CompiledHoneyTalk> get results {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_results);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -767,24 +755,24 @@ class _$DaemonCompileResult extends DaemonCompileResult {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DaemonCompileResult &&
-            (identical(other.requestId, requestId) ||
-                const DeepCollectionEquality()
-                    .equals(other.requestId, requestId)) &&
-            (identical(other.results, results) ||
-                const DeepCollectionEquality().equals(other.results, results)));
+        (other.runtimeType == runtimeType &&
+            other is _$DaemonCompileResult &&
+            const DeepCollectionEquality().equals(other.requestId, requestId) &&
+            const DeepCollectionEquality().equals(other._results, _results));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(requestId) ^
-      const DeepCollectionEquality().hash(results);
 
   @JsonKey(ignore: true)
   @override
-  $DaemonCompileResultCopyWith<DaemonCompileResult> get copyWith =>
-      _$DaemonCompileResultCopyWithImpl<DaemonCompileResult>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(requestId),
+      const DeepCollectionEquality().hash(_results));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DaemonCompileResultCopyWith<_$DaemonCompileResult> get copyWith =>
+      __$$DaemonCompileResultCopyWithImpl<_$DaemonCompileResult>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -871,49 +859,51 @@ class _$DaemonCompileResult extends DaemonCompileResult {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DaemonCompileResultToJson(this)..['type'] = 'compile_result';
+    return _$$DaemonCompileResultToJson(
+      this,
+    );
   }
 }
 
-abstract class DaemonCompileResult extends DaemonMessage {
+abstract class DaemonCompileResult implements DaemonMessage {
   const factory DaemonCompileResult(
-      {required int requestId,
-      required List<CompiledHoneyTalk> results}) = _$DaemonCompileResult;
-  const DaemonCompileResult._() : super._();
+      {required final int requestId,
+      required final List<CompiledHoneyTalk> results}) = _$DaemonCompileResult;
 
   factory DaemonCompileResult.fromJson(Map<String, dynamic> json) =
       _$DaemonCompileResult.fromJson;
 
-  int get requestId => throw _privateConstructorUsedError;
-  List<CompiledHoneyTalk> get results => throw _privateConstructorUsedError;
+  int get requestId;
+  List<CompiledHoneyTalk> get results;
   @JsonKey(ignore: true)
-  $DaemonCompileResultCopyWith<DaemonCompileResult> get copyWith =>
+  _$$DaemonCompileResultCopyWith<_$DaemonCompileResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DaemonErrorCopyWith<$Res> {
-  factory $DaemonErrorCopyWith(
-          DaemonError value, $Res Function(DaemonError) then) =
-      _$DaemonErrorCopyWithImpl<$Res>;
+abstract class _$$DaemonErrorCopyWith<$Res> {
+  factory _$$DaemonErrorCopyWith(
+          _$DaemonError value, $Res Function(_$DaemonError) then) =
+      __$$DaemonErrorCopyWithImpl<$Res>;
   $Res call({String error});
 }
 
 /// @nodoc
-class _$DaemonErrorCopyWithImpl<$Res> extends _$DaemonMessageCopyWithImpl<$Res>
-    implements $DaemonErrorCopyWith<$Res> {
-  _$DaemonErrorCopyWithImpl(
-      DaemonError _value, $Res Function(DaemonError) _then)
-      : super(_value, (v) => _then(v as DaemonError));
+class __$$DaemonErrorCopyWithImpl<$Res>
+    extends _$DaemonMessageCopyWithImpl<$Res>
+    implements _$$DaemonErrorCopyWith<$Res> {
+  __$$DaemonErrorCopyWithImpl(
+      _$DaemonError _value, $Res Function(_$DaemonError) _then)
+      : super(_value, (v) => _then(v as _$DaemonError));
 
   @override
-  DaemonError get _value => super._value as DaemonError;
+  _$DaemonError get _value => super._value as _$DaemonError;
 
   @override
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(DaemonError(
+    return _then(_$DaemonError(
       error: error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -924,15 +914,18 @@ class _$DaemonErrorCopyWithImpl<$Res> extends _$DaemonMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('error')
-class _$DaemonError extends DaemonError {
-  const _$DaemonError({required this.error}) : super._();
+class _$DaemonError implements DaemonError {
+  const _$DaemonError({required this.error, final String? $type})
+      : $type = $type ?? 'error';
 
   factory _$DaemonError.fromJson(Map<String, dynamic> json) =>
       _$$DaemonErrorFromJson(json);
 
   @override
   final String error;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -942,19 +935,20 @@ class _$DaemonError extends DaemonError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DaemonError &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)));
+        (other.runtimeType == runtimeType &&
+            other is _$DaemonError &&
+            const DeepCollectionEquality().equals(other.error, error));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
   @override
-  $DaemonErrorCopyWith<DaemonError> get copyWith =>
-      _$DaemonErrorCopyWithImpl<DaemonError>(this, _$identity);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DaemonErrorCopyWith<_$DaemonError> get copyWith =>
+      __$$DaemonErrorCopyWithImpl<_$DaemonError>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1041,47 +1035,27 @@ class _$DaemonError extends DaemonError {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DaemonErrorToJson(this)..['type'] = 'error';
+    return _$$DaemonErrorToJson(
+      this,
+    );
   }
 }
 
-abstract class DaemonError extends DaemonMessage {
-  const factory DaemonError({required String error}) = _$DaemonError;
-  const DaemonError._() : super._();
+abstract class DaemonError implements DaemonMessage {
+  const factory DaemonError({required final String error}) = _$DaemonError;
 
   factory DaemonError.fromJson(Map<String, dynamic> json) =
       _$DaemonError.fromJson;
 
-  String get error => throw _privateConstructorUsedError;
+  String get error;
   @JsonKey(ignore: true)
-  $DaemonErrorCopyWith<DaemonError> get copyWith =>
+  _$$DaemonErrorCopyWith<_$DaemonError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 DaemonDevice _$DaemonDeviceFromJson(Map<String, dynamic> json) {
   return _DaemonDevice.fromJson(json);
 }
-
-/// @nodoc
-class _$DaemonDeviceTearOff {
-  const _$DaemonDeviceTearOff();
-
-  _DaemonDevice call(
-      {required String id, required String name, required String platform}) {
-    return _DaemonDevice(
-      id: id,
-      name: name,
-      platform: platform,
-    );
-  }
-
-  DaemonDevice fromJson(Map<String, Object> json) {
-    return DaemonDevice.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $DaemonDevice = _$DaemonDeviceTearOff();
 
 /// @nodoc
 mixin _$DaemonDevice {
@@ -1135,24 +1109,25 @@ class _$DaemonDeviceCopyWithImpl<$Res> implements $DaemonDeviceCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$DaemonDeviceCopyWith<$Res>
+abstract class _$$_DaemonDeviceCopyWith<$Res>
     implements $DaemonDeviceCopyWith<$Res> {
-  factory _$DaemonDeviceCopyWith(
-          _DaemonDevice value, $Res Function(_DaemonDevice) then) =
-      __$DaemonDeviceCopyWithImpl<$Res>;
+  factory _$$_DaemonDeviceCopyWith(
+          _$_DaemonDevice value, $Res Function(_$_DaemonDevice) then) =
+      __$$_DaemonDeviceCopyWithImpl<$Res>;
   @override
   $Res call({String id, String name, String platform});
 }
 
 /// @nodoc
-class __$DaemonDeviceCopyWithImpl<$Res> extends _$DaemonDeviceCopyWithImpl<$Res>
-    implements _$DaemonDeviceCopyWith<$Res> {
-  __$DaemonDeviceCopyWithImpl(
-      _DaemonDevice _value, $Res Function(_DaemonDevice) _then)
-      : super(_value, (v) => _then(v as _DaemonDevice));
+class __$$_DaemonDeviceCopyWithImpl<$Res>
+    extends _$DaemonDeviceCopyWithImpl<$Res>
+    implements _$$_DaemonDeviceCopyWith<$Res> {
+  __$$_DaemonDeviceCopyWithImpl(
+      _$_DaemonDevice _value, $Res Function(_$_DaemonDevice) _then)
+      : super(_value, (v) => _then(v as _$_DaemonDevice));
 
   @override
-  _DaemonDevice get _value => super._value as _DaemonDevice;
+  _$_DaemonDevice get _value => super._value as _$_DaemonDevice;
 
   @override
   $Res call({
@@ -1160,7 +1135,7 @@ class __$DaemonDeviceCopyWithImpl<$Res> extends _$DaemonDeviceCopyWithImpl<$Res>
     Object? name = freezed,
     Object? platform = freezed,
   }) {
-    return _then(_DaemonDevice(
+    return _then(_$_DaemonDevice(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1201,83 +1176,58 @@ class _$_DaemonDevice implements _DaemonDevice {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DaemonDevice &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.platform, platform) ||
-                const DeepCollectionEquality()
-                    .equals(other.platform, platform)));
+        (other.runtimeType == runtimeType &&
+            other is _$_DaemonDevice &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.platform, platform));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(platform);
 
   @JsonKey(ignore: true)
   @override
-  _$DaemonDeviceCopyWith<_DaemonDevice> get copyWith =>
-      __$DaemonDeviceCopyWithImpl<_DaemonDevice>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(platform));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_DaemonDeviceCopyWith<_$_DaemonDevice> get copyWith =>
+      __$$_DaemonDeviceCopyWithImpl<_$_DaemonDevice>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DaemonDeviceToJson(this);
+    return _$$_DaemonDeviceToJson(
+      this,
+    );
   }
 }
 
 abstract class _DaemonDevice implements DaemonDevice {
   const factory _DaemonDevice(
-      {required String id,
-      required String name,
-      required String platform}) = _$_DaemonDevice;
+      {required final String id,
+      required final String name,
+      required final String platform}) = _$_DaemonDevice;
 
   factory _DaemonDevice.fromJson(Map<String, dynamic> json) =
       _$_DaemonDevice.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get platform => throw _privateConstructorUsedError;
+  String get platform;
   @override
   @JsonKey(ignore: true)
-  _$DaemonDeviceCopyWith<_DaemonDevice> get copyWith =>
+  _$$_DaemonDeviceCopyWith<_$_DaemonDevice> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 CompiledHoneyTalk _$CompiledHoneyTalkFromJson(Map<String, dynamic> json) {
   return _CompiledHoneyTalk.fromJson(json);
 }
-
-/// @nodoc
-class _$CompiledHoneyTalkTearOff {
-  const _$CompiledHoneyTalkTearOff();
-
-  _CompiledHoneyTalk call(
-      {List<Statement>? statements,
-      String? error,
-      int? errorLine,
-      int? errorColumn}) {
-    return _CompiledHoneyTalk(
-      statements: statements,
-      error: error,
-      errorLine: errorLine,
-      errorColumn: errorColumn,
-    );
-  }
-
-  CompiledHoneyTalk fromJson(Map<String, Object> json) {
-    return CompiledHoneyTalk.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CompiledHoneyTalk = _$CompiledHoneyTalkTearOff();
 
 /// @nodoc
 mixin _$CompiledHoneyTalk {
@@ -1342,11 +1292,11 @@ class _$CompiledHoneyTalkCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$CompiledHoneyTalkCopyWith<$Res>
+abstract class _$$_CompiledHoneyTalkCopyWith<$Res>
     implements $CompiledHoneyTalkCopyWith<$Res> {
-  factory _$CompiledHoneyTalkCopyWith(
-          _CompiledHoneyTalk value, $Res Function(_CompiledHoneyTalk) then) =
-      __$CompiledHoneyTalkCopyWithImpl<$Res>;
+  factory _$$_CompiledHoneyTalkCopyWith(_$_CompiledHoneyTalk value,
+          $Res Function(_$_CompiledHoneyTalk) then) =
+      __$$_CompiledHoneyTalkCopyWithImpl<$Res>;
   @override
   $Res call(
       {List<Statement>? statements,
@@ -1356,15 +1306,15 @@ abstract class _$CompiledHoneyTalkCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CompiledHoneyTalkCopyWithImpl<$Res>
+class __$$_CompiledHoneyTalkCopyWithImpl<$Res>
     extends _$CompiledHoneyTalkCopyWithImpl<$Res>
-    implements _$CompiledHoneyTalkCopyWith<$Res> {
-  __$CompiledHoneyTalkCopyWithImpl(
-      _CompiledHoneyTalk _value, $Res Function(_CompiledHoneyTalk) _then)
-      : super(_value, (v) => _then(v as _CompiledHoneyTalk));
+    implements _$$_CompiledHoneyTalkCopyWith<$Res> {
+  __$$_CompiledHoneyTalkCopyWithImpl(
+      _$_CompiledHoneyTalk _value, $Res Function(_$_CompiledHoneyTalk) _then)
+      : super(_value, (v) => _then(v as _$_CompiledHoneyTalk));
 
   @override
-  _CompiledHoneyTalk get _value => super._value as _CompiledHoneyTalk;
+  _$_CompiledHoneyTalk get _value => super._value as _$_CompiledHoneyTalk;
 
   @override
   $Res call({
@@ -1373,9 +1323,9 @@ class __$CompiledHoneyTalkCopyWithImpl<$Res>
     Object? errorLine = freezed,
     Object? errorColumn = freezed,
   }) {
-    return _then(_CompiledHoneyTalk(
+    return _then(_$_CompiledHoneyTalk(
       statements: statements == freezed
-          ? _value.statements
+          ? _value._statements
           : statements // ignore: cast_nullable_to_non_nullable
               as List<Statement>?,
       error: error == freezed
@@ -1398,13 +1348,24 @@ class __$CompiledHoneyTalkCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CompiledHoneyTalk implements _CompiledHoneyTalk {
   const _$_CompiledHoneyTalk(
-      {this.statements, this.error, this.errorLine, this.errorColumn});
+      {final List<Statement>? statements,
+      this.error,
+      this.errorLine,
+      this.errorColumn})
+      : _statements = statements;
 
   factory _$_CompiledHoneyTalk.fromJson(Map<String, dynamic> json) =>
       _$$_CompiledHoneyTalkFromJson(json);
 
+  final List<Statement>? _statements;
   @override
-  final List<Statement>? statements;
+  List<Statement>? get statements {
+    final value = _statements;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? error;
   @override
@@ -1420,59 +1381,59 @@ class _$_CompiledHoneyTalk implements _CompiledHoneyTalk {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CompiledHoneyTalk &&
-            (identical(other.statements, statements) ||
-                const DeepCollectionEquality()
-                    .equals(other.statements, statements)) &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
-            (identical(other.errorLine, errorLine) ||
-                const DeepCollectionEquality()
-                    .equals(other.errorLine, errorLine)) &&
-            (identical(other.errorColumn, errorColumn) ||
-                const DeepCollectionEquality()
-                    .equals(other.errorColumn, errorColumn)));
+        (other.runtimeType == runtimeType &&
+            other is _$_CompiledHoneyTalk &&
+            const DeepCollectionEquality()
+                .equals(other._statements, _statements) &&
+            const DeepCollectionEquality().equals(other.error, error) &&
+            const DeepCollectionEquality().equals(other.errorLine, errorLine) &&
+            const DeepCollectionEquality()
+                .equals(other.errorColumn, errorColumn));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(statements) ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(errorLine) ^
-      const DeepCollectionEquality().hash(errorColumn);
 
   @JsonKey(ignore: true)
   @override
-  _$CompiledHoneyTalkCopyWith<_CompiledHoneyTalk> get copyWith =>
-      __$CompiledHoneyTalkCopyWithImpl<_CompiledHoneyTalk>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_statements),
+      const DeepCollectionEquality().hash(error),
+      const DeepCollectionEquality().hash(errorLine),
+      const DeepCollectionEquality().hash(errorColumn));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_CompiledHoneyTalkCopyWith<_$_CompiledHoneyTalk> get copyWith =>
+      __$$_CompiledHoneyTalkCopyWithImpl<_$_CompiledHoneyTalk>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CompiledHoneyTalkToJson(this);
+    return _$$_CompiledHoneyTalkToJson(
+      this,
+    );
   }
 }
 
 abstract class _CompiledHoneyTalk implements CompiledHoneyTalk {
   const factory _CompiledHoneyTalk(
-      {List<Statement>? statements,
-      String? error,
-      int? errorLine,
-      int? errorColumn}) = _$_CompiledHoneyTalk;
+      {final List<Statement>? statements,
+      final String? error,
+      final int? errorLine,
+      final int? errorColumn}) = _$_CompiledHoneyTalk;
 
   factory _CompiledHoneyTalk.fromJson(Map<String, dynamic> json) =
       _$_CompiledHoneyTalk.fromJson;
 
   @override
-  List<Statement>? get statements => throw _privateConstructorUsedError;
+  List<Statement>? get statements;
   @override
-  String? get error => throw _privateConstructorUsedError;
+  String? get error;
   @override
-  int? get errorLine => throw _privateConstructorUsedError;
+  int? get errorLine;
   @override
-  int? get errorColumn => throw _privateConstructorUsedError;
+  int? get errorColumn;
   @override
   @JsonKey(ignore: true)
-  _$CompiledHoneyTalkCopyWith<_CompiledHoneyTalk> get copyWith =>
+  _$$_CompiledHoneyTalkCopyWith<_$_CompiledHoneyTalk> get copyWith =>
       throw _privateConstructorUsedError;
 }

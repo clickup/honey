@@ -1,8 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:honey_core/honey_core.dart';
-import 'package:honey_core/src/models/statement.dart';
-
-import 'test_step.dart';
 
 part 'debug_message.freezed.dart';
 part 'debug_message.g.dart';

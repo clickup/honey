@@ -66,7 +66,7 @@ class RuntimeHoneyContext with HoneyContext {
   }
 
   void dispatchPointerEvent(PointerEvent e) {
-    WidgetsBinding.instance!.handlePointerEvent(e);
+    WidgetsBinding.instance.handlePointerEvent(e);
   }
 
   Future delay(Duration duration) async {

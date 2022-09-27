@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'statement.dart';
@@ -11,7 +12,7 @@ part of 'statement.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Statement _$StatementFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
@@ -29,54 +30,8 @@ Statement _$StatementFromJson(Map<String, dynamic> json) {
 }
 
 /// @nodoc
-class _$StatementTearOff {
-  const _$StatementTearOff();
-
-  ExpressionStatement expression(
-      {required SourceInfo sourceInfo,
-      required bool optional,
-      @ExpConverter() required Expression expression}) {
-    return ExpressionStatement(
-      sourceInfo: sourceInfo,
-      optional: optional,
-      expression: expression,
-    );
-  }
-
-  IfStatement sIf(
-      {required SourceInfo sourceInfo,
-      @ExpConverter() required Expression condition,
-      required List<Statement> statements}) {
-    return IfStatement(
-      sourceInfo: sourceInfo,
-      condition: condition,
-      statements: statements,
-    );
-  }
-
-  WhileStatement sWhile(
-      {required SourceInfo sourceInfo,
-      @ExpConverter() required Expression condition,
-      required List<Statement> statements}) {
-    return WhileStatement(
-      sourceInfo: sourceInfo,
-      condition: condition,
-      statements: statements,
-    );
-  }
-
-  Statement fromJson(Map<String, Object?> json) {
-    return Statement.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Statement = _$StatementTearOff();
-
-/// @nodoc
 mixin _$Statement {
   SourceInfo get sourceInfo => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SourceInfo sourceInfo, bool optional,
@@ -183,11 +138,11 @@ class _$StatementCopyWithImpl<$Res> implements $StatementCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $ExpressionStatementCopyWith<$Res>
+abstract class _$$ExpressionStatementCopyWith<$Res>
     implements $StatementCopyWith<$Res> {
-  factory $ExpressionStatementCopyWith(
-          ExpressionStatement value, $Res Function(ExpressionStatement) then) =
-      _$ExpressionStatementCopyWithImpl<$Res>;
+  factory _$$ExpressionStatementCopyWith(_$ExpressionStatement value,
+          $Res Function(_$ExpressionStatement) then) =
+      __$$ExpressionStatementCopyWithImpl<$Res>;
   @override
   $Res call(
       {SourceInfo sourceInfo,
@@ -199,15 +154,15 @@ abstract class $ExpressionStatementCopyWith<$Res>
 }
 
 /// @nodoc
-class _$ExpressionStatementCopyWithImpl<$Res>
+class __$$ExpressionStatementCopyWithImpl<$Res>
     extends _$StatementCopyWithImpl<$Res>
-    implements $ExpressionStatementCopyWith<$Res> {
-  _$ExpressionStatementCopyWithImpl(
-      ExpressionStatement _value, $Res Function(ExpressionStatement) _then)
-      : super(_value, (v) => _then(v as ExpressionStatement));
+    implements _$$ExpressionStatementCopyWith<$Res> {
+  __$$ExpressionStatementCopyWithImpl(
+      _$ExpressionStatement _value, $Res Function(_$ExpressionStatement) _then)
+      : super(_value, (v) => _then(v as _$ExpressionStatement));
 
   @override
-  ExpressionStatement get _value => super._value as ExpressionStatement;
+  _$ExpressionStatement get _value => super._value as _$ExpressionStatement;
 
   @override
   $Res call({
@@ -215,7 +170,7 @@ class _$ExpressionStatementCopyWithImpl<$Res>
     Object? optional = freezed,
     Object? expression = freezed,
   }) {
-    return _then(ExpressionStatement(
+    return _then(_$ExpressionStatement(
       sourceInfo: sourceInfo == freezed
           ? _value.sourceInfo
           : sourceInfo // ignore: cast_nullable_to_non_nullable
@@ -235,13 +190,12 @@ class _$ExpressionStatementCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-@FreezedUnionValue('expression')
 class _$ExpressionStatement implements ExpressionStatement {
   const _$ExpressionStatement(
       {required this.sourceInfo,
       required this.optional,
       @ExpConverter() required this.expression,
-      String? $type})
+      final String? $type})
       : $type = $type ?? 'expression';
 
   factory _$ExpressionStatement.fromJson(Map<String, dynamic> json) =>
@@ -267,23 +221,27 @@ class _$ExpressionStatement implements ExpressionStatement {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ExpressionStatement &&
-            (identical(other.sourceInfo, sourceInfo) ||
-                other.sourceInfo == sourceInfo) &&
-            (identical(other.optional, optional) ||
-                other.optional == optional) &&
-            (identical(other.expression, expression) ||
-                other.expression == expression));
+            other is _$ExpressionStatement &&
+            const DeepCollectionEquality()
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality().equals(other.optional, optional) &&
+            const DeepCollectionEquality()
+                .equals(other.expression, expression));
   }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, sourceInfo, optional, expression);
 
   @JsonKey(ignore: true)
   @override
-  $ExpressionStatementCopyWith<ExpressionStatement> get copyWith =>
-      _$ExpressionStatementCopyWithImpl<ExpressionStatement>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(optional),
+      const DeepCollectionEquality().hash(expression));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$ExpressionStatementCopyWith<_$ExpressionStatement> get copyWith =>
+      __$$ExpressionStatementCopyWithImpl<_$ExpressionStatement>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -373,15 +331,18 @@ class _$ExpressionStatement implements ExpressionStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ExpressionStatementToJson(this);
+    return _$$ExpressionStatementToJson(
+      this,
+    );
   }
 }
 
 abstract class ExpressionStatement implements Statement {
   const factory ExpressionStatement(
-      {required SourceInfo sourceInfo,
-      required bool optional,
-      @ExpConverter() required Expression expression}) = _$ExpressionStatement;
+          {required final SourceInfo sourceInfo,
+          required final bool optional,
+          @ExpConverter() required final Expression expression}) =
+      _$ExpressionStatement;
 
   factory ExpressionStatement.fromJson(Map<String, dynamic> json) =
       _$ExpressionStatement.fromJson;
@@ -393,15 +354,16 @@ abstract class ExpressionStatement implements Statement {
   Expression get expression;
   @override
   @JsonKey(ignore: true)
-  $ExpressionStatementCopyWith<ExpressionStatement> get copyWith =>
+  _$$ExpressionStatementCopyWith<_$ExpressionStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $IfStatementCopyWith<$Res> implements $StatementCopyWith<$Res> {
-  factory $IfStatementCopyWith(
-          IfStatement value, $Res Function(IfStatement) then) =
-      _$IfStatementCopyWithImpl<$Res>;
+abstract class _$$IfStatementCopyWith<$Res>
+    implements $StatementCopyWith<$Res> {
+  factory _$$IfStatementCopyWith(
+          _$IfStatement value, $Res Function(_$IfStatement) then) =
+      __$$IfStatementCopyWithImpl<$Res>;
   @override
   $Res call(
       {SourceInfo sourceInfo,
@@ -413,14 +375,14 @@ abstract class $IfStatementCopyWith<$Res> implements $StatementCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
-    implements $IfStatementCopyWith<$Res> {
-  _$IfStatementCopyWithImpl(
-      IfStatement _value, $Res Function(IfStatement) _then)
-      : super(_value, (v) => _then(v as IfStatement));
+class __$$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
+    implements _$$IfStatementCopyWith<$Res> {
+  __$$IfStatementCopyWithImpl(
+      _$IfStatement _value, $Res Function(_$IfStatement) _then)
+      : super(_value, (v) => _then(v as _$IfStatement));
 
   @override
-  IfStatement get _value => super._value as IfStatement;
+  _$IfStatement get _value => super._value as _$IfStatement;
 
   @override
   $Res call({
@@ -428,7 +390,7 @@ class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
     Object? condition = freezed,
     Object? statements = freezed,
   }) {
-    return _then(IfStatement(
+    return _then(_$IfStatement(
       sourceInfo: sourceInfo == freezed
           ? _value.sourceInfo
           : sourceInfo // ignore: cast_nullable_to_non_nullable
@@ -438,7 +400,7 @@ class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
           : condition // ignore: cast_nullable_to_non_nullable
               as Expression,
       statements: statements == freezed
-          ? _value.statements
+          ? _value._statements
           : statements // ignore: cast_nullable_to_non_nullable
               as List<Statement>,
     ));
@@ -448,14 +410,14 @@ class _$IfStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-@FreezedUnionValue('if')
 class _$IfStatement implements IfStatement {
   const _$IfStatement(
       {required this.sourceInfo,
       @ExpConverter() required this.condition,
-      required this.statements,
-      String? $type})
-      : $type = $type ?? 'if';
+      required final List<Statement> statements,
+      final String? $type})
+      : _statements = statements,
+        $type = $type ?? 'if';
 
   factory _$IfStatement.fromJson(Map<String, dynamic> json) =>
       _$$IfStatementFromJson(json);
@@ -465,8 +427,12 @@ class _$IfStatement implements IfStatement {
   @override
   @ExpConverter()
   final Expression condition;
+  final List<Statement> _statements;
   @override
-  final List<Statement> statements;
+  List<Statement> get statements {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_statements);
+  }
 
   @JsonKey(name: 'type')
   final String $type;
@@ -480,23 +446,26 @@ class _$IfStatement implements IfStatement {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is IfStatement &&
-            (identical(other.sourceInfo, sourceInfo) ||
-                other.sourceInfo == sourceInfo) &&
-            (identical(other.condition, condition) ||
-                other.condition == condition) &&
+            other is _$IfStatement &&
             const DeepCollectionEquality()
-                .equals(other.statements, statements));
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality().equals(other.condition, condition) &&
+            const DeepCollectionEquality()
+                .equals(other._statements, _statements));
   }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, sourceInfo, condition,
-      const DeepCollectionEquality().hash(statements));
 
   @JsonKey(ignore: true)
   @override
-  $IfStatementCopyWith<IfStatement> get copyWith =>
-      _$IfStatementCopyWithImpl<IfStatement>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(condition),
+      const DeepCollectionEquality().hash(_statements));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$IfStatementCopyWith<_$IfStatement> get copyWith =>
+      __$$IfStatementCopyWithImpl<_$IfStatement>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -586,15 +555,17 @@ class _$IfStatement implements IfStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IfStatementToJson(this);
+    return _$$IfStatementToJson(
+      this,
+    );
   }
 }
 
 abstract class IfStatement implements Statement {
   const factory IfStatement(
-      {required SourceInfo sourceInfo,
-      @ExpConverter() required Expression condition,
-      required List<Statement> statements}) = _$IfStatement;
+      {required final SourceInfo sourceInfo,
+      @ExpConverter() required final Expression condition,
+      required final List<Statement> statements}) = _$IfStatement;
 
   factory IfStatement.fromJson(Map<String, dynamic> json) =
       _$IfStatement.fromJson;
@@ -606,16 +577,16 @@ abstract class IfStatement implements Statement {
   List<Statement> get statements;
   @override
   @JsonKey(ignore: true)
-  $IfStatementCopyWith<IfStatement> get copyWith =>
+  _$$IfStatementCopyWith<_$IfStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $WhileStatementCopyWith<$Res>
+abstract class _$$WhileStatementCopyWith<$Res>
     implements $StatementCopyWith<$Res> {
-  factory $WhileStatementCopyWith(
-          WhileStatement value, $Res Function(WhileStatement) then) =
-      _$WhileStatementCopyWithImpl<$Res>;
+  factory _$$WhileStatementCopyWith(
+          _$WhileStatement value, $Res Function(_$WhileStatement) then) =
+      __$$WhileStatementCopyWithImpl<$Res>;
   @override
   $Res call(
       {SourceInfo sourceInfo,
@@ -627,14 +598,14 @@ abstract class $WhileStatementCopyWith<$Res>
 }
 
 /// @nodoc
-class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
-    implements $WhileStatementCopyWith<$Res> {
-  _$WhileStatementCopyWithImpl(
-      WhileStatement _value, $Res Function(WhileStatement) _then)
-      : super(_value, (v) => _then(v as WhileStatement));
+class __$$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
+    implements _$$WhileStatementCopyWith<$Res> {
+  __$$WhileStatementCopyWithImpl(
+      _$WhileStatement _value, $Res Function(_$WhileStatement) _then)
+      : super(_value, (v) => _then(v as _$WhileStatement));
 
   @override
-  WhileStatement get _value => super._value as WhileStatement;
+  _$WhileStatement get _value => super._value as _$WhileStatement;
 
   @override
   $Res call({
@@ -642,7 +613,7 @@ class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
     Object? condition = freezed,
     Object? statements = freezed,
   }) {
-    return _then(WhileStatement(
+    return _then(_$WhileStatement(
       sourceInfo: sourceInfo == freezed
           ? _value.sourceInfo
           : sourceInfo // ignore: cast_nullable_to_non_nullable
@@ -652,7 +623,7 @@ class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
           : condition // ignore: cast_nullable_to_non_nullable
               as Expression,
       statements: statements == freezed
-          ? _value.statements
+          ? _value._statements
           : statements // ignore: cast_nullable_to_non_nullable
               as List<Statement>,
     ));
@@ -662,14 +633,14 @@ class _$WhileStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-@FreezedUnionValue('while')
 class _$WhileStatement implements WhileStatement {
   const _$WhileStatement(
       {required this.sourceInfo,
       @ExpConverter() required this.condition,
-      required this.statements,
-      String? $type})
-      : $type = $type ?? 'while';
+      required final List<Statement> statements,
+      final String? $type})
+      : _statements = statements,
+        $type = $type ?? 'while';
 
   factory _$WhileStatement.fromJson(Map<String, dynamic> json) =>
       _$$WhileStatementFromJson(json);
@@ -679,8 +650,12 @@ class _$WhileStatement implements WhileStatement {
   @override
   @ExpConverter()
   final Expression condition;
+  final List<Statement> _statements;
   @override
-  final List<Statement> statements;
+  List<Statement> get statements {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_statements);
+  }
 
   @JsonKey(name: 'type')
   final String $type;
@@ -694,23 +669,26 @@ class _$WhileStatement implements WhileStatement {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is WhileStatement &&
-            (identical(other.sourceInfo, sourceInfo) ||
-                other.sourceInfo == sourceInfo) &&
-            (identical(other.condition, condition) ||
-                other.condition == condition) &&
+            other is _$WhileStatement &&
             const DeepCollectionEquality()
-                .equals(other.statements, statements));
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality().equals(other.condition, condition) &&
+            const DeepCollectionEquality()
+                .equals(other._statements, _statements));
   }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, sourceInfo, condition,
-      const DeepCollectionEquality().hash(statements));
 
   @JsonKey(ignore: true)
   @override
-  $WhileStatementCopyWith<WhileStatement> get copyWith =>
-      _$WhileStatementCopyWithImpl<WhileStatement>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(condition),
+      const DeepCollectionEquality().hash(_statements));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$WhileStatementCopyWith<_$WhileStatement> get copyWith =>
+      __$$WhileStatementCopyWithImpl<_$WhileStatement>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -800,15 +778,17 @@ class _$WhileStatement implements WhileStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$WhileStatementToJson(this);
+    return _$$WhileStatementToJson(
+      this,
+    );
   }
 }
 
 abstract class WhileStatement implements Statement {
   const factory WhileStatement(
-      {required SourceInfo sourceInfo,
-      @ExpConverter() required Expression condition,
-      required List<Statement> statements}) = _$WhileStatement;
+      {required final SourceInfo sourceInfo,
+      @ExpConverter() required final Expression condition,
+      required final List<Statement> statements}) = _$WhileStatement;
 
   factory WhileStatement.fromJson(Map<String, dynamic> json) =
       _$WhileStatement.fromJson;
@@ -820,40 +800,13 @@ abstract class WhileStatement implements Statement {
   List<Statement> get statements;
   @override
   @JsonKey(ignore: true)
-  $WhileStatementCopyWith<WhileStatement> get copyWith =>
+  _$$WhileStatementCopyWith<_$WhileStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 SourceInfo _$SourceInfoFromJson(Map<String, dynamic> json) {
   return _SourceInfo.fromJson(json);
 }
-
-/// @nodoc
-class _$SourceInfoTearOff {
-  const _$SourceInfoTearOff();
-
-  _SourceInfo call(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn}) {
-    return _SourceInfo(
-      source: source,
-      startLine: startLine,
-      startColumn: startColumn,
-      endLine: endLine,
-      endColumn: endColumn,
-    );
-  }
-
-  SourceInfo fromJson(Map<String, Object?> json) {
-    return SourceInfo.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $SourceInfo = _$SourceInfoTearOff();
 
 /// @nodoc
 mixin _$SourceInfo {
@@ -924,10 +877,11 @@ class _$SourceInfoCopyWithImpl<$Res> implements $SourceInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$SourceInfoCopyWith<$Res> implements $SourceInfoCopyWith<$Res> {
-  factory _$SourceInfoCopyWith(
-          _SourceInfo value, $Res Function(_SourceInfo) then) =
-      __$SourceInfoCopyWithImpl<$Res>;
+abstract class _$$_SourceInfoCopyWith<$Res>
+    implements $SourceInfoCopyWith<$Res> {
+  factory _$$_SourceInfoCopyWith(
+          _$_SourceInfo value, $Res Function(_$_SourceInfo) then) =
+      __$$_SourceInfoCopyWithImpl<$Res>;
   @override
   $Res call(
       {String source,
@@ -938,14 +892,14 @@ abstract class _$SourceInfoCopyWith<$Res> implements $SourceInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$SourceInfoCopyWithImpl<$Res> extends _$SourceInfoCopyWithImpl<$Res>
-    implements _$SourceInfoCopyWith<$Res> {
-  __$SourceInfoCopyWithImpl(
-      _SourceInfo _value, $Res Function(_SourceInfo) _then)
-      : super(_value, (v) => _then(v as _SourceInfo));
+class __$$_SourceInfoCopyWithImpl<$Res> extends _$SourceInfoCopyWithImpl<$Res>
+    implements _$$_SourceInfoCopyWith<$Res> {
+  __$$_SourceInfoCopyWithImpl(
+      _$_SourceInfo _value, $Res Function(_$_SourceInfo) _then)
+      : super(_value, (v) => _then(v as _$_SourceInfo));
 
   @override
-  _SourceInfo get _value => super._value as _SourceInfo;
+  _$_SourceInfo get _value => super._value as _$_SourceInfo;
 
   @override
   $Res call({
@@ -955,7 +909,7 @@ class __$SourceInfoCopyWithImpl<$Res> extends _$SourceInfoCopyWithImpl<$Res>
     Object? endLine = freezed,
     Object? endColumn = freezed,
   }) {
-    return _then(_SourceInfo(
+    return _then(_$_SourceInfo(
       source: source == freezed
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
@@ -1014,39 +968,45 @@ class _$_SourceInfo implements _SourceInfo {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _SourceInfo &&
-            (identical(other.source, source) || other.source == source) &&
-            (identical(other.startLine, startLine) ||
-                other.startLine == startLine) &&
-            (identical(other.startColumn, startColumn) ||
-                other.startColumn == startColumn) &&
-            (identical(other.endLine, endLine) || other.endLine == endLine) &&
-            (identical(other.endColumn, endColumn) ||
-                other.endColumn == endColumn));
+            other is _$_SourceInfo &&
+            const DeepCollectionEquality().equals(other.source, source) &&
+            const DeepCollectionEquality().equals(other.startLine, startLine) &&
+            const DeepCollectionEquality()
+                .equals(other.startColumn, startColumn) &&
+            const DeepCollectionEquality().equals(other.endLine, endLine) &&
+            const DeepCollectionEquality().equals(other.endColumn, endColumn));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, source, startLine, startColumn, endLine, endColumn);
 
   @JsonKey(ignore: true)
   @override
-  _$SourceInfoCopyWith<_SourceInfo> get copyWith =>
-      __$SourceInfoCopyWithImpl<_SourceInfo>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(source),
+      const DeepCollectionEquality().hash(startLine),
+      const DeepCollectionEquality().hash(startColumn),
+      const DeepCollectionEquality().hash(endLine),
+      const DeepCollectionEquality().hash(endColumn));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_SourceInfoCopyWith<_$_SourceInfo> get copyWith =>
+      __$$_SourceInfoCopyWithImpl<_$_SourceInfo>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SourceInfoToJson(this);
+    return _$$_SourceInfoToJson(
+      this,
+    );
   }
 }
 
 abstract class _SourceInfo implements SourceInfo {
   const factory _SourceInfo(
-      {required String source,
-      required int startLine,
-      required int startColumn,
-      required int endLine,
-      required int endColumn}) = _$_SourceInfo;
+      {required final String source,
+      required final int startLine,
+      required final int startColumn,
+      required final int endLine,
+      required final int endColumn}) = _$_SourceInfo;
 
   factory _SourceInfo.fromJson(Map<String, dynamic> json) =
       _$_SourceInfo.fromJson;
@@ -1063,6 +1023,6 @@ abstract class _SourceInfo implements SourceInfo {
   int get endColumn;
   @override
   @JsonKey(ignore: true)
-  _$SourceInfoCopyWith<_SourceInfo> get copyWith =>
+  _$$_SourceInfoCopyWith<_$_SourceInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }

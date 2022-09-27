@@ -31,9 +31,9 @@ class _HoneyOverlayState extends State<HoneyOverlay>
 
   @override
   void initState() {
-    _semanticsHandle = WidgetsBinding.instance!.pipelineOwner.ensureSemantics(
+    _semanticsHandle = WidgetsBinding.instance.pipelineOwner.ensureSemantics(
       listener: () {
-        SchedulerBinding.instance!.addPostFrameCallback((Duration timeStamp) {
+        SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
           if (mounted) {
             _handleSemanticsUpdate();
           }
@@ -44,7 +44,7 @@ class _HoneyOverlayState extends State<HoneyOverlay>
   }
 
   SemanticsNode? get rootNode =>
-      WidgetsBinding.instance!.pipelineOwner.semanticsOwner?.rootSemanticsNode;
+      WidgetsBinding.instance.pipelineOwner.semanticsOwner?.rootSemanticsNode;
 
   @override
   void dispose() {

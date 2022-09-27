@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'debug_message.dart';
@@ -11,7 +12,7 @@ part of 'debug_message.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 DebugMessage _$DebugMessageFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
@@ -37,73 +38,6 @@ DebugMessage _$DebugMessageFromJson(Map<String, dynamic> json) {
           'Invalid union type "${json['type']}"!');
   }
 }
-
-/// @nodoc
-class _$DebugMessageTearOff {
-  const _$DebugMessageTearOff();
-
-  DeviceStatus deviceStatus(
-      {required String appName,
-      required String appBuild,
-      required bool overlayEnabled,
-      required bool testRunning,
-      required bool recording}) {
-    return DeviceStatus(
-      appName: appName,
-      appBuild: appBuild,
-      overlayEnabled: overlayEnabled,
-      testRunning: testRunning,
-      recording: recording,
-    );
-  }
-
-  StartTest startTest(
-      {required int runId,
-      required List<Statement> statements,
-      @ExpConverter() Map<String, Expression> variables = const {}}) {
-    return StartTest(
-      runId: runId,
-      statements: statements,
-      variables: variables,
-    );
-  }
-
-  Step testStep({required int runId, required TestStep step}) {
-    return Step(
-      runId: runId,
-      step: step,
-    );
-  }
-
-  CancelTests cancelTests() {
-    return const CancelTests();
-  }
-
-  ToggleOverlay toggleOverlay() {
-    return const ToggleOverlay();
-  }
-
-  ToggleRecording toggleRecording() {
-    return const ToggleRecording();
-  }
-
-  RecordedStatement recordedStatement({required String statement}) {
-    return RecordedStatement(
-      statement: statement,
-    );
-  }
-
-  ResetApp resetApp() {
-    return const ResetApp();
-  }
-
-  DebugMessage fromJson(Map<String, Object?> json) {
-    return DebugMessage.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $DebugMessage = _$DebugMessageTearOff();
 
 /// @nodoc
 mixin _$DebugMessage {
@@ -213,10 +147,10 @@ class _$DebugMessageCopyWithImpl<$Res> implements $DebugMessageCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $DeviceStatusCopyWith<$Res> {
-  factory $DeviceStatusCopyWith(
-          DeviceStatus value, $Res Function(DeviceStatus) then) =
-      _$DeviceStatusCopyWithImpl<$Res>;
+abstract class _$$DeviceStatusCopyWith<$Res> {
+  factory _$$DeviceStatusCopyWith(
+          _$DeviceStatus value, $Res Function(_$DeviceStatus) then) =
+      __$$DeviceStatusCopyWithImpl<$Res>;
   $Res call(
       {String appName,
       String appBuild,
@@ -226,14 +160,15 @@ abstract class $DeviceStatusCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DeviceStatusCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $DeviceStatusCopyWith<$Res> {
-  _$DeviceStatusCopyWithImpl(
-      DeviceStatus _value, $Res Function(DeviceStatus) _then)
-      : super(_value, (v) => _then(v as DeviceStatus));
+class __$$DeviceStatusCopyWithImpl<$Res>
+    extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$DeviceStatusCopyWith<$Res> {
+  __$$DeviceStatusCopyWithImpl(
+      _$DeviceStatus _value, $Res Function(_$DeviceStatus) _then)
+      : super(_value, (v) => _then(v as _$DeviceStatus));
 
   @override
-  DeviceStatus get _value => super._value as DeviceStatus;
+  _$DeviceStatus get _value => super._value as _$DeviceStatus;
 
   @override
   $Res call({
@@ -243,7 +178,7 @@ class _$DeviceStatusCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
     Object? testRunning = freezed,
     Object? recording = freezed,
   }) {
-    return _then(DeviceStatus(
+    return _then(_$DeviceStatus(
       appName: appName == freezed
           ? _value.appName
           : appName // ignore: cast_nullable_to_non_nullable
@@ -270,7 +205,6 @@ class _$DeviceStatusCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('device_status')
 class _$DeviceStatus extends DeviceStatus {
   const _$DeviceStatus(
       {required this.appName,
@@ -278,7 +212,7 @@ class _$DeviceStatus extends DeviceStatus {
       required this.overlayEnabled,
       required this.testRunning,
       required this.recording,
-      String? $type})
+      final String? $type})
       : $type = $type ?? 'device_status',
         super._();
 
@@ -308,26 +242,30 @@ class _$DeviceStatus extends DeviceStatus {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceStatus &&
-            (identical(other.appName, appName) || other.appName == appName) &&
-            (identical(other.appBuild, appBuild) ||
-                other.appBuild == appBuild) &&
-            (identical(other.overlayEnabled, overlayEnabled) ||
-                other.overlayEnabled == overlayEnabled) &&
-            (identical(other.testRunning, testRunning) ||
-                other.testRunning == testRunning) &&
-            (identical(other.recording, recording) ||
-                other.recording == recording));
+            other is _$DeviceStatus &&
+            const DeepCollectionEquality().equals(other.appName, appName) &&
+            const DeepCollectionEquality().equals(other.appBuild, appBuild) &&
+            const DeepCollectionEquality()
+                .equals(other.overlayEnabled, overlayEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.testRunning, testRunning) &&
+            const DeepCollectionEquality().equals(other.recording, recording));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, appName, appBuild, overlayEnabled, testRunning, recording);
 
   @JsonKey(ignore: true)
   @override
-  $DeviceStatusCopyWith<DeviceStatus> get copyWith =>
-      _$DeviceStatusCopyWithImpl<DeviceStatus>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(appName),
+      const DeepCollectionEquality().hash(appBuild),
+      const DeepCollectionEquality().hash(overlayEnabled),
+      const DeepCollectionEquality().hash(testRunning),
+      const DeepCollectionEquality().hash(recording));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$DeviceStatusCopyWith<_$DeviceStatus> get copyWith =>
+      __$$DeviceStatusCopyWithImpl<_$DeviceStatus>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -444,17 +382,19 @@ class _$DeviceStatus extends DeviceStatus {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DeviceStatusToJson(this);
+    return _$$DeviceStatusToJson(
+      this,
+    );
   }
 }
 
 abstract class DeviceStatus extends DebugMessage {
   const factory DeviceStatus(
-      {required String appName,
-      required String appBuild,
-      required bool overlayEnabled,
-      required bool testRunning,
-      required bool recording}) = _$DeviceStatus;
+      {required final String appName,
+      required final String appBuild,
+      required final bool overlayEnabled,
+      required final bool testRunning,
+      required final bool recording}) = _$DeviceStatus;
   const DeviceStatus._() : super._();
 
   factory DeviceStatus.fromJson(Map<String, dynamic> json) =
@@ -466,14 +406,15 @@ abstract class DeviceStatus extends DebugMessage {
   bool get testRunning;
   bool get recording;
   @JsonKey(ignore: true)
-  $DeviceStatusCopyWith<DeviceStatus> get copyWith =>
+  _$$DeviceStatusCopyWith<_$DeviceStatus> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $StartTestCopyWith<$Res> {
-  factory $StartTestCopyWith(StartTest value, $Res Function(StartTest) then) =
-      _$StartTestCopyWithImpl<$Res>;
+abstract class _$$StartTestCopyWith<$Res> {
+  factory _$$StartTestCopyWith(
+          _$StartTest value, $Res Function(_$StartTest) then) =
+      __$$StartTestCopyWithImpl<$Res>;
   $Res call(
       {int runId,
       List<Statement> statements,
@@ -481,13 +422,14 @@ abstract class $StartTestCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$StartTestCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $StartTestCopyWith<$Res> {
-  _$StartTestCopyWithImpl(StartTest _value, $Res Function(StartTest) _then)
-      : super(_value, (v) => _then(v as StartTest));
+class __$$StartTestCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$StartTestCopyWith<$Res> {
+  __$$StartTestCopyWithImpl(
+      _$StartTest _value, $Res Function(_$StartTest) _then)
+      : super(_value, (v) => _then(v as _$StartTest));
 
   @override
-  StartTest get _value => super._value as StartTest;
+  _$StartTest get _value => super._value as _$StartTest;
 
   @override
   $Res call({
@@ -495,17 +437,17 @@ class _$StartTestCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
     Object? statements = freezed,
     Object? variables = freezed,
   }) {
-    return _then(StartTest(
+    return _then(_$StartTest(
       runId: runId == freezed
           ? _value.runId
           : runId // ignore: cast_nullable_to_non_nullable
               as int,
       statements: statements == freezed
-          ? _value.statements
+          ? _value._statements
           : statements // ignore: cast_nullable_to_non_nullable
               as List<Statement>,
       variables: variables == freezed
-          ? _value.variables
+          ? _value._variables
           : variables // ignore: cast_nullable_to_non_nullable
               as Map<String, Expression>,
     ));
@@ -514,14 +456,15 @@ class _$StartTestCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('start_test')
 class _$StartTest extends StartTest {
   const _$StartTest(
       {required this.runId,
-      required this.statements,
-      @ExpConverter() this.variables = const {},
-      String? $type})
-      : $type = $type ?? 'start_test',
+      required final List<Statement> statements,
+      @ExpConverter() final Map<String, Expression> variables = const {},
+      final String? $type})
+      : _statements = statements,
+        _variables = variables,
+        $type = $type ?? 'start_test',
         super._();
 
   factory _$StartTest.fromJson(Map<String, dynamic> json) =>
@@ -529,12 +472,21 @@ class _$StartTest extends StartTest {
 
   @override
   final int runId;
+  final List<Statement> _statements;
   @override
-  final List<Statement> statements;
-  @JsonKey(defaultValue: const {})
+  List<Statement> get statements {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_statements);
+  }
+
+  final Map<String, Expression> _variables;
   @override
+  @JsonKey()
   @ExpConverter()
-  final Map<String, Expression> variables;
+  Map<String, Expression> get variables {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_variables);
+  }
 
   @JsonKey(name: 'type')
   final String $type;
@@ -548,24 +500,26 @@ class _$StartTest extends StartTest {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is StartTest &&
-            (identical(other.runId, runId) || other.runId == runId) &&
+            other is _$StartTest &&
+            const DeepCollectionEquality().equals(other.runId, runId) &&
             const DeepCollectionEquality()
-                .equals(other.statements, statements) &&
-            const DeepCollectionEquality().equals(other.variables, variables));
+                .equals(other._statements, _statements) &&
+            const DeepCollectionEquality()
+                .equals(other._variables, _variables));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      runId,
-      const DeepCollectionEquality().hash(statements),
-      const DeepCollectionEquality().hash(variables));
 
   @JsonKey(ignore: true)
   @override
-  $StartTestCopyWith<StartTest> get copyWith =>
-      _$StartTestCopyWithImpl<StartTest>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(runId),
+      const DeepCollectionEquality().hash(_statements),
+      const DeepCollectionEquality().hash(_variables));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$StartTestCopyWith<_$StartTest> get copyWith =>
+      __$$StartTestCopyWithImpl<_$StartTest>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -679,15 +633,17 @@ class _$StartTest extends StartTest {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StartTestToJson(this);
+    return _$$StartTestToJson(
+      this,
+    );
   }
 }
 
 abstract class StartTest extends DebugMessage {
   const factory StartTest(
-      {required int runId,
-      required List<Statement> statements,
-      @ExpConverter() Map<String, Expression> variables}) = _$StartTest;
+      {required final int runId,
+      required final List<Statement> statements,
+      @ExpConverter() final Map<String, Expression> variables}) = _$StartTest;
   const StartTest._() : super._();
 
   factory StartTest.fromJson(Map<String, dynamic> json) = _$StartTest.fromJson;
@@ -697,34 +653,34 @@ abstract class StartTest extends DebugMessage {
   @ExpConverter()
   Map<String, Expression> get variables;
   @JsonKey(ignore: true)
-  $StartTestCopyWith<StartTest> get copyWith =>
+  _$$StartTestCopyWith<_$StartTest> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $StepCopyWith<$Res> {
-  factory $StepCopyWith(Step value, $Res Function(Step) then) =
-      _$StepCopyWithImpl<$Res>;
+abstract class _$$StepCopyWith<$Res> {
+  factory _$$StepCopyWith(_$Step value, $Res Function(_$Step) then) =
+      __$$StepCopyWithImpl<$Res>;
   $Res call({int runId, TestStep step});
 
   $TestStepCopyWith<$Res> get step;
 }
 
 /// @nodoc
-class _$StepCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $StepCopyWith<$Res> {
-  _$StepCopyWithImpl(Step _value, $Res Function(Step) _then)
-      : super(_value, (v) => _then(v as Step));
+class __$$StepCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$StepCopyWith<$Res> {
+  __$$StepCopyWithImpl(_$Step _value, $Res Function(_$Step) _then)
+      : super(_value, (v) => _then(v as _$Step));
 
   @override
-  Step get _value => super._value as Step;
+  _$Step get _value => super._value as _$Step;
 
   @override
   $Res call({
     Object? runId = freezed,
     Object? step = freezed,
   }) {
-    return _then(Step(
+    return _then(_$Step(
       runId: runId == freezed
           ? _value.runId
           : runId // ignore: cast_nullable_to_non_nullable
@@ -746,9 +702,8 @@ class _$StepCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('test_step')
 class _$Step extends Step {
-  const _$Step({required this.runId, required this.step, String? $type})
+  const _$Step({required this.runId, required this.step, final String? $type})
       : $type = $type ?? 'test_step',
         super._();
 
@@ -771,18 +726,22 @@ class _$Step extends Step {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is Step &&
-            (identical(other.runId, runId) || other.runId == runId) &&
-            (identical(other.step, step) || other.step == step));
+            other is _$Step &&
+            const DeepCollectionEquality().equals(other.runId, runId) &&
+            const DeepCollectionEquality().equals(other.step, step));
   }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, runId, step);
 
   @JsonKey(ignore: true)
   @override
-  $StepCopyWith<Step> get copyWith =>
-      _$StepCopyWithImpl<Step>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(runId),
+      const DeepCollectionEquality().hash(step));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$StepCopyWith<_$Step> get copyWith =>
+      __$$StepCopyWithImpl<_$Step>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -896,12 +855,15 @@ class _$Step extends Step {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StepToJson(this);
+    return _$$StepToJson(
+      this,
+    );
   }
 }
 
 abstract class Step extends DebugMessage {
-  const factory Step({required int runId, required TestStep step}) = _$Step;
+  const factory Step({required final int runId, required final TestStep step}) =
+      _$Step;
   const Step._() : super._();
 
   factory Step.fromJson(Map<String, dynamic> json) = _$Step.fromJson;
@@ -909,32 +871,31 @@ abstract class Step extends DebugMessage {
   int get runId;
   TestStep get step;
   @JsonKey(ignore: true)
-  $StepCopyWith<Step> get copyWith => throw _privateConstructorUsedError;
+  _$$StepCopyWith<_$Step> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CancelTestsCopyWith<$Res> {
-  factory $CancelTestsCopyWith(
-          CancelTests value, $Res Function(CancelTests) then) =
-      _$CancelTestsCopyWithImpl<$Res>;
+abstract class _$$CancelTestsCopyWith<$Res> {
+  factory _$$CancelTestsCopyWith(
+          _$CancelTests value, $Res Function(_$CancelTests) then) =
+      __$$CancelTestsCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$CancelTestsCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $CancelTestsCopyWith<$Res> {
-  _$CancelTestsCopyWithImpl(
-      CancelTests _value, $Res Function(CancelTests) _then)
-      : super(_value, (v) => _then(v as CancelTests));
+class __$$CancelTestsCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$CancelTestsCopyWith<$Res> {
+  __$$CancelTestsCopyWithImpl(
+      _$CancelTests _value, $Res Function(_$CancelTests) _then)
+      : super(_value, (v) => _then(v as _$CancelTests));
 
   @override
-  CancelTests get _value => super._value as CancelTests;
+  _$CancelTests get _value => super._value as _$CancelTests;
 }
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('cancel_tests')
 class _$CancelTests extends CancelTests {
-  const _$CancelTests({String? $type})
+  const _$CancelTests({final String? $type})
       : $type = $type ?? 'cancel_tests',
         super._();
 
@@ -952,9 +913,10 @@ class _$CancelTests extends CancelTests {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is CancelTests);
+        (other.runtimeType == runtimeType && other is _$CancelTests);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -1070,7 +1032,9 @@ class _$CancelTests extends CancelTests {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CancelTestsToJson(this);
+    return _$$CancelTestsToJson(
+      this,
+    );
   }
 }
 
@@ -1083,28 +1047,28 @@ abstract class CancelTests extends DebugMessage {
 }
 
 /// @nodoc
-abstract class $ToggleOverlayCopyWith<$Res> {
-  factory $ToggleOverlayCopyWith(
-          ToggleOverlay value, $Res Function(ToggleOverlay) then) =
-      _$ToggleOverlayCopyWithImpl<$Res>;
+abstract class _$$ToggleOverlayCopyWith<$Res> {
+  factory _$$ToggleOverlayCopyWith(
+          _$ToggleOverlay value, $Res Function(_$ToggleOverlay) then) =
+      __$$ToggleOverlayCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ToggleOverlayCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $ToggleOverlayCopyWith<$Res> {
-  _$ToggleOverlayCopyWithImpl(
-      ToggleOverlay _value, $Res Function(ToggleOverlay) _then)
-      : super(_value, (v) => _then(v as ToggleOverlay));
+class __$$ToggleOverlayCopyWithImpl<$Res>
+    extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$ToggleOverlayCopyWith<$Res> {
+  __$$ToggleOverlayCopyWithImpl(
+      _$ToggleOverlay _value, $Res Function(_$ToggleOverlay) _then)
+      : super(_value, (v) => _then(v as _$ToggleOverlay));
 
   @override
-  ToggleOverlay get _value => super._value as ToggleOverlay;
+  _$ToggleOverlay get _value => super._value as _$ToggleOverlay;
 }
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('toggle_overlay')
 class _$ToggleOverlay extends ToggleOverlay {
-  const _$ToggleOverlay({String? $type})
+  const _$ToggleOverlay({final String? $type})
       : $type = $type ?? 'toggle_overlay',
         super._();
 
@@ -1122,9 +1086,10 @@ class _$ToggleOverlay extends ToggleOverlay {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is ToggleOverlay);
+        (other.runtimeType == runtimeType && other is _$ToggleOverlay);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -1240,7 +1205,9 @@ class _$ToggleOverlay extends ToggleOverlay {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ToggleOverlayToJson(this);
+    return _$$ToggleOverlayToJson(
+      this,
+    );
   }
 }
 
@@ -1253,29 +1220,28 @@ abstract class ToggleOverlay extends DebugMessage {
 }
 
 /// @nodoc
-abstract class $ToggleRecordingCopyWith<$Res> {
-  factory $ToggleRecordingCopyWith(
-          ToggleRecording value, $Res Function(ToggleRecording) then) =
-      _$ToggleRecordingCopyWithImpl<$Res>;
+abstract class _$$ToggleRecordingCopyWith<$Res> {
+  factory _$$ToggleRecordingCopyWith(
+          _$ToggleRecording value, $Res Function(_$ToggleRecording) then) =
+      __$$ToggleRecordingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ToggleRecordingCopyWithImpl<$Res>
+class __$$ToggleRecordingCopyWithImpl<$Res>
     extends _$DebugMessageCopyWithImpl<$Res>
-    implements $ToggleRecordingCopyWith<$Res> {
-  _$ToggleRecordingCopyWithImpl(
-      ToggleRecording _value, $Res Function(ToggleRecording) _then)
-      : super(_value, (v) => _then(v as ToggleRecording));
+    implements _$$ToggleRecordingCopyWith<$Res> {
+  __$$ToggleRecordingCopyWithImpl(
+      _$ToggleRecording _value, $Res Function(_$ToggleRecording) _then)
+      : super(_value, (v) => _then(v as _$ToggleRecording));
 
   @override
-  ToggleRecording get _value => super._value as ToggleRecording;
+  _$ToggleRecording get _value => super._value as _$ToggleRecording;
 }
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('toggle_recording')
 class _$ToggleRecording extends ToggleRecording {
-  const _$ToggleRecording({String? $type})
+  const _$ToggleRecording({final String? $type})
       : $type = $type ?? 'toggle_recording',
         super._();
 
@@ -1293,9 +1259,10 @@ class _$ToggleRecording extends ToggleRecording {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is ToggleRecording);
+        (other.runtimeType == runtimeType && other is _$ToggleRecording);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -1411,7 +1378,9 @@ class _$ToggleRecording extends ToggleRecording {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ToggleRecordingToJson(this);
+    return _$$ToggleRecordingToJson(
+      this,
+    );
   }
 }
 
@@ -1424,29 +1393,29 @@ abstract class ToggleRecording extends DebugMessage {
 }
 
 /// @nodoc
-abstract class $RecordedStatementCopyWith<$Res> {
-  factory $RecordedStatementCopyWith(
-          RecordedStatement value, $Res Function(RecordedStatement) then) =
-      _$RecordedStatementCopyWithImpl<$Res>;
+abstract class _$$RecordedStatementCopyWith<$Res> {
+  factory _$$RecordedStatementCopyWith(
+          _$RecordedStatement value, $Res Function(_$RecordedStatement) then) =
+      __$$RecordedStatementCopyWithImpl<$Res>;
   $Res call({String statement});
 }
 
 /// @nodoc
-class _$RecordedStatementCopyWithImpl<$Res>
+class __$$RecordedStatementCopyWithImpl<$Res>
     extends _$DebugMessageCopyWithImpl<$Res>
-    implements $RecordedStatementCopyWith<$Res> {
-  _$RecordedStatementCopyWithImpl(
-      RecordedStatement _value, $Res Function(RecordedStatement) _then)
-      : super(_value, (v) => _then(v as RecordedStatement));
+    implements _$$RecordedStatementCopyWith<$Res> {
+  __$$RecordedStatementCopyWithImpl(
+      _$RecordedStatement _value, $Res Function(_$RecordedStatement) _then)
+      : super(_value, (v) => _then(v as _$RecordedStatement));
 
   @override
-  RecordedStatement get _value => super._value as RecordedStatement;
+  _$RecordedStatement get _value => super._value as _$RecordedStatement;
 
   @override
   $Res call({
     Object? statement = freezed,
   }) {
-    return _then(RecordedStatement(
+    return _then(_$RecordedStatement(
       statement: statement == freezed
           ? _value.statement
           : statement // ignore: cast_nullable_to_non_nullable
@@ -1457,9 +1426,8 @@ class _$RecordedStatementCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('recoreded_statement')
 class _$RecordedStatement extends RecordedStatement {
-  const _$RecordedStatement({required this.statement, String? $type})
+  const _$RecordedStatement({required this.statement, final String? $type})
       : $type = $type ?? 'recoreded_statement',
         super._();
 
@@ -1481,18 +1449,19 @@ class _$RecordedStatement extends RecordedStatement {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is RecordedStatement &&
-            (identical(other.statement, statement) ||
-                other.statement == statement));
+            other is _$RecordedStatement &&
+            const DeepCollectionEquality().equals(other.statement, statement));
   }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, statement);
 
   @JsonKey(ignore: true)
   @override
-  $RecordedStatementCopyWith<RecordedStatement> get copyWith =>
-      _$RecordedStatementCopyWithImpl<RecordedStatement>(this, _$identity);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(statement));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$RecordedStatementCopyWith<_$RecordedStatement> get copyWith =>
+      __$$RecordedStatementCopyWithImpl<_$RecordedStatement>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1606,12 +1575,14 @@ class _$RecordedStatement extends RecordedStatement {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RecordedStatementToJson(this);
+    return _$$RecordedStatementToJson(
+      this,
+    );
   }
 }
 
 abstract class RecordedStatement extends DebugMessage {
-  const factory RecordedStatement({required String statement}) =
+  const factory RecordedStatement({required final String statement}) =
       _$RecordedStatement;
   const RecordedStatement._() : super._();
 
@@ -1620,31 +1591,31 @@ abstract class RecordedStatement extends DebugMessage {
 
   String get statement;
   @JsonKey(ignore: true)
-  $RecordedStatementCopyWith<RecordedStatement> get copyWith =>
+  _$$RecordedStatementCopyWith<_$RecordedStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ResetAppCopyWith<$Res> {
-  factory $ResetAppCopyWith(ResetApp value, $Res Function(ResetApp) then) =
-      _$ResetAppCopyWithImpl<$Res>;
+abstract class _$$ResetAppCopyWith<$Res> {
+  factory _$$ResetAppCopyWith(
+          _$ResetApp value, $Res Function(_$ResetApp) then) =
+      __$$ResetAppCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ResetAppCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
-    implements $ResetAppCopyWith<$Res> {
-  _$ResetAppCopyWithImpl(ResetApp _value, $Res Function(ResetApp) _then)
-      : super(_value, (v) => _then(v as ResetApp));
+class __$$ResetAppCopyWithImpl<$Res> extends _$DebugMessageCopyWithImpl<$Res>
+    implements _$$ResetAppCopyWith<$Res> {
+  __$$ResetAppCopyWithImpl(_$ResetApp _value, $Res Function(_$ResetApp) _then)
+      : super(_value, (v) => _then(v as _$ResetApp));
 
   @override
-  ResetApp get _value => super._value as ResetApp;
+  _$ResetApp get _value => super._value as _$ResetApp;
 }
 
 /// @nodoc
 @JsonSerializable()
-@FreezedUnionValue('reset_app')
 class _$ResetApp extends ResetApp {
-  const _$ResetApp({String? $type})
+  const _$ResetApp({final String? $type})
       : $type = $type ?? 'reset_app',
         super._();
 
@@ -1662,9 +1633,10 @@ class _$ResetApp extends ResetApp {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is ResetApp);
+        (other.runtimeType == runtimeType && other is _$ResetApp);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -1780,7 +1752,9 @@ class _$ResetApp extends ResetApp {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ResetAppToJson(this);
+    return _$$ResetAppToJson(
+      this,
+    );
   }
 }
 

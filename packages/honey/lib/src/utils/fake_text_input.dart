@@ -21,7 +21,7 @@ class FakeTextInput {
 
   /// The messenger which sends the bytes for this channel, not null.
   BinaryMessenger get _binaryMessenger =>
-      ServicesBinding.instance!.defaultBinaryMessenger;
+      ServicesBinding.instance.defaultBinaryMessenger;
 
   /// Resets any internal state of this object and calls [register].
   ///

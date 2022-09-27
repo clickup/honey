@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:honey/src/binding/honey_binding.dart';
@@ -37,7 +33,7 @@ extension SemanticsNodeX on SemanticsNode {
         );
       current = current.parent;
     }
-    final devicePixelRatio = WidgetsBinding.instance!.window.devicePixelRatio;
+    final devicePixelRatio = WidgetsBinding.instance.window.devicePixelRatio;
     return MatrixUtils.transformRect(
       Matrix4.diagonal3Values(
         1.0 / devicePixelRatio,

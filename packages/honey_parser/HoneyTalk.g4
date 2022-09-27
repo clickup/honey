@@ -107,7 +107,7 @@ function:
     | ID 'with' (term (','? term)*?)   # functionCustom;
 
 handler:
-    'on' name = ID ()
+    'on' name = ID ();
 
 literal:
     cardinalValue                   # literalCardinal

@@ -62,7 +62,20 @@ export class HoneyDaemon implements vs.Disposable {
             return false;
         }
 
-        const installHoneyDaemon = child_process.spawn("dart", ["pub", "global", "activate", "-spath", "C:\\Users\\simon\\Desktop\\honey\\packages\\honey_cli", "--overwrite"], { shell: true });
+        const cliSource = vs.workspace.getConfiguration('honey').get<string>('cliSource')
+        const installArgs = ["pub", "global", "activate"]
+        if (cliSource) {
+            if (cliSource.startsWith("https")) {
+                installArgs.push("-sgit")
+            } else {
+                installArgs.push("-spath")
+            }
+            installArgs.push(cliSource)
+        } else {
+            installArgs.push("honey_cli")
+        }
+        installArgs.push("--overwrite")
+        const installHoneyDaemon = child_process.spawn("dart", installArgs, { shell: true });
         runProcessInOutputChannel(installHoneyDaemon, this.channel)
         const daemonActivated = (await waitUntilExit(installHoneyDaemon)) == 0
         if (!daemonActivated) {

@@ -1,4 +1,4 @@
-// Generated from HoneyTalk.g4 by ANTLR 4.9.3
+// Generated from HoneyTalk.g4 by ANTLR 4.11.1
 // ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
 import 'package:antlr4/antlr4.dart';
 
@@ -331,6 +331,11 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitFunctionCustom(FunctionCustomContext ctx);
+
+  /// Visit a parse tree produced by [HoneyTalkParser.handler].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitHandler(HandlerContext ctx);
 
   /// Visit a parse tree produced by the {@code literalCardinal}
   /// labeled alternative in {@link HoneyTalkParser#literal}.

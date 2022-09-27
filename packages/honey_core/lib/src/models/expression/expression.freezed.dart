@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'expression.dart';
@@ -11,24 +12,7 @@ part of 'expression.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$FunctionExpTearOff {
-  const _$FunctionExpTearOff();
-
-  _FunctionExp call(String name, @ExpConverter() List<Expression> params,
-      {@JsonKey(ignore: true, defaultValue: false) bool retry = false}) {
-    return _FunctionExp(
-      name,
-      params,
-      retry: retry,
-    );
-  }
-}
-
-/// @nodoc
-const $FunctionExp = _$FunctionExpTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$FunctionExp {
@@ -86,11 +70,11 @@ class _$FunctionExpCopyWithImpl<$Res> implements $FunctionExpCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$FunctionExpCopyWith<$Res>
+abstract class _$$_FunctionExpCopyWith<$Res>
     implements $FunctionExpCopyWith<$Res> {
-  factory _$FunctionExpCopyWith(
-          _FunctionExp value, $Res Function(_FunctionExp) then) =
-      __$FunctionExpCopyWithImpl<$Res>;
+  factory _$$_FunctionExpCopyWith(
+          _$_FunctionExp value, $Res Function(_$_FunctionExp) then) =
+      __$$_FunctionExpCopyWithImpl<$Res>;
   @override
   $Res call(
       {String name,
@@ -99,14 +83,14 @@ abstract class _$FunctionExpCopyWith<$Res>
 }
 
 /// @nodoc
-class __$FunctionExpCopyWithImpl<$Res> extends _$FunctionExpCopyWithImpl<$Res>
-    implements _$FunctionExpCopyWith<$Res> {
-  __$FunctionExpCopyWithImpl(
-      _FunctionExp _value, $Res Function(_FunctionExp) _then)
-      : super(_value, (v) => _then(v as _FunctionExp));
+class __$$_FunctionExpCopyWithImpl<$Res> extends _$FunctionExpCopyWithImpl<$Res>
+    implements _$$_FunctionExpCopyWith<$Res> {
+  __$$_FunctionExpCopyWithImpl(
+      _$_FunctionExp _value, $Res Function(_$_FunctionExp) _then)
+      : super(_value, (v) => _then(v as _$_FunctionExp));
 
   @override
-  _FunctionExp get _value => super._value as _FunctionExp;
+  _$_FunctionExp get _value => super._value as _$_FunctionExp;
 
   @override
   $Res call({
@@ -114,13 +98,13 @@ class __$FunctionExpCopyWithImpl<$Res> extends _$FunctionExpCopyWithImpl<$Res>
     Object? params = freezed,
     Object? retry = freezed,
   }) {
-    return _then(_FunctionExp(
+    return _then(_$_FunctionExp(
       name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       params == freezed
-          ? _value.params
+          ? _value._params
           : params // ignore: cast_nullable_to_non_nullable
               as List<Expression>,
       retry: retry == freezed
@@ -135,15 +119,21 @@ class __$FunctionExpCopyWithImpl<$Res> extends _$FunctionExpCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_FunctionExp extends _FunctionExp {
-  const _$_FunctionExp(this.name, @ExpConverter() this.params,
+  const _$_FunctionExp(this.name, @ExpConverter() final List<Expression> params,
       {@JsonKey(ignore: true, defaultValue: false) this.retry = false})
-      : super._();
+      : _params = params,
+        super._();
 
   @override
   final String name;
+  final List<Expression> _params;
   @override
   @ExpConverter()
-  final List<Expression> params;
+  List<Expression> get params {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_params);
+  }
+
   @override
   @JsonKey(ignore: true, defaultValue: false)
   final bool retry;
@@ -157,26 +147,29 @@ class _$_FunctionExp extends _FunctionExp {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FunctionExp &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other.params, params) &&
-            (identical(other.retry, retry) || other.retry == retry));
+            other is _$_FunctionExp &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other._params, _params) &&
+            const DeepCollectionEquality().equals(other.retry, retry));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(params), retry);
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(_params),
+      const DeepCollectionEquality().hash(retry));
 
   @JsonKey(ignore: true)
   @override
-  _$FunctionExpCopyWith<_FunctionExp> get copyWith =>
-      __$FunctionExpCopyWithImpl<_FunctionExp>(this, _$identity);
+  _$$_FunctionExpCopyWith<_$_FunctionExp> get copyWith =>
+      __$$_FunctionExpCopyWithImpl<_$_FunctionExp>(this, _$identity);
 }
 
 abstract class _FunctionExp extends FunctionExp {
   const factory _FunctionExp(
-          String name, @ExpConverter() List<Expression> params,
-          {@JsonKey(ignore: true, defaultValue: false) bool retry}) =
+          final String name, @ExpConverter() final List<Expression> params,
+          {@JsonKey(ignore: true, defaultValue: false) final bool retry}) =
       _$_FunctionExp;
   const _FunctionExp._() : super._();
 
@@ -190,25 +183,9 @@ abstract class _FunctionExp extends FunctionExp {
   bool get retry;
   @override
   @JsonKey(ignore: true)
-  _$FunctionExpCopyWith<_FunctionExp> get copyWith =>
+  _$$_FunctionExpCopyWith<_$_FunctionExp> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$ListExpTearOff {
-  const _$ListExpTearOff();
-
-  _ListExp call(@ExpConverter() List<Expression> list,
-      {@JsonKey(ignore: true, defaultValue: false) bool retry = false}) {
-    return _ListExp(
-      list,
-      retry: retry,
-    );
-  }
-}
-
-/// @nodoc
-const $ListExp = _$ListExpTearOff();
 
 /// @nodoc
 mixin _$ListExp {
@@ -257,9 +234,10 @@ class _$ListExpCopyWithImpl<$Res> implements $ListExpCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ListExpCopyWith<$Res> implements $ListExpCopyWith<$Res> {
-  factory _$ListExpCopyWith(_ListExp value, $Res Function(_ListExp) then) =
-      __$ListExpCopyWithImpl<$Res>;
+abstract class _$$_ListExpCopyWith<$Res> implements $ListExpCopyWith<$Res> {
+  factory _$$_ListExpCopyWith(
+          _$_ListExp value, $Res Function(_$_ListExp) then) =
+      __$$_ListExpCopyWithImpl<$Res>;
   @override
   $Res call(
       {@ExpConverter() List<Expression> list,
@@ -267,22 +245,22 @@ abstract class _$ListExpCopyWith<$Res> implements $ListExpCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ListExpCopyWithImpl<$Res> extends _$ListExpCopyWithImpl<$Res>
-    implements _$ListExpCopyWith<$Res> {
-  __$ListExpCopyWithImpl(_ListExp _value, $Res Function(_ListExp) _then)
-      : super(_value, (v) => _then(v as _ListExp));
+class __$$_ListExpCopyWithImpl<$Res> extends _$ListExpCopyWithImpl<$Res>
+    implements _$$_ListExpCopyWith<$Res> {
+  __$$_ListExpCopyWithImpl(_$_ListExp _value, $Res Function(_$_ListExp) _then)
+      : super(_value, (v) => _then(v as _$_ListExp));
 
   @override
-  _ListExp get _value => super._value as _ListExp;
+  _$_ListExp get _value => super._value as _$_ListExp;
 
   @override
   $Res call({
     Object? list = freezed,
     Object? retry = freezed,
   }) {
-    return _then(_ListExp(
+    return _then(_$_ListExp(
       list == freezed
-          ? _value.list
+          ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
               as List<Expression>,
       retry: retry == freezed
@@ -297,13 +275,19 @@ class __$ListExpCopyWithImpl<$Res> extends _$ListExpCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_ListExp extends _ListExp {
-  const _$_ListExp(@ExpConverter() this.list,
+  const _$_ListExp(@ExpConverter() final List<Expression> list,
       {@JsonKey(ignore: true, defaultValue: false) this.retry = false})
-      : super._();
+      : _list = list,
+        super._();
 
+  final List<Expression> _list;
   @override
   @ExpConverter()
-  final List<Expression> list;
+  List<Expression> get list {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_list);
+  }
+
   @override
   @JsonKey(ignore: true, defaultValue: false)
   final bool retry;
@@ -317,24 +301,27 @@ class _$_ListExp extends _ListExp {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ListExp &&
-            const DeepCollectionEquality().equals(other.list, list) &&
-            (identical(other.retry, retry) || other.retry == retry));
+            other is _$_ListExp &&
+            const DeepCollectionEquality().equals(other._list, _list) &&
+            const DeepCollectionEquality().equals(other.retry, retry));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(list), retry);
+      runtimeType,
+      const DeepCollectionEquality().hash(_list),
+      const DeepCollectionEquality().hash(retry));
 
   @JsonKey(ignore: true)
   @override
-  _$ListExpCopyWith<_ListExp> get copyWith =>
-      __$ListExpCopyWithImpl<_ListExp>(this, _$identity);
+  _$$_ListExpCopyWith<_$_ListExp> get copyWith =>
+      __$$_ListExpCopyWithImpl<_$_ListExp>(this, _$identity);
 }
 
 abstract class _ListExp extends ListExp {
-  const factory _ListExp(@ExpConverter() List<Expression> list,
-      {@JsonKey(ignore: true, defaultValue: false) bool retry}) = _$_ListExp;
+  const factory _ListExp(@ExpConverter() final List<Expression> list,
+          {@JsonKey(ignore: true, defaultValue: false) final bool retry}) =
+      _$_ListExp;
   const _ListExp._() : super._();
 
   @override
@@ -345,27 +332,9 @@ abstract class _ListExp extends ListExp {
   bool get retry;
   @override
   @JsonKey(ignore: true)
-  _$ListExpCopyWith<_ListExp> get copyWith =>
+  _$$_ListExpCopyWith<_$_ListExp> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$ValueExpTearOff {
-  const _$ValueExpTearOff();
-
-  _ValueExp str(String value,
-      {String? regexFlags,
-      @JsonKey(ignore: true, defaultValue: false) bool retry = false}) {
-    return _ValueExp(
-      value,
-      regexFlags: regexFlags,
-      retry: retry,
-    );
-  }
-}
-
-/// @nodoc
-const $ValueExp = _$ValueExpTearOff();
 
 /// @nodoc
 mixin _$ValueExp {
@@ -373,7 +342,6 @@ mixin _$ValueExp {
   String? get regexFlags => throw _privateConstructorUsedError;
   @JsonKey(ignore: true, defaultValue: false)
   bool get retry => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String value, String? regexFlags,
@@ -460,9 +428,10 @@ class _$ValueExpCopyWithImpl<$Res> implements $ValueExpCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ValueExpCopyWith<$Res> implements $ValueExpCopyWith<$Res> {
-  factory _$ValueExpCopyWith(_ValueExp value, $Res Function(_ValueExp) then) =
-      __$ValueExpCopyWithImpl<$Res>;
+abstract class _$$_ValueExpCopyWith<$Res> implements $ValueExpCopyWith<$Res> {
+  factory _$$_ValueExpCopyWith(
+          _$_ValueExp value, $Res Function(_$_ValueExp) then) =
+      __$$_ValueExpCopyWithImpl<$Res>;
   @override
   $Res call(
       {String value,
@@ -471,13 +440,14 @@ abstract class _$ValueExpCopyWith<$Res> implements $ValueExpCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ValueExpCopyWithImpl<$Res> extends _$ValueExpCopyWithImpl<$Res>
-    implements _$ValueExpCopyWith<$Res> {
-  __$ValueExpCopyWithImpl(_ValueExp _value, $Res Function(_ValueExp) _then)
-      : super(_value, (v) => _then(v as _ValueExp));
+class __$$_ValueExpCopyWithImpl<$Res> extends _$ValueExpCopyWithImpl<$Res>
+    implements _$$_ValueExpCopyWith<$Res> {
+  __$$_ValueExpCopyWithImpl(
+      _$_ValueExp _value, $Res Function(_$_ValueExp) _then)
+      : super(_value, (v) => _then(v as _$_ValueExp));
 
   @override
-  _ValueExp get _value => super._value as _ValueExp;
+  _$_ValueExp get _value => super._value as _$_ValueExp;
 
   @override
   $Res call({
@@ -485,7 +455,7 @@ class __$ValueExpCopyWithImpl<$Res> extends _$ValueExpCopyWithImpl<$Res>
     Object? regexFlags = freezed,
     Object? retry = freezed,
   }) {
-    return _then(_ValueExp(
+    return _then(_$_ValueExp(
       value == freezed
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -528,20 +498,24 @@ class _$_ValueExp extends _ValueExp {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ValueExp &&
-            (identical(other.value, value) || other.value == value) &&
-            (identical(other.regexFlags, regexFlags) ||
-                other.regexFlags == regexFlags) &&
-            (identical(other.retry, retry) || other.retry == retry));
+            other is _$_ValueExp &&
+            const DeepCollectionEquality().equals(other.value, value) &&
+            const DeepCollectionEquality()
+                .equals(other.regexFlags, regexFlags) &&
+            const DeepCollectionEquality().equals(other.retry, retry));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, value, regexFlags, retry);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(value),
+      const DeepCollectionEquality().hash(regexFlags),
+      const DeepCollectionEquality().hash(retry));
 
   @JsonKey(ignore: true)
   @override
-  _$ValueExpCopyWith<_ValueExp> get copyWith =>
-      __$ValueExpCopyWithImpl<_ValueExp>(this, _$identity);
+  _$$_ValueExpCopyWith<_$_ValueExp> get copyWith =>
+      __$$_ValueExpCopyWithImpl<_$_ValueExp>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -607,9 +581,10 @@ class _$_ValueExp extends _ValueExp {
 }
 
 abstract class _ValueExp extends ValueExp {
-  const factory _ValueExp(String value,
-      {String? regexFlags,
-      @JsonKey(ignore: true, defaultValue: false) bool retry}) = _$_ValueExp;
+  const factory _ValueExp(final String value,
+          {final String? regexFlags,
+          @JsonKey(ignore: true, defaultValue: false) final bool retry}) =
+      _$_ValueExp;
   const _ValueExp._() : super._();
 
   @override
@@ -621,6 +596,6 @@ abstract class _ValueExp extends ValueExp {
   bool get retry;
   @override
   @JsonKey(ignore: true)
-  _$ValueExpCopyWith<_ValueExp> get copyWith =>
+  _$$_ValueExpCopyWith<_$_ValueExp> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,21 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:honey_core/honey_core.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'daemon_message.g.dart';
 part 'daemon_message.freezed.dart';
 
 @Freezed(unionKey: 'type')
 class DaemonMessage with _$DaemonMessage {
-  const DaemonMessage._();
-
   @FreezedUnionValue('devices')
   const factory DaemonMessage.devices({
-    required List<DaemonDevice> devices,
-  }) = DaemonDevices;
-
-  @FreezedUnionValue('apps')
-  const factory DaemonMessage.apps({
     required List<DaemonDevice> devices,
   }) = DaemonDevices;
 

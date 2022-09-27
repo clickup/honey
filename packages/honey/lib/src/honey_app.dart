@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:honey/src/binding/honey_binding.dart';
 import 'package:honey/src/overlay/honey_overlay.dart';
 
 import 'binding/honey_debug.dart';

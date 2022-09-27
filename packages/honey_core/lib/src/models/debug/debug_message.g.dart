@@ -35,7 +35,7 @@ _$StartTest _$$StartTestFromJson(Map<String, dynamic> json) => _$StartTest(
             (k, e) => MapEntry(
                 k, const ExpConverter().fromJson(e as Map<String, dynamic>)),
           ) ??
-          {},
+          const {},
       $type: json['type'] as String?,
     );
 

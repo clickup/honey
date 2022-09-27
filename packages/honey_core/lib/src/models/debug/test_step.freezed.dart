@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'test_step.dart';
@@ -11,40 +12,11 @@ part of 'test_step.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 TestStep _$TestStepFromJson(Map<String, dynamic> json) {
   return _TestStep.fromJson(json);
 }
-
-/// @nodoc
-class _$TestStepTearOff {
-  const _$TestStepTearOff();
-
-  _TestStep call(
-      {required int time,
-      required int index,
-      required String step,
-      String message = '',
-      bool error = false,
-      @ExpConverter() required Map<String, Expression> variables}) {
-    return _TestStep(
-      time: time,
-      index: index,
-      step: step,
-      message: message,
-      error: error,
-      variables: variables,
-    );
-  }
-
-  TestStep fromJson(Map<String, Object?> json) {
-    return TestStep.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $TestStep = _$TestStepTearOff();
 
 /// @nodoc
 mixin _$TestStep {
@@ -122,9 +94,10 @@ class _$TestStepCopyWithImpl<$Res> implements $TestStepCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$TestStepCopyWith<$Res> implements $TestStepCopyWith<$Res> {
-  factory _$TestStepCopyWith(_TestStep value, $Res Function(_TestStep) then) =
-      __$TestStepCopyWithImpl<$Res>;
+abstract class _$$_TestStepCopyWith<$Res> implements $TestStepCopyWith<$Res> {
+  factory _$$_TestStepCopyWith(
+          _$_TestStep value, $Res Function(_$_TestStep) then) =
+      __$$_TestStepCopyWithImpl<$Res>;
   @override
   $Res call(
       {int time,
@@ -136,13 +109,14 @@ abstract class _$TestStepCopyWith<$Res> implements $TestStepCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$TestStepCopyWithImpl<$Res> extends _$TestStepCopyWithImpl<$Res>
-    implements _$TestStepCopyWith<$Res> {
-  __$TestStepCopyWithImpl(_TestStep _value, $Res Function(_TestStep) _then)
-      : super(_value, (v) => _then(v as _TestStep));
+class __$$_TestStepCopyWithImpl<$Res> extends _$TestStepCopyWithImpl<$Res>
+    implements _$$_TestStepCopyWith<$Res> {
+  __$$_TestStepCopyWithImpl(
+      _$_TestStep _value, $Res Function(_$_TestStep) _then)
+      : super(_value, (v) => _then(v as _$_TestStep));
 
   @override
-  _TestStep get _value => super._value as _TestStep;
+  _$_TestStep get _value => super._value as _$_TestStep;
 
   @override
   $Res call({
@@ -153,7 +127,7 @@ class __$TestStepCopyWithImpl<$Res> extends _$TestStepCopyWithImpl<$Res>
     Object? error = freezed,
     Object? variables = freezed,
   }) {
-    return _then(_TestStep(
+    return _then(_$_TestStep(
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
@@ -175,7 +149,7 @@ class __$TestStepCopyWithImpl<$Res> extends _$TestStepCopyWithImpl<$Res>
           : error // ignore: cast_nullable_to_non_nullable
               as bool,
       variables: variables == freezed
-          ? _value.variables
+          ? _value._variables
           : variables // ignore: cast_nullable_to_non_nullable
               as Map<String, Expression>,
     ));
@@ -192,8 +166,9 @@ class _$_TestStep extends _TestStep {
       required this.step,
       this.message = '',
       this.error = false,
-      @ExpConverter() required this.variables})
-      : super._();
+      @ExpConverter() required final Map<String, Expression> variables})
+      : _variables = variables,
+        super._();
 
   factory _$_TestStep.fromJson(Map<String, dynamic> json) =>
       _$$_TestStepFromJson(json);
@@ -204,15 +179,19 @@ class _$_TestStep extends _TestStep {
   final int index;
   @override
   final String step;
-  @JsonKey(defaultValue: '')
   @override
+  @JsonKey()
   final String message;
-  @JsonKey(defaultValue: false)
   @override
+  @JsonKey()
   final bool error;
+  final Map<String, Expression> _variables;
   @override
   @ExpConverter()
-  final Map<String, Expression> variables;
+  Map<String, Expression> get variables {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_variables);
+  }
 
   @override
   String toString() {
@@ -223,38 +202,48 @@ class _$_TestStep extends _TestStep {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TestStep &&
-            (identical(other.time, time) || other.time == time) &&
-            (identical(other.index, index) || other.index == index) &&
-            (identical(other.step, step) || other.step == step) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.error, error) || other.error == error) &&
-            const DeepCollectionEquality().equals(other.variables, variables));
+            other is _$_TestStep &&
+            const DeepCollectionEquality().equals(other.time, time) &&
+            const DeepCollectionEquality().equals(other.index, index) &&
+            const DeepCollectionEquality().equals(other.step, step) &&
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.error, error) &&
+            const DeepCollectionEquality()
+                .equals(other._variables, _variables));
   }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, time, index, step, message,
-      error, const DeepCollectionEquality().hash(variables));
 
   @JsonKey(ignore: true)
   @override
-  _$TestStepCopyWith<_TestStep> get copyWith =>
-      __$TestStepCopyWithImpl<_TestStep>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(time),
+      const DeepCollectionEquality().hash(index),
+      const DeepCollectionEquality().hash(step),
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(error),
+      const DeepCollectionEquality().hash(_variables));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_TestStepCopyWith<_$_TestStep> get copyWith =>
+      __$$_TestStepCopyWithImpl<_$_TestStep>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TestStepToJson(this);
+    return _$$_TestStepToJson(
+      this,
+    );
   }
 }
 
 abstract class _TestStep extends TestStep {
   const factory _TestStep(
-          {required int time,
-          required int index,
-          required String step,
-          String message,
-          bool error,
-          @ExpConverter() required Map<String, Expression> variables}) =
+          {required final int time,
+          required final int index,
+          required final String step,
+          final String message,
+          final bool error,
+          @ExpConverter() required final Map<String, Expression> variables}) =
       _$_TestStep;
   const _TestStep._() : super._();
 
@@ -275,6 +264,6 @@ abstract class _TestStep extends TestStep {
   Map<String, Expression> get variables;
   @override
   @JsonKey(ignore: true)
-  _$TestStepCopyWith<_TestStep> get copyWith =>
+  _$$_TestStepCopyWith<_$_TestStep> get copyWith =>
       throw _privateConstructorUsedError;
 }

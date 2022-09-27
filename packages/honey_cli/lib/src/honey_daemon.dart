@@ -37,7 +37,7 @@ class HoneyDaemon {
       return DaemonDevice(
         id: device.id,
         name: device.name,
-        platform: device.platformType.value,
+        platform: device.platformType!.value,
       );
     }).toList();
     _output(DaemonMessage.devices(

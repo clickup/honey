@@ -11,11 +11,13 @@ _$DaemonDevices _$$DaemonDevicesFromJson(Map<String, dynamic> json) =>
       devices: (json['devices'] as List<dynamic>)
           .map((e) => DaemonDevice.fromJson(e as Map<String, dynamic>))
           .toList(),
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DaemonDevicesToJson(_$DaemonDevices instance) =>
     <String, dynamic>{
       'devices': instance.devices,
+      'type': instance.$type,
     };
 
 _$DaemonDeviceMessage _$$DaemonDeviceMessageFromJson(
@@ -23,6 +25,7 @@ _$DaemonDeviceMessage _$$DaemonDeviceMessageFromJson(
     _$DaemonDeviceMessage(
       deviceId: json['deviceId'] as String,
       message: DebugMessage.fromJson(json['message'] as Map<String, dynamic>),
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DaemonDeviceMessageToJson(
@@ -30,6 +33,7 @@ Map<String, dynamic> _$$DaemonDeviceMessageToJson(
     <String, dynamic>{
       'deviceId': instance.deviceId,
       'message': instance.message,
+      'type': instance.$type,
     };
 
 _$DaemonCompile _$$DaemonCompileFromJson(Map<String, dynamic> json) =>
@@ -37,12 +41,14 @@ _$DaemonCompile _$$DaemonCompileFromJson(Map<String, dynamic> json) =>
       requestId: json['requestId'] as int,
       sources:
           (json['sources'] as List<dynamic>).map((e) => e as String).toList(),
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DaemonCompileToJson(_$DaemonCompile instance) =>
     <String, dynamic>{
       'requestId': instance.requestId,
       'sources': instance.sources,
+      'type': instance.$type,
     };
 
 _$DaemonCompileResult _$$DaemonCompileResultFromJson(
@@ -52,6 +58,7 @@ _$DaemonCompileResult _$$DaemonCompileResultFromJson(
       results: (json['results'] as List<dynamic>)
           .map((e) => CompiledHoneyTalk.fromJson(e as Map<String, dynamic>))
           .toList(),
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DaemonCompileResultToJson(
@@ -59,16 +66,19 @@ Map<String, dynamic> _$$DaemonCompileResultToJson(
     <String, dynamic>{
       'requestId': instance.requestId,
       'results': instance.results,
+      'type': instance.$type,
     };
 
 _$DaemonError _$$DaemonErrorFromJson(Map<String, dynamic> json) =>
     _$DaemonError(
       error: json['error'] as String,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DaemonErrorToJson(_$DaemonError instance) =>
     <String, dynamic>{
       'error': instance.error,
+      'type': instance.$type,
     };
 
 _$_DaemonDevice _$$_DaemonDeviceFromJson(Map<String, dynamic> json) =>

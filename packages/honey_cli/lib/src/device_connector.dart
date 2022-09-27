@@ -25,7 +25,7 @@ class DeviceConnector {
   }
 
   Future refresh() async {
-    final devices = await deviceManager.refreshAllConnectedDevices();
+    final devices = await deviceManager!.refreshAllConnectedDevices();
     final mobileDevices = devices.where((d) =>
         d.platformType == PlatformType.android ||
         d.platformType == PlatformType.ios);
@@ -73,7 +73,7 @@ class DeviceConnector {
 
   void _connectDevice(Device device, int port) async {
     try {
-      final localPort = await device.portForwarder.forward(port);
+      final localPort = await device.portForwarder!.forward(port);
       final socket = await WebSocket.connect('ws://127.0.0.1:$localPort');
       socket.pingInterval = Duration(seconds: 5);
       _devices[device] = socket;
