@@ -1,6 +1,6 @@
 name: honey
 description: The sweet side of testing...
-version: 0.0.6
+version: 0.0.5
 homepage: https://honey.dev
 repository: https://github.com/leisim/honey
 
@@ -11,8 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  honey_core:
-    path: ../honey_core
+  honey_core: 0.0.5
   freezed_annotation: ^2.1.0
   json_annotation: ^4.7.0
   intl: ^0.17.0
