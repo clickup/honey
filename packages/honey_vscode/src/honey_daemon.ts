@@ -2,6 +2,7 @@ import * as vs from 'vscode';
 import * as child_process from "child_process";
 import { createInterface } from "readline";
 import { getOutputChannel, runProcessInOutputChannel, waitUntilExit } from './utils';
+import fixPath from 'fix-path';
 
 export class HoneyDaemon implements vs.Disposable {
     private prepared = false
@@ -18,6 +19,7 @@ export class HoneyDaemon implements vs.Disposable {
 
     constructor() {
         this.channel = getOutputChannel("Honey Daemon")
+        fixPath()
     }
 
     public async start(): Promise<boolean> {
@@ -32,7 +34,7 @@ export class HoneyDaemon implements vs.Disposable {
             }
         }
 
-        const process = child_process.spawn("dart", ['pub', 'global', 'run', 'honey_cli:honey', 'daemon'], { shell: true })
+        const process = child_process.spawn("flutter", ['pub', 'global', 'run', 'honey_cli:honey', 'daemon'], { shell: true })
         this.channel.appendLine(`Starting daemon process ${process.pid}`)
         runProcessInOutputChannel(process, this.channel)
         const stdout = createInterface(process.stdout!)
@@ -50,11 +52,11 @@ export class HoneyDaemon implements vs.Disposable {
     }
 
     private async prepare(): Promise<boolean> {
-        const dart = child_process.spawn("dart", ["--version"], { shell: true })
-        runProcessInOutputChannel(dart, this.channel)
-        const dartExists = (await waitUntilExit(dart)) == 0
-        if (!dartExists) {
-            vs.window.showWarningMessage("Dart not found in PATH. Please install it and restart VSCode.", "Show Log").then((action) => {
+        const flutter = child_process.spawn("flutter", ["--version"], { shell: true })
+        runProcessInOutputChannel(flutter, this.channel)
+        const flutterExists = (await waitUntilExit(flutter)) == 0
+        if (!flutterExists) {
+            vs.window.showWarningMessage("Flutter not found in PATH. Please install it and restart VSCode.", "Show Log").then((action) => {
                 if (action == "Show Log") {
                     this.channel.show()
                 }
@@ -75,7 +77,7 @@ export class HoneyDaemon implements vs.Disposable {
             installArgs.push("honey_cli")
         }
         installArgs.push("--overwrite")
-        const installHoneyDaemon = child_process.spawn("dart", installArgs, { shell: true });
+        const installHoneyDaemon = child_process.spawn("flutter", installArgs, { shell: true });
         runProcessInOutputChannel(installHoneyDaemon, this.channel)
         const daemonActivated = (await waitUntilExit(installHoneyDaemon)) == 0
         if (!daemonActivated) {

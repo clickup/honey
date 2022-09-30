@@ -3,7 +3,7 @@
     "displayName": "Honey",
     "description": "Visual Studio Code Extension for the Honey test framwork.",
     "publisher": "honey",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "author": {
         "name": "Simon Leier"
     },
@@ -128,5 +128,8 @@
         "vscode-debugadapter": "^1.50.0",
         "webpack": "^5.52.1",
         "webpack-cli": "^4.9.1"
+    },
+    "dependencies": {
+        "fix-path": "^4.0.0"
     }
 }
