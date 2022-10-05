@@ -22,13 +22,26 @@ actionStatement:
     | 'set' variable = ID ('to' | 'as') expression               # actionSetVariable
     | ('put' | 'store') expression ('in' | 'into') variable = ID # actionSetVariable
     | 'wait' 'for'? expression                                   # actionWait
-    | ('print' | 'output' | 'message') expression                # actionPrint;
+    | ('print' | 'output' | 'message') expression                # actionPrint
+    | swipeType 'on'? target = expression (
+        ('at' | 'with'? 'offset') offset = expression
+    )? # actionSwipe
+    | swipeType ('on'? target = expression)? (
+        'at'
+        | 'with'? 'offset'
+    ) offset = expression                                        # actionSwipe;
 
 clickType:
     'left'? click    # clickTypeSingle
     | 'double' click # clickTypeDouble
     | 'long' click   # clickTypeLong
     | 'right' click  # clickTypeRight;
+
+swipeType: 
+    swipe 'left'?    # swipeTypeLeft
+    |  swipe 'right' # swipeTypeRight
+    |  swipe 'up'    # swipeTypeUp
+    |  swipe 'down'  # swipeTypeDown;
 
 expression:
     '(' expression ')'                     # expressionExpression
@@ -237,6 +250,8 @@ item: 'item' | 'items';
 of: 'of' | 'from' | 'in';
 
 click: 'click' | 'tap' | 'press' | 'push' | 'hit' | 'slam';
+
+swipe: 'swipe' | 'slide' | 'scroll';
 
 isAre: 'is' | 'are' | 'does';
 isAreNot:

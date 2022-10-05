@@ -6,6 +6,8 @@ variables:
   verifyAction: verify(\s+that)?|see|look\s+at
   clickActionType: left|double|long|right
   clickAction: (($clickActionType)\s+)?(click|tap|press|push|hit|slam)
+  swipeActionType: left|up|down|right
+  swipeAction: (($swipeActionType))?(swipe)
   enterAction: enter|type
   setAction: set|put|store
   printAction: print|output|message

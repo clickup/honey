@@ -20,6 +20,7 @@ class FunctionParams {
   }
 
   Future<Expression> getAndEval(HoneyContext context, int index) {
+    print('$index ${get(index).value ?? ''}');
     return context.eval(get(index));
   }
 }

@@ -11,6 +11,7 @@ import 'widget_type_visitor.dart';
 import 'widget_visitor.dart';
 
 final clickTypeVisitor = ClickTypeVisitor();
+final swipeTypeVisitor = SwipeTypeVisitor();
 final expressionVisitor = ExpressionVisitor();
 final widgetVisitor = WidgetVisitor();
 final widgetTypeVisitor = WidgetTypeVisitor();

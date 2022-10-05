@@ -14,6 +14,7 @@ abstract class ActionFunctions {
     'enter': enter,
     'wait': wait,
     'print': print,
+    'swipe': swipe,
   };
 
   static Future<Expression> click(
@@ -76,6 +77,26 @@ abstract class ActionFunctions {
     final value = await params.getAndEval(ctx, 0);
     final message = value.value ?? '';
     ctx.message = message;
+    return ValueExp.empty();
+  }
+
+  static Future<Expression> swipe(
+      HoneyContext ctx, FunctionParams params) async {
+    final type = await params.getAndEval(ctx, 0);
+    final target = await params.getAndEval(ctx, 1);
+    final offsetExp = await params.getAndEval(ctx, 2);
+
+    final targetWidget = target.widgetExp;
+    Offset? offset;
+    if (offsetExp is ValueExp && offsetExp.isNotEmpty) {
+      offset = offsetExp.asOffset;
+    }
+
+    ctx.swipe(
+      widget: targetWidget,
+      offset: offset,
+      type: type.value != null ? SwipeType.from(type.value!) : SwipeType.Left,
+    );
     return ValueExp.empty();
   }
 }

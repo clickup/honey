@@ -112,6 +112,18 @@ class Builtin {
     );
   }
 
+  static FunctionExp swipe(
+      String type, Expression? target, Expression? offset) {
+    return FunctionExp(
+      "swipe",
+      [
+        ValueExp(type),
+        target.nullable,
+        offset.nullable,
+      ],
+    );
+  }
+
   static FunctionExp verify(Expression expression) {
     return FunctionExp("verify", [expression]);
   }
