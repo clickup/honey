@@ -85,6 +85,7 @@ abstract class ActionFunctions {
     final type = await params.getAndEval(ctx, 0);
     final target = await params.getAndEval(ctx, 1);
     final offsetExp = await params.getAndEval(ctx, 2);
+    final pixelsExp = await params.getAndEval(ctx, 3);
 
     final targetWidget = target.widgetExp;
     Offset? offset;
@@ -92,10 +93,16 @@ abstract class ActionFunctions {
       offset = offsetExp.asOffset;
     }
 
+    var pixels = 0.0;
+    if (pixelsExp is ValueExp && pixelsExp.isNotEmpty) {
+      pixels = pixelsExp.asDouble;
+    }
+
     ctx.swipe(
       widget: targetWidget,
       offset: offset,
       type: type.value != null ? SwipeType.from(type.value!) : SwipeType.Left,
+      by: pixels,
     );
     return ValueExp.empty();
   }

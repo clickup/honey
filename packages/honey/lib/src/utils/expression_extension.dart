@@ -15,6 +15,10 @@ extension ExpressionExt on Expression {
     return Offset(x.toDouble(), y.toDouble());
   }
 
+  double get asDouble {
+    return asNum.toDouble();
+  }
+
   WidgetExp? get widgetExp {
     if (this is WidgetExp) {
       return this as WidgetExp;

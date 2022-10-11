@@ -25,11 +25,10 @@ actionStatement:
     | ('print' | 'output' | 'message') expression                # actionPrint
     | swipeType 'on'? target = expression (
         ('at' | 'with'? 'offset') offset = expression
-    )? # actionSwipe
+    )? ('by')? pixels = expression  # actionSwipe
     | swipeType ('on'? target = expression)? (
         'at'
-        | 'with'? 'offset'
-    ) offset = expression                                        # actionSwipe;
+        | 'with'? 'offset') offset = expression ('by') pixels = expression         # actionSwipe;
 
 clickType:
     'left'? click    # clickTypeSingle

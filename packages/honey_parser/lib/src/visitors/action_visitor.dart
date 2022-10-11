@@ -35,7 +35,8 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
     final target = ctx.target?.accept(expressionVisitor);
     final widgets = target != null ? Builtin.widgets(target) : null;
     final offset = ctx.offset?.accept(expressionVisitor);
-    return Builtin.swipe(type, widgets, offset);
+    final pixels = ctx.pixels?.accept(expressionVisitor);
+    return Builtin.swipe(type, widgets, offset, pixels);
   }
 
   @override

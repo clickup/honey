@@ -35,6 +35,8 @@ abstract class HoneyContext {
 
   void dispatchPointerEvent(PointerEvent e);
 
+  void dispatchSemanticAction(Offset offset, SemanticsAction action);
+
   Future delay(Duration duration);
 
   Future click({
@@ -61,6 +63,7 @@ abstract class HoneyContext {
     WidgetExp? widget,
     Offset? offset,
     SwipeType type = SwipeType.Left,
+    double by = 0.0,
   }) async {
     //TODO move it to SwipeType
     int dx() {
@@ -93,20 +96,28 @@ abstract class HoneyContext {
       }
       offset = rect.shift(offset).center;
     }
-    final downEvent = PointerDownEvent(position: offset ?? rect.center);
-    dispatchPointerEvent(downEvent);
-    final move1Event = PointerMoveEvent(
-      position: offset ?? rect.center,
+
+    offset ??= rect.center;
+    var delta = Offset(
+      dx() * (by != 0.0 ? by : rect.width),
+      dy() * (by != 0.0 ? by : rect.height),
+    );
+    dispatchPointerEvent(PointerDownEvent(position: offset));
+    dispatchPointerEvent(PointerMoveEvent(
+      position: offset,
       delta: Offset(0, 0),
-    );
-    dispatchPointerEvent(move1Event);
-    final moveEvent = PointerMoveEvent(
-      position: offset ?? rect.center,
-      delta: Offset(200.0 * dx(), 200.0 * dy()),
-    );
-    dispatchPointerEvent(moveEvent);
-    final upEvent = PointerUpEvent();
-    dispatchPointerEvent(upEvent);
+    ));
+    offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
+    dispatchPointerEvent(PointerMoveEvent(
+      position: offset,
+      delta: delta,
+    ));
+    offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
+    dispatchPointerEvent(PointerMoveEvent(
+      position: offset,
+      delta: delta,
+    ));
+    dispatchPointerEvent(PointerUpEvent());
   }
 
   Future<Expression> eval(Expression expression);

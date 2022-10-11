@@ -72,6 +72,11 @@ class RuntimeHoneyContext with HoneyContext {
     WidgetsBinding.instance.handlePointerEvent(e);
   }
 
+  void dispatchSemanticAction(Offset position, SemanticsAction action) {
+    HoneyBinding.instance.pipelineOwner.semanticsOwner!
+        .performActionAt(position, action);
+  }
+
   Future delay(Duration duration) async {
     final s = Stopwatch()..start();
     while (true) {

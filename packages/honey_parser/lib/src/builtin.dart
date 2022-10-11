@@ -113,13 +113,18 @@ class Builtin {
   }
 
   static FunctionExp swipe(
-      String type, Expression? target, Expression? offset) {
+    String type,
+    Expression? target,
+    Expression? offset,
+    Expression? pixels,
+  ) {
     return FunctionExp(
       "swipe",
       [
         ValueExp(type),
         target.nullable,
         offset.nullable,
+        pixels.nullable,
       ],
     );
   }
