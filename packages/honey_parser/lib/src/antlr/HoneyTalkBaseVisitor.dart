@@ -59,6 +59,10 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
+  T? visitActionSwipe(ActionSwipeContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
   T? visitClickTypeSingle(ClickTypeSingleContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
@@ -72,6 +76,22 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// [visitChildren] on [ctx].
   @override
   T? visitClickTypeRight(ClickTypeRightContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitSwipeTypeLeft(SwipeTypeLeftContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitSwipeTypeRight(SwipeTypeRightContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitSwipeTypeUp(SwipeTypeUpContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitSwipeTypeDown(SwipeTypeDownContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
@@ -412,6 +432,10 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// [visitChildren] on [ctx].
   @override
   T? visitClick(ClickContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitSwipe(SwipeContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override

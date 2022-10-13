@@ -74,6 +74,12 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitActionPrint(ActionPrintContext ctx);
 
+  /// Visit a parse tree produced by the {@code actionSwipe}
+  /// labeled alternative in {@link HoneyTalkParser#actionStatement}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitActionSwipe(ActionSwipeContext ctx);
+
   /// Visit a parse tree produced by the {@code clickTypeSingle}
   /// labeled alternative in {@link HoneyTalkParser#clickType}.
   /// [ctx] the parse tree.
@@ -97,6 +103,30 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitClickTypeRight(ClickTypeRightContext ctx);
+
+  /// Visit a parse tree produced by the {@code swipeTypeLeft}
+  /// labeled alternative in {@link HoneyTalkParser#swipeType}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitSwipeTypeLeft(SwipeTypeLeftContext ctx);
+
+  /// Visit a parse tree produced by the {@code swipeTypeRight}
+  /// labeled alternative in {@link HoneyTalkParser#swipeType}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitSwipeTypeRight(SwipeTypeRightContext ctx);
+
+  /// Visit a parse tree produced by the {@code swipeTypeUp}
+  /// labeled alternative in {@link HoneyTalkParser#swipeType}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitSwipeTypeUp(SwipeTypeUpContext ctx);
+
+  /// Visit a parse tree produced by the {@code swipeTypeDown}
+  /// labeled alternative in {@link HoneyTalkParser#swipeType}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitSwipeTypeDown(SwipeTypeDownContext ctx);
 
   /// Visit a parse tree produced by the {@code expressionContains}
   /// labeled alternative in {@link HoneyTalkParser#expression}.
@@ -594,6 +624,11 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitClick(ClickContext ctx);
+
+  /// Visit a parse tree produced by [HoneyTalkParser.swipe].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitSwipe(SwipeContext ctx);
 
   /// Visit a parse tree produced by [HoneyTalkParser.isAre].
   /// [ctx] the parse tree.

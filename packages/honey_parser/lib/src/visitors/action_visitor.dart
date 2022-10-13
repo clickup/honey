@@ -30,6 +30,16 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
   }
 
   @override
+  FunctionExp? visitActionSwipe(ActionSwipeContext ctx) {
+    final type = ctx.swipeType()!.accept(swipeTypeVisitor)!;
+    final target = ctx.target?.accept(expressionVisitor);
+    final widgets = target != null ? Builtin.widgets(target) : null;
+    final offset = ctx.offset?.accept(expressionVisitor);
+    final pixels = ctx.pixels?.accept(expressionVisitor);
+    return Builtin.swipe(type, widgets, offset, pixels);
+  }
+
+  @override
   FunctionExp visitActionEnter(ActionEnterContext ctx) {
     final value = ctx.value!.accept(expressionVisitor)!;
     return Builtin.enter(value);
@@ -67,4 +77,15 @@ class ClickTypeVisitor extends HoneyTalkBaseVisitor<String> {
 
   @override
   String visitClickTypeRight(ClickTypeRightContext ctx) => 'right';
+}
+
+class SwipeTypeVisitor extends HoneyTalkBaseVisitor<String> {
+  @override
+  String visitSwipeTypeLeft(SwipeTypeLeftContext ctx) => 'left';
+  @override
+  String visitSwipeTypeRight(SwipeTypeRightContext ctx) => 'right';
+  @override
+  String visitSwipeTypeUp(SwipeTypeUpContext ctx) => 'up';
+  @override
+  String visitSwipeTypeDown(SwipeTypeDownContext ctx) => 'down';
 }

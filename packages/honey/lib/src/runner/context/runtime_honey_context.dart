@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:honey/src/binding/honey_binding.dart';
@@ -67,6 +70,11 @@ class RuntimeHoneyContext with HoneyContext {
 
   void dispatchPointerEvent(PointerEvent e) {
     WidgetsBinding.instance.handlePointerEvent(e);
+  }
+
+  void dispatchSemanticAction(Offset position, SemanticsAction action) {
+    HoneyBinding.instance.pipelineOwner.semanticsOwner!
+        .performActionAt(position, action);
   }
 
   Future delay(Duration duration) async {

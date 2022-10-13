@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:honey/honey.dart';
-import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/widget_not_found_error.dart';
+import 'package:honey/src/runner/types/swipe_type.dart';
 import 'package:honey_core/honey_core.dart';
 import 'package:honey/src/utils/expression_extension.dart';
 
@@ -14,6 +14,7 @@ abstract class ActionFunctions {
     'enter': enter,
     'wait': wait,
     'print': print,
+    'swipe': swipe,
   };
 
   static Future<Expression> click(
@@ -76,6 +77,33 @@ abstract class ActionFunctions {
     final value = await params.getAndEval(ctx, 0);
     final message = value.value ?? '';
     ctx.message = message;
+    return ValueExp.empty();
+  }
+
+  static Future<Expression> swipe(
+      HoneyContext ctx, FunctionParams params) async {
+    final type = await params.getAndEval(ctx, 0);
+    final target = await params.getAndEval(ctx, 1);
+    final offsetExp = await params.getAndEval(ctx, 2);
+    final pixelsExp = await params.getAndEval(ctx, 3);
+
+    final targetWidget = target.widgetExp;
+    Offset? offset;
+    if (offsetExp is ValueExp && offsetExp.isNotEmpty) {
+      offset = offsetExp.asOffset;
+    }
+
+    var pixels = 0.0;
+    if (pixelsExp is ValueExp && pixelsExp.isNotEmpty) {
+      pixels = pixelsExp.asDouble;
+    }
+
+    ctx.swipe(
+      widget: targetWidget,
+      offset: offset,
+      type: type.value != null ? SwipeType.from(type.value!) : SwipeType.Left,
+      by: pixels,
+    );
     return ValueExp.empty();
   }
 }

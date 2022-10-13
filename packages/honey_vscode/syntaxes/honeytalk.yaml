@@ -2,10 +2,13 @@ name: HoneyTalk
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 scopeName: source.ht
 variables:
+  by: by
   maybe: maybe|try(\s*to)?|optionally|optional
   verifyAction: verify(\s+that)?|see|look\s+at
   clickActionType: left|double|long|right
   clickAction: (($clickActionType)\s+)?(click|tap|press|push|hit|slam)
+  swipeActionType: left|up|down|right
+  swipeAction: (swipe)(($swipeActionType))?
   enterAction: enter|type
   setAction: set|put|store
   printAction: print|output|message
