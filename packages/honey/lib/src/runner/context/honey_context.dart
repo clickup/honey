@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:honey/src/models/widget_expression.dart';
+import 'package:honey/src/runner/types/click_type.dart';
+import 'package:honey/src/runner/types/swipe_type.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
 import 'package:honey_core/honey_core.dart';
 
@@ -58,37 +59,12 @@ abstract class HoneyContext {
     dispatchPointerEvent(upEvent);
   }
 
-  //TODO: move it to separate class / mixin / extension.
   Future swipe({
     WidgetExp? widget,
     Offset? offset,
     SwipeType type = SwipeType.Left,
     double by = 0.0,
   }) async {
-    //TODO move it to SwipeType
-    int dx() {
-      switch (type) {
-        case SwipeType.Left:
-          return -1;
-        case SwipeType.Right:
-          return 1;
-        default:
-          return 0;
-      }
-    }
-
-//TODO move it to SwipeType
-    int dy() {
-      switch (type) {
-        case SwipeType.Up:
-          return -1;
-        case SwipeType.Down:
-          return 1;
-        default:
-          return 0;
-      }
-    }
-
     final rect = widget?.rect ?? screenRect;
     if (offset != null) {
       if (offset.dx <= 1 && offset.dy <= 1) {
@@ -99,8 +75,8 @@ abstract class HoneyContext {
 
     offset ??= rect.center;
     var delta = Offset(
-      dx() * (by != 0.0 ? by : rect.width),
-      dy() * (by != 0.0 ? by : rect.height),
+      type.xValue * (by != 0.0 ? by : rect.width),
+      type.yValue * (by != 0.0 ? by : rect.height),
     );
     dispatchPointerEvent(PointerDownEvent(position: offset));
     dispatchPointerEvent(PointerMoveEvent(
@@ -121,19 +97,4 @@ abstract class HoneyContext {
   }
 
   Future<Expression> eval(Expression expression);
-}
-
-enum ClickType { Single, Double, Long, Right }
-
-enum SwipeType {
-  Left('left'),
-  Up('up'),
-  Down('down'),
-  Right('right');
-
-  final String label;
-  const SwipeType(this.label);
-  factory SwipeType.from(String label) {
-    return SwipeType.values.firstWhere((e) => e.label == label);
-  }
 }
