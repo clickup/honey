@@ -67,6 +67,7 @@ class SemanticsPopup extends StatelessWidget {
                 color: Colors.yellow[500],
                 borderRadius: BorderRadius.circular(12),
               ),
+              margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(8),
               child: DefaultTextStyle(
                 style: TextStyle(color: Colors.grey[700]),
@@ -125,7 +126,7 @@ class _Property extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          Text(value),
+          Flexible(child: Text(value)),
         ],
       ),
     );

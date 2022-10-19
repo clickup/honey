@@ -30,7 +30,7 @@ class HoneyDebug {
   late final DebugConnection _debugConnection;
 
   TestRunner? _testRunner;
-  var _overlayEnabled = false;
+  var _overlayEnabled = true;
   var _testRunning = false;
   var _recording = false;
 

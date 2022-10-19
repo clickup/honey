@@ -37,33 +37,29 @@ class SemanticsNodePainter extends StatelessWidget {
       },
     );
 
+    final children = <SemanticsNode>[];
     if (!node.mergeAllDescendantsIntoThisNode) {
-      final children = <SemanticsNode>[];
       node.visitChildren((node) {
         if (node.shouldBeConsidered) {
           children.add(node);
         }
         return true;
       });
-      if (children.length > 0) {
-        return Positioned.fromRect(
-          rect: data.transformedRect,
-          child: Stack(
-            children: [
-              dataPainter,
-              for (var child in children)
-                SemanticsNodePainter(
-                  node: child,
-                  onSelect: onSelect,
-                ),
-            ],
-          ),
-        );
-      }
     }
-    return Positioned.fromRect(
-      rect: data.transformedRect,
-      child: dataPainter,
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fromRect(
+          rect: node.globalRect,
+          child: dataPainter,
+        ),
+        for (var child in children)
+          SemanticsNodePainter(
+            node: child,
+            onSelect: onSelect,
+          ),
+      ],
     );
   }
 }

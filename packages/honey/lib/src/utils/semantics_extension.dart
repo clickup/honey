@@ -26,11 +26,10 @@ extension SemanticsNodeX on SemanticsNode {
     Rect paintBounds = rect;
     SemanticsNode? current = this;
     while (current != null) {
-      if (current.transform != null)
-        paintBounds = MatrixUtils.transformRect(
-          current.transform!,
-          paintBounds,
-        );
+      final transform = current.transform;
+      if (transform != null) {
+        paintBounds = MatrixUtils.transformRect(transform, paintBounds);
+      }
       current = current.parent;
     }
     final devicePixelRatio = WidgetsBinding.instance.window.devicePixelRatio;
