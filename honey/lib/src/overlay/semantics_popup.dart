@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/models/expression/widget_expression.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
 
@@ -44,9 +45,9 @@ class SemanticsPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = node.toExp();
-    final attrs = WidgetExp.semanticsAttrs
+    final attrs = _semanticsAttrs
         .map((e) {
-          final result = widget.getProperty(e);
+          final result = widget.getProperty(e.name);
           if ((result?.isBool ?? false) && result!.asBool) {
             return e;
           }
@@ -132,3 +133,32 @@ class _Property extends StatelessWidget {
     );
   }
 }
+
+const _semanticsAttrs = [
+  Property.widget,
+  Property.button,
+  Property.link,
+  Property.textfield,
+  Property.image,
+  Property.slider,
+  Property.checkable,
+  Property.checkbox,
+  Property.toggleable,
+  Property.sswitch,
+  Property.header,
+  Property.clickable,
+  Property.longClickable,
+  Property.scrollable,
+  Property.checked,
+  Property.unchecked,
+  Property.toggled,
+  Property.enableable,
+  Property.enabled,
+  Property.disabled,
+  Property.focusable,
+  Property.focused,
+  Property.multiline,
+  Property.selected,
+  Property.obscured,
+  Property.readonly,
+];

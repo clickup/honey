@@ -1,5 +1,6 @@
 part of 'expression.dart';
 
+@immutable
 class ValueExp extends Expression implements Comparable<Expression> {
   ValueExp(
     dynamic value, {
@@ -50,5 +51,19 @@ class ValueExp extends Expression implements Comparable<Expression> {
       }
     }
     return -2;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is ValueExp &&
+      value == other.value &&
+      regexFlags == other.regexFlags;
+
+  @override
+  int get hashCode => Object.hash(value, regexFlags);
+
+  @override
+  String toString() {
+    return 'ValueExp{value: $value, regexFlags: $regexFlags}';
   }
 }

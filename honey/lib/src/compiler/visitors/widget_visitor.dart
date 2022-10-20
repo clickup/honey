@@ -4,6 +4,7 @@ import 'package:honey/src/models/expression/expression.dart';
 
 class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
   final _identVisitor = _WidgetIdentVisitor();
+
   @override
   FunctionExp? visitWidget(WidgetContext ctx) {
     final ident = ctx.widgetIdent()!.accept(_identVisitor)!;
@@ -11,11 +12,16 @@ class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
         .widgetReferences()
         .map((e) => e.accept(referenceVisitor)!.toExp())
         .toList();
-    var filter = ctx.widgetWhere()?.expression()?.accept(expressionVisitor);
-    filter = filter != null
-        ? Builtin.and(ident.attrFilter, filter)
-        : ident.attrFilter;
-    return Builtin.findWidgets(ident.names, references, filter);
+    final filter = ctx.widgetWhere()?.expression()?.accept(expressionVisitor);
+    final allFilters = [
+      if (filter != null) filter,
+      ...ident.attrFilters,
+    ];
+    return FunctionExp(HoneyFunction.widgets, [
+      ListExp(ident.names),
+      ListExp(references),
+      ListExp(allFilters),
+    ]);
   }
 }
 
@@ -32,31 +38,35 @@ class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
       } else {
         return name;
       }
-    }).toList();
+    });
 
-    final type = ctx.widgetType()!.accept(typeVisitor)!;
-    final attrs = ctx.attr.map((e) => e.text!).toList();
-    var attrFilter = Builtin.equal(Builtin.variable(type), ValueExp(true));
-    for (final attr in attrs) {
-      final attrExp = Builtin.equal(Builtin.variable(attr), ValueExp(true));
-      attrFilter = Builtin.and(attrExp, attrFilter);
-    }
-    return _WidgetIdentResult(names, attrFilter);
+    final attrs = [
+      ctx.widgetType()!.accept(widgetTypeVisitor)!,
+      ...ctx.attr.map((e) => e.text!),
+    ];
+    final attrFilters = attrs.map((e) {
+      return FunctionExp(HoneyFunction.equal, [
+        FunctionExp(HoneyFunction.variable, [ValueExp(e)]),
+        ValueExp(true),
+      ]);
+    });
+
+    return _WidgetIdentResult(names.toList(), attrFilters.toList());
   }
 }
 
 class _WidgetIdentResult {
-
-  _WidgetIdentResult(this.names, this.attrFilter);
+  _WidgetIdentResult(this.names, this.attrFilters);
   final List<ValueExp> names;
-  final Expression attrFilter;
+  final List<Expression> attrFilters;
 }
 
 class _WidgetNameModifierVisitor
     extends HoneyTalkBaseVisitor<ValueExp Function(ValueExp)> {
   @override
   ValueExp Function(ValueExp) visitWidgetNameCaseSensitive(
-      WidgetNameCaseSensitiveContext ctx,) {
+    WidgetNameCaseSensitiveContext ctx,
+  ) {
     return (e) {
       if (e.isRegExp) {
         return e;
@@ -68,7 +78,8 @@ class _WidgetNameModifierVisitor
 
   @override
   ValueExp Function(ValueExp) visitWidgetNameCaseInsensitive(
-      WidgetNameCaseInsensitiveContext ctx,) {
+    WidgetNameCaseInsensitiveContext ctx,
+  ) {
     return (e) {
       if (e.isRegExp) {
         return e;
@@ -80,7 +91,8 @@ class _WidgetNameModifierVisitor
 
   @override
   ValueExp Function(ValueExp) visitWidgetNameExactly(
-      WidgetNameExactlyContext ctx,) {
+    WidgetNameExactlyContext ctx,
+  ) {
     return (e) {
       if (e.isRegExp) {
         return e;

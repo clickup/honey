@@ -1,7 +1,10 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/models/expression/expression.dart';
 
+@immutable
 class WidgetExp extends Expression {
   const WidgetExp({
     required this.data,
@@ -103,32 +106,22 @@ class WidgetExp extends Expression {
     }
   }
 
-  static const semanticsAttrs = [
-    'widget',
-    'button',
-    'link',
-    'textfield',
-    'image',
-    'slider',
-    'checkable',
-    'checkbox',
-    'toggleable',
-    'switch',
-    'header',
-    'clickable',
-    'long-clickable',
-    'scrollable',
-    'checked',
-    'unchecked',
-    'toggled',
-    'enableable',
-    'enabled',
-    'disabled',
-    'focusable',
-    'focused',
-    'multiline',
-    'selected',
-    'obscured',
-    'readonly',
-  ];
+  @override
+  bool operator ==(Object other) =>
+      other is WidgetExp &&
+      data == other.data &&
+      rect == other.rect &&
+      const MapEquality<String, dynamic>().equals(properties, other.properties);
+
+  @override
+  int get hashCode => Object.hash(
+        data,
+        rect,
+        const MapEquality<String, dynamic>().hash(properties),
+      );
+
+  @override
+  String toString() {
+    return 'WidgetExp{data: $data, rect: $rect, properties: $properties}';
+  }
 }

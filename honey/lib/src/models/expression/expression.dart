@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:honey/src/models/expression/widget_expression.dart';
 
 part 'function_expression.dart';

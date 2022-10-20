@@ -107,8 +107,8 @@ class _SemanticsWidget extends StatefulWidget {
 }
 
 class _SemanticsWidgetState extends State<_SemanticsWidget> {
-  static const _tagCounter = 0;
-  final _tag = const SemanticsTag('__honey{$_tagCounter++}');
+  static int _tagCounter = 0;
+  final _tag = SemanticsTag('__honey${_tagCounter++}');
 
   @override
   void initState() {

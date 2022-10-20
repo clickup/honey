@@ -31,7 +31,7 @@ actionStatement:
         | 'with'? 'offset') offset = expression ('by') pixels = expression         # actionSwipe;
 
 clickType:
-    'left'? click    # clickTypeSingle
+    ('left' | 'single')? click    # clickTypeSingle
     | 'double' click # clickTypeDouble
     | 'long' click   # clickTypeLong
     | 'right' click  # clickTypeRight;

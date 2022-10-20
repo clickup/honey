@@ -10,11 +10,13 @@ class Statement {
 class ExpressionStatement extends Statement {
   const ExpressionStatement({
     required this.expression,
+    required this.optional,
     required super.source,
     required super.line,
   });
 
   final Expression expression;
+  final bool optional;
 }
 
 class IfStatement extends Statement {
