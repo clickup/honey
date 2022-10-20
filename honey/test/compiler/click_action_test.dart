@@ -12,11 +12,19 @@ void main() {
       );
 
       expectExp('click "myWidget"', result);
+      expectExp('clicking "myWidget"', result);
       expectExp('tap "myWidget"', result);
+      expectExp('tapping "myWidget"', result);
+      expectExp('touch "myWidget"', result);
+      expectExp('touching "myWidget"', result);
       expectExp('push "myWidget"', result);
+      expectExp('pushing "myWidget"', result);
       expectExp('press "myWidget"', result);
+      expectExp('pressing "myWidget"', result);
       expectExp('hit "myWidget"', result);
+      expectExp('hitting "myWidget"', result);
       expectExp('slam "myWidget"', result);
+      expectExp('slamming "myWidget"', result);
     });
 
     test('Left', () {
@@ -69,6 +77,16 @@ void main() {
       expectExp('long click on "myWidget"', result);
       expectExp('long click on the "myWidget"', result);
       expectExp('long click "myWidget"', result);
+    });
+
+    test('Offset', () {
+      final result = func(
+        HoneyFunction.click,
+        [val('single'), val('myWidget'), val('0.5,0.5')],
+      );
+
+      expectExp('click "myWidget" at "0.5,0.5"', result);
+      expectExp('click "myWidget" with offset "0.5,0.5"', result);
     });
   });
 }
