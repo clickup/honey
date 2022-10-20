@@ -89,7 +89,6 @@ class HoneyDaemon {
           errorColumn: result.errorColumn,
         ));
       } catch (e) {
-        print(e);
         results.add(CompiledHoneyTalk(error: 'Internal compiler error'));
       }
     }

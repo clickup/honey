@@ -22,7 +22,7 @@ class TestRunner {
   Stream<TestStep> executeAll() async* {
     final queue = ListQueue.of(statements.reversed);
     var stepIndex = 0;
-    while (queue.isNotEmpty) {
+    while (queue.isNotEmpty && !_canceled) {
       final statement = queue.removeLast();
       final startTime = DateTime.now();
       dynamic result;
