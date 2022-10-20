@@ -2,9 +2,10 @@ grammar HoneyTalk;
 
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
-statement:
-    maybe? actionStatement ('if' expression)? # statementAction
+statement: ifStat                             # statementIf
+    | maybe? actionStatement ('if' expression)? # statementAction
     | maybe? expression                       # statementExpression;
+    
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
@@ -65,6 +66,10 @@ expression:
     | expression (isAre | isAreNot) property  # expressionIsAttr
     | expression 'and' expression             # expressionAnd
     | expression 'or' expression              # expressionOr;
+
+ifStat: IF expression THEN NEWLINE* (actionStatement NEWLINE)* (elseIfStat)? (elseStat)? END_IF;
+elseIfStat: ELSE IF expression THEN NEWLINE* (actionStatement NEWLINE)*;
+elseStat: ELSE NEWLINE* (actionStatement NEWLINE)*;
 
 comparisonOp:
     ('=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
@@ -266,6 +271,11 @@ NUMBER_LITERAL:
     | '.' DIGIT+
     | DIGIT+ '.'
     | DIGIT+ '.' DIGIT+;
+
+IF: 'if';
+ELSE: 'else';
+END_IF: 'endif';
+THEN: 'then';
 
 BOOL_LITERAL: 'true' | 'false';
 

@@ -26,6 +26,34 @@ Map<String, dynamic> _$$ExpressionStatementToJson(
       'type': instance.$type,
     };
 
+_$ConditionStatement _$$ConditionStatementFromJson(Map<String, dynamic> json) =>
+    _$ConditionStatement(
+      sourceInfo:
+          SourceInfo.fromJson(json['sourceInfo'] as Map<String, dynamic>),
+      ifStatement: json['ifStatement'] == null
+          ? null
+          : IfStatement.fromJson(json['ifStatement'] as Map<String, dynamic>),
+      elseIfStatement: json['elseIfStatement'] == null
+          ? null
+          : ElseIfStatement.fromJson(
+              json['elseIfStatement'] as Map<String, dynamic>),
+      elseStatement: json['elseStatement'] == null
+          ? null
+          : ElseStatement.fromJson(
+              json['elseStatement'] as Map<String, dynamic>),
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$ConditionStatementToJson(
+        _$ConditionStatement instance) =>
+    <String, dynamic>{
+      'sourceInfo': instance.sourceInfo.toJson(),
+      'ifStatement': instance.ifStatement?.toJson(),
+      'elseIfStatement': instance.elseIfStatement?.toJson(),
+      'elseStatement': instance.elseStatement?.toJson(),
+      'type': instance.$type,
+    };
+
 _$IfStatement _$$IfStatementFromJson(Map<String, dynamic> json) =>
     _$IfStatement(
       sourceInfo:
@@ -42,6 +70,43 @@ Map<String, dynamic> _$$IfStatementToJson(_$IfStatement instance) =>
     <String, dynamic>{
       'sourceInfo': instance.sourceInfo.toJson(),
       'condition': const ExpConverter().toJson(instance.condition),
+      'statements': instance.statements.map((e) => e.toJson()).toList(),
+      'type': instance.$type,
+    };
+
+_$ElseIfStatement _$$ElseIfStatementFromJson(Map<String, dynamic> json) =>
+    _$ElseIfStatement(
+      sourceInfo:
+          SourceInfo.fromJson(json['sourceInfo'] as Map<String, dynamic>),
+      condition: const ExpConverter()
+          .fromJson(json['condition'] as Map<String, dynamic>),
+      statements: (json['statements'] as List<dynamic>)
+          .map((e) => Statement.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$ElseIfStatementToJson(_$ElseIfStatement instance) =>
+    <String, dynamic>{
+      'sourceInfo': instance.sourceInfo.toJson(),
+      'condition': const ExpConverter().toJson(instance.condition),
+      'statements': instance.statements.map((e) => e.toJson()).toList(),
+      'type': instance.$type,
+    };
+
+_$ElseStatement _$$ElseStatementFromJson(Map<String, dynamic> json) =>
+    _$ElseStatement(
+      sourceInfo:
+          SourceInfo.fromJson(json['sourceInfo'] as Map<String, dynamic>),
+      statements: (json['statements'] as List<dynamic>)
+          .map((e) => Statement.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$ElseStatementToJson(_$ElseStatement instance) =>
+    <String, dynamic>{
+      'sourceInfo': instance.sourceInfo.toJson(),
       'statements': instance.statements.map((e) => e.toJson()).toList(),
       'type': instance.$type,
     };

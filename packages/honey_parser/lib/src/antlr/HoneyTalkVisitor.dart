@@ -15,6 +15,12 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitScript(ScriptContext ctx);
 
+  /// Visit a parse tree produced by the {@code statementIf}
+  /// labeled alternative in {@link HoneyTalkParser#statement}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitStatementIf(StatementIfContext ctx);
+
   /// Visit a parse tree produced by the {@code statementAction}
   /// labeled alternative in {@link HoneyTalkParser#statement}.
   /// [ctx] the parse tree.
@@ -217,6 +223,21 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// [ctx] the parse tree.
   /// Return the visitor result.
   T? visitExpressionMatches(ExpressionMatchesContext ctx);
+
+  /// Visit a parse tree produced by [HoneyTalkParser.ifStat].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitIfStat(IfStatContext ctx);
+
+  /// Visit a parse tree produced by [HoneyTalkParser.elseIfStat].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitElseIfStat(ElseIfStatContext ctx);
+
+  /// Visit a parse tree produced by [HoneyTalkParser.elseStat].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitElseStat(ElseStatContext ctx);
 
   /// Visit a parse tree produced by the {@code comparisonOpEq}
   /// labeled alternative in {@link HoneyTalkParser#comparisonOp}.

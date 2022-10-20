@@ -18,8 +18,14 @@ Statement _$StatementFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
     case 'expression':
       return ExpressionStatement.fromJson(json);
+    case 'condition':
+      return ConditionStatement.fromJson(json);
     case 'if':
       return IfStatement.fromJson(json);
+    case 'elseif':
+      return ElseIfStatement.fromJson(json);
+    case 'else':
+      return ElseStatement.fromJson(json);
     case 'while':
       return WhileStatement.fromJson(json);
 
@@ -37,9 +43,17 @@ mixin _$Statement {
     required TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)
         expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
@@ -50,9 +64,16 @@ mixin _$Statement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -63,9 +84,16 @@ mixin _$Statement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -75,21 +103,30 @@ mixin _$Statement {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
     required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
     required TResult Function(WhileStatement value) sWhile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
     required TResult orElse(),
   }) =>
@@ -249,9 +286,17 @@ class _$ExpressionStatement implements ExpressionStatement {
     required TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)
         expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
@@ -265,9 +310,16 @@ class _$ExpressionStatement implements ExpressionStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -281,9 +333,16 @@ class _$ExpressionStatement implements ExpressionStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -299,7 +358,10 @@ class _$ExpressionStatement implements ExpressionStatement {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
     required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
     required TResult Function(WhileStatement value) sWhile,
   }) {
     return expression(this);
@@ -309,7 +371,10 @@ class _$ExpressionStatement implements ExpressionStatement {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
   }) {
     return expression?.call(this);
@@ -319,7 +384,10 @@ class _$ExpressionStatement implements ExpressionStatement {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
     required TResult orElse(),
   }) {
@@ -355,6 +423,272 @@ abstract class ExpressionStatement implements Statement {
   @override
   @JsonKey(ignore: true)
   _$$ExpressionStatementCopyWith<_$ExpressionStatement> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ConditionStatementCopyWith<$Res>
+    implements $StatementCopyWith<$Res> {
+  factory _$$ConditionStatementCopyWith(_$ConditionStatement value,
+          $Res Function(_$ConditionStatement) then) =
+      __$$ConditionStatementCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {SourceInfo sourceInfo,
+      IfStatement? ifStatement,
+      ElseIfStatement? elseIfStatement,
+      ElseStatement? elseStatement});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
+}
+
+/// @nodoc
+class __$$ConditionStatementCopyWithImpl<$Res>
+    extends _$StatementCopyWithImpl<$Res>
+    implements _$$ConditionStatementCopyWith<$Res> {
+  __$$ConditionStatementCopyWithImpl(
+      _$ConditionStatement _value, $Res Function(_$ConditionStatement) _then)
+      : super(_value, (v) => _then(v as _$ConditionStatement));
+
+  @override
+  _$ConditionStatement get _value => super._value as _$ConditionStatement;
+
+  @override
+  $Res call({
+    Object? sourceInfo = freezed,
+    Object? ifStatement = freezed,
+    Object? elseIfStatement = freezed,
+    Object? elseStatement = freezed,
+  }) {
+    return _then(_$ConditionStatement(
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
+      ifStatement: ifStatement == freezed
+          ? _value.ifStatement
+          : ifStatement // ignore: cast_nullable_to_non_nullable
+              as IfStatement?,
+      elseIfStatement: elseIfStatement == freezed
+          ? _value.elseIfStatement
+          : elseIfStatement // ignore: cast_nullable_to_non_nullable
+              as ElseIfStatement?,
+      elseStatement: elseStatement == freezed
+          ? _value.elseStatement
+          : elseStatement // ignore: cast_nullable_to_non_nullable
+              as ElseStatement?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$ConditionStatement implements ConditionStatement {
+  const _$ConditionStatement(
+      {required this.sourceInfo,
+      this.ifStatement,
+      this.elseIfStatement,
+      this.elseStatement,
+      final String? $type})
+      : $type = $type ?? 'condition';
+
+  factory _$ConditionStatement.fromJson(Map<String, dynamic> json) =>
+      _$$ConditionStatementFromJson(json);
+
+  @override
+  final SourceInfo sourceInfo;
+  @override
+  final IfStatement? ifStatement;
+  @override
+  final ElseIfStatement? elseIfStatement;
+  @override
+  final ElseStatement? elseStatement;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Statement.sCondition(sourceInfo: $sourceInfo, ifStatement: $ifStatement, elseIfStatement: $elseIfStatement, elseStatement: $elseStatement)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ConditionStatement &&
+            const DeepCollectionEquality()
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality()
+                .equals(other.ifStatement, ifStatement) &&
+            const DeepCollectionEquality()
+                .equals(other.elseIfStatement, elseIfStatement) &&
+            const DeepCollectionEquality()
+                .equals(other.elseStatement, elseStatement));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(ifStatement),
+      const DeepCollectionEquality().hash(elseIfStatement),
+      const DeepCollectionEquality().hash(elseStatement));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$ConditionStatementCopyWith<_$ConditionStatement> get copyWith =>
+      __$$ConditionStatementCopyWithImpl<_$ConditionStatement>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
+        expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sWhile,
+  }) {
+    return sCondition(sourceInfo, ifStatement, elseIfStatement, elseStatement);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+  }) {
+    return sCondition?.call(
+        sourceInfo, ifStatement, elseIfStatement, elseStatement);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+    required TResult orElse(),
+  }) {
+    if (sCondition != null) {
+      return sCondition(
+          sourceInfo, ifStatement, elseIfStatement, elseStatement);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
+    required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
+    required TResult Function(WhileStatement value) sWhile,
+  }) {
+    return sCondition(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+  }) {
+    return sCondition?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+    required TResult orElse(),
+  }) {
+    if (sCondition != null) {
+      return sCondition(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ConditionStatementToJson(
+      this,
+    );
+  }
+}
+
+abstract class ConditionStatement implements Statement {
+  const factory ConditionStatement(
+      {required final SourceInfo sourceInfo,
+      final IfStatement? ifStatement,
+      final ElseIfStatement? elseIfStatement,
+      final ElseStatement? elseStatement}) = _$ConditionStatement;
+
+  factory ConditionStatement.fromJson(Map<String, dynamic> json) =
+      _$ConditionStatement.fromJson;
+
+  @override
+  SourceInfo get sourceInfo;
+  IfStatement? get ifStatement;
+  ElseIfStatement? get elseIfStatement;
+  ElseStatement? get elseStatement;
+  @override
+  @JsonKey(ignore: true)
+  _$$ConditionStatementCopyWith<_$ConditionStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -473,9 +807,17 @@ class _$IfStatement implements IfStatement {
     required TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)
         expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
@@ -489,9 +831,16 @@ class _$IfStatement implements IfStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -505,9 +854,16 @@ class _$IfStatement implements IfStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -523,7 +879,10 @@ class _$IfStatement implements IfStatement {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
     required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
     required TResult Function(WhileStatement value) sWhile,
   }) {
     return sIf(this);
@@ -533,7 +892,10 @@ class _$IfStatement implements IfStatement {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
   }) {
     return sIf?.call(this);
@@ -543,7 +905,10 @@ class _$IfStatement implements IfStatement {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
     required TResult orElse(),
   }) {
@@ -578,6 +943,498 @@ abstract class IfStatement implements Statement {
   @override
   @JsonKey(ignore: true)
   _$$IfStatementCopyWith<_$IfStatement> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ElseIfStatementCopyWith<$Res>
+    implements $StatementCopyWith<$Res> {
+  factory _$$ElseIfStatementCopyWith(
+          _$ElseIfStatement value, $Res Function(_$ElseIfStatement) then) =
+      __$$ElseIfStatementCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {SourceInfo sourceInfo,
+      @ExpConverter() Expression condition,
+      List<Statement> statements});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
+}
+
+/// @nodoc
+class __$$ElseIfStatementCopyWithImpl<$Res>
+    extends _$StatementCopyWithImpl<$Res>
+    implements _$$ElseIfStatementCopyWith<$Res> {
+  __$$ElseIfStatementCopyWithImpl(
+      _$ElseIfStatement _value, $Res Function(_$ElseIfStatement) _then)
+      : super(_value, (v) => _then(v as _$ElseIfStatement));
+
+  @override
+  _$ElseIfStatement get _value => super._value as _$ElseIfStatement;
+
+  @override
+  $Res call({
+    Object? sourceInfo = freezed,
+    Object? condition = freezed,
+    Object? statements = freezed,
+  }) {
+    return _then(_$ElseIfStatement(
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
+      condition: condition == freezed
+          ? _value.condition
+          : condition // ignore: cast_nullable_to_non_nullable
+              as Expression,
+      statements: statements == freezed
+          ? _value._statements
+          : statements // ignore: cast_nullable_to_non_nullable
+              as List<Statement>,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$ElseIfStatement implements ElseIfStatement {
+  const _$ElseIfStatement(
+      {required this.sourceInfo,
+      @ExpConverter() required this.condition,
+      required final List<Statement> statements,
+      final String? $type})
+      : _statements = statements,
+        $type = $type ?? 'elseif';
+
+  factory _$ElseIfStatement.fromJson(Map<String, dynamic> json) =>
+      _$$ElseIfStatementFromJson(json);
+
+  @override
+  final SourceInfo sourceInfo;
+  @override
+  @ExpConverter()
+  final Expression condition;
+  final List<Statement> _statements;
+  @override
+  List<Statement> get statements {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_statements);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Statement.sElseIf(sourceInfo: $sourceInfo, condition: $condition, statements: $statements)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElseIfStatement &&
+            const DeepCollectionEquality()
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality().equals(other.condition, condition) &&
+            const DeepCollectionEquality()
+                .equals(other._statements, _statements));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(condition),
+      const DeepCollectionEquality().hash(_statements));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$ElseIfStatementCopyWith<_$ElseIfStatement> get copyWith =>
+      __$$ElseIfStatementCopyWithImpl<_$ElseIfStatement>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
+        expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sWhile,
+  }) {
+    return sElseIf(sourceInfo, condition, statements);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+  }) {
+    return sElseIf?.call(sourceInfo, condition, statements);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+    required TResult orElse(),
+  }) {
+    if (sElseIf != null) {
+      return sElseIf(sourceInfo, condition, statements);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
+    required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
+    required TResult Function(WhileStatement value) sWhile,
+  }) {
+    return sElseIf(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+  }) {
+    return sElseIf?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+    required TResult orElse(),
+  }) {
+    if (sElseIf != null) {
+      return sElseIf(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElseIfStatementToJson(
+      this,
+    );
+  }
+}
+
+abstract class ElseIfStatement implements Statement {
+  const factory ElseIfStatement(
+      {required final SourceInfo sourceInfo,
+      @ExpConverter() required final Expression condition,
+      required final List<Statement> statements}) = _$ElseIfStatement;
+
+  factory ElseIfStatement.fromJson(Map<String, dynamic> json) =
+      _$ElseIfStatement.fromJson;
+
+  @override
+  SourceInfo get sourceInfo;
+  @ExpConverter()
+  Expression get condition;
+  List<Statement> get statements;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElseIfStatementCopyWith<_$ElseIfStatement> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ElseStatementCopyWith<$Res>
+    implements $StatementCopyWith<$Res> {
+  factory _$$ElseStatementCopyWith(
+          _$ElseStatement value, $Res Function(_$ElseStatement) then) =
+      __$$ElseStatementCopyWithImpl<$Res>;
+  @override
+  $Res call({SourceInfo sourceInfo, List<Statement> statements});
+
+  @override
+  $SourceInfoCopyWith<$Res> get sourceInfo;
+}
+
+/// @nodoc
+class __$$ElseStatementCopyWithImpl<$Res> extends _$StatementCopyWithImpl<$Res>
+    implements _$$ElseStatementCopyWith<$Res> {
+  __$$ElseStatementCopyWithImpl(
+      _$ElseStatement _value, $Res Function(_$ElseStatement) _then)
+      : super(_value, (v) => _then(v as _$ElseStatement));
+
+  @override
+  _$ElseStatement get _value => super._value as _$ElseStatement;
+
+  @override
+  $Res call({
+    Object? sourceInfo = freezed,
+    Object? statements = freezed,
+  }) {
+    return _then(_$ElseStatement(
+      sourceInfo: sourceInfo == freezed
+          ? _value.sourceInfo
+          : sourceInfo // ignore: cast_nullable_to_non_nullable
+              as SourceInfo,
+      statements: statements == freezed
+          ? _value._statements
+          : statements // ignore: cast_nullable_to_non_nullable
+              as List<Statement>,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$ElseStatement implements ElseStatement {
+  const _$ElseStatement(
+      {required this.sourceInfo,
+      required final List<Statement> statements,
+      final String? $type})
+      : _statements = statements,
+        $type = $type ?? 'else';
+
+  factory _$ElseStatement.fromJson(Map<String, dynamic> json) =>
+      _$$ElseStatementFromJson(json);
+
+  @override
+  final SourceInfo sourceInfo;
+  final List<Statement> _statements;
+  @override
+  List<Statement> get statements {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_statements);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Statement.sElse(sourceInfo: $sourceInfo, statements: $statements)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElseStatement &&
+            const DeepCollectionEquality()
+                .equals(other.sourceInfo, sourceInfo) &&
+            const DeepCollectionEquality()
+                .equals(other._statements, _statements));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sourceInfo),
+      const DeepCollectionEquality().hash(_statements));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$ElseStatementCopyWith<_$ElseStatement> get copyWith =>
+      __$$ElseStatementCopyWithImpl<_$ElseStatement>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)
+        expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sWhile,
+  }) {
+    return sElse(sourceInfo, statements);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+  }) {
+    return sElse?.call(sourceInfo, statements);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SourceInfo sourceInfo, bool optional,
+            @ExpConverter() Expression expression)?
+        expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sWhile,
+    required TResult orElse(),
+  }) {
+    if (sElse != null) {
+      return sElse(sourceInfo, statements);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
+    required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
+    required TResult Function(WhileStatement value) sWhile,
+  }) {
+    return sElse(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+  }) {
+    return sElse?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
+    TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
+    TResult Function(WhileStatement value)? sWhile,
+    required TResult orElse(),
+  }) {
+    if (sElse != null) {
+      return sElse(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElseStatementToJson(
+      this,
+    );
+  }
+}
+
+abstract class ElseStatement implements Statement {
+  const factory ElseStatement(
+      {required final SourceInfo sourceInfo,
+      required final List<Statement> statements}) = _$ElseStatement;
+
+  factory ElseStatement.fromJson(Map<String, dynamic> json) =
+      _$ElseStatement.fromJson;
+
+  @override
+  SourceInfo get sourceInfo;
+  List<Statement> get statements;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElseStatementCopyWith<_$ElseStatement> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -696,9 +1553,17 @@ class _$WhileStatement implements WhileStatement {
     required TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)
         expression,
+    required TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)
+        sCondition,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sIf,
+    required TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)
+        sElseIf,
+    required TResult Function(SourceInfo sourceInfo, List<Statement> statements)
+        sElse,
     required TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)
         sWhile,
@@ -712,9 +1577,16 @@ class _$WhileStatement implements WhileStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -728,9 +1600,16 @@ class _$WhileStatement implements WhileStatement {
     TResult Function(SourceInfo sourceInfo, bool optional,
             @ExpConverter() Expression expression)?
         expression,
+    TResult Function(SourceInfo sourceInfo, IfStatement? ifStatement,
+            ElseIfStatement? elseIfStatement, ElseStatement? elseStatement)?
+        sCondition,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sIf,
+    TResult Function(SourceInfo sourceInfo,
+            @ExpConverter() Expression condition, List<Statement> statements)?
+        sElseIf,
+    TResult Function(SourceInfo sourceInfo, List<Statement> statements)? sElse,
     TResult Function(SourceInfo sourceInfo,
             @ExpConverter() Expression condition, List<Statement> statements)?
         sWhile,
@@ -746,7 +1625,10 @@ class _$WhileStatement implements WhileStatement {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ExpressionStatement value) expression,
+    required TResult Function(ConditionStatement value) sCondition,
     required TResult Function(IfStatement value) sIf,
+    required TResult Function(ElseIfStatement value) sElseIf,
+    required TResult Function(ElseStatement value) sElse,
     required TResult Function(WhileStatement value) sWhile,
   }) {
     return sWhile(this);
@@ -756,7 +1638,10 @@ class _$WhileStatement implements WhileStatement {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
   }) {
     return sWhile?.call(this);
@@ -766,7 +1651,10 @@ class _$WhileStatement implements WhileStatement {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ExpressionStatement value)? expression,
+    TResult Function(ConditionStatement value)? sCondition,
     TResult Function(IfStatement value)? sIf,
+    TResult Function(ElseIfStatement value)? sElseIf,
+    TResult Function(ElseStatement value)? sElse,
     TResult Function(WhileStatement value)? sWhile,
     required TResult orElse(),
   }) {

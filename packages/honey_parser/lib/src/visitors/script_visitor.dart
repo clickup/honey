@@ -6,6 +6,16 @@ import 'visitors.dart';
 class ScriptVisitor extends HoneyTalkBaseVisitor<List<Statement>> {
   @override
   List<Statement> visitScript(ScriptContext ctx) {
-    return ctx.statements().map((e) => e.accept(statementVisitor)!).toList();
+    print('starting');
+    try {
+      return ctx.statements().map((e) {
+        print('statement: ${e}');
+        final statement = e.accept(statementVisitor)!;
+        return statement;
+      }).toList();
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 }

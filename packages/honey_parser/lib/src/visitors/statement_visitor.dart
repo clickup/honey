@@ -28,16 +28,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
       optional: ctx.maybe() != null,
       expression: action,
     );
-    if (condition == null) {
-      return statement;
-    } else {
-      final src = "if ${conditionCtx!.source}";
-      return IfStatement(
-        sourceInfo: _getSourceInfo(actionCtx).copyWith(source: src),
-        condition: condition,
-        statements: [statement],
-      );
-    }
+    return statement;
   }
 
   @override
@@ -48,6 +39,97 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
       sourceInfo: _getSourceInfo(ctx),
       optional: ctx.maybe() != null,
       expression: expression,
+    );
+  }
+
+  @override
+  Statement? visitStatementIf(StatementIfContext ctx) {
+    return ConditionStatement(
+      sourceInfo: _getSourceInfo(ctx),
+      ifStatement: _ifStatement(ctx),
+      elseIfStatement: _elseIfStatement(ctx),
+      elseStatement: _elseStatement(ctx),
+    );
+  }
+
+  IfStatement? _ifStatement(StatementIfContext ctx) {
+    if (ctx.ifStat() == null) {
+      return null;
+    }
+
+    final actionCtx = ctx.ifStat()!.actionStatements();
+    final conditionCtx = ctx.ifStat()!.expression();
+    final condition = conditionCtx?.accept(expressionVisitor);
+    var statements = <Statement>[];
+    for (var element in actionCtx) {
+      final e = element.accept(actionVisitor);
+      if (e != null) {
+        statements.add(Statement.expression(
+          sourceInfo: _getSourceInfo(element),
+          optional: false,
+          expression: e,
+        ));
+      }
+    }
+
+    final src = "if ${conditionCtx!.source}";
+    return IfStatement(
+      sourceInfo: _getSourceInfo(ctx).copyWith(source: src),
+      condition: condition!,
+      statements: statements.toList(),
+    );
+  }
+
+  ElseStatement? _elseStatement(StatementIfContext ctx) {
+    if (ctx.ifStat()?.elseStat() == null) {
+      return null;
+    }
+
+    final actionCtx = ctx.ifStat()!.elseStat()!.actionStatements();
+    var statements = <Statement>[];
+    for (var element in actionCtx) {
+      final e = element.accept(actionVisitor);
+      if (e != null) {
+        statements.add(Statement.expression(
+          sourceInfo: _getSourceInfo(element),
+          optional: false,
+          expression: e,
+        ));
+      }
+    }
+
+    final src = "else";
+    return ElseStatement(
+      sourceInfo: _getSourceInfo(ctx).copyWith(source: src),
+      statements: statements.toList(),
+    );
+  }
+
+  ElseIfStatement? _elseIfStatement(StatementIfContext ctx) {
+    if (ctx.ifStat()?.elseIfStat() == null) {
+      return null;
+    }
+
+    final actionCtx = ctx.ifStat()!.elseIfStat()!.actionStatements();
+    final conditionCtx = ctx.ifStat()!.elseIfStat()!.expression();
+    final condition = conditionCtx?.accept(expressionVisitor);
+    var statements = <Statement>[];
+    for (var element in actionCtx) {
+      final e = element.accept(actionVisitor);
+      if (e != null) {
+        statements.add(Statement.expression(
+          sourceInfo: _getSourceInfo(element),
+          optional: false,
+          expression: e,
+        ));
+      }
+    }
+
+    final src = "else if ${conditionCtx!.source}";
+    return ElseIfStatement(
+      sourceInfo: _getSourceInfo(ctx).copyWith(source: src),
+      condition: condition!,
+      statements: statements.toList(),
     );
   }
 }

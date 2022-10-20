@@ -19,6 +19,10 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
+  T? visitStatementIf(StatementIfContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
   T? visitStatementAction(StatementActionContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
@@ -152,6 +156,18 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// [visitChildren] on [ctx].
   @override
   T? visitExpressionMatches(ExpressionMatchesContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitIfStat(IfStatContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitElseIfStat(ElseIfStatContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitElseStat(ElseStatContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override

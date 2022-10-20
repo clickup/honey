@@ -64,8 +64,10 @@ class HoneyDebug {
 
   Stream<TestStep> runTest(List<Statement> statements) async* {
     if (_testRunner != null) return;
-
-    print(statements);
+    print('-------------------');
+    for (var s in statements) {
+      print('run test statement: ${s}');
+    }
     try {
       _setStatus(testRunning: true, overlayEnabled: false, recording: false);
 

@@ -16,12 +16,36 @@ class Statement with _$Statement {
   }) = ExpressionStatement;
 
   @JsonSerializable(explicitToJson: true)
+  @FreezedUnionValue('condition')
+  const factory Statement.sCondition({
+    required SourceInfo sourceInfo,
+    IfStatement? ifStatement,
+    ElseIfStatement? elseIfStatement,
+    ElseStatement? elseStatement,
+  }) = ConditionStatement;
+
+  @JsonSerializable(explicitToJson: true)
   @FreezedUnionValue('if')
   const factory Statement.sIf({
     required SourceInfo sourceInfo,
     @ExpConverter() required Expression condition,
     required List<Statement> statements,
   }) = IfStatement;
+
+  @JsonSerializable(explicitToJson: true)
+  @FreezedUnionValue('elseif')
+  const factory Statement.sElseIf({
+    required SourceInfo sourceInfo,
+    @ExpConverter() required Expression condition,
+    required List<Statement> statements,
+  }) = ElseIfStatement;
+
+  @JsonSerializable(explicitToJson: true)
+  @FreezedUnionValue('else')
+  const factory Statement.sElse({
+    required SourceInfo sourceInfo,
+    required List<Statement> statements,
+  }) = ElseStatement;
 
   @JsonSerializable(explicitToJson: true)
   @FreezedUnionValue('while')

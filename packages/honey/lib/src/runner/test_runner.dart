@@ -22,18 +22,12 @@ class TestRunner {
   Stream<TestStep> executeAll() async* {
     final queue = ListQueue.of(statements.reversed);
     var stepIndex = 0;
-    while (queue.isNotEmpty && !_canceled) {
+    while (queue.isNotEmpty) {
       final statement = queue.removeLast();
       final startTime = DateTime.now();
       dynamic result;
-      if (statement is IfStatement) {
-        result = await runRepeatedly(
-          statement.condition,
-          untilTrue: true,
-        );
-        if (result is Expression && result.asBool) {
-          queue.addAll(statement.statements.reversed);
-        }
+      if (statement is ConditionStatement) {
+        result = await _runCondition(statement, queue);
       } else if (statement is ExpressionStatement) {
         result = await runRepeatedly(
           statement.expression,
@@ -103,5 +97,37 @@ class TestRunner {
 
   void dispose() {
     _fakeInput.dispose();
+  }
+
+  Future<dynamic> _runCondition(
+      ConditionStatement statement, ListQueue<Statement> queue) async {
+    var isConditionMet = false;
+    dynamic result;
+    dynamic conditionalStatement = statement.ifStatement;
+    if (conditionalStatement != null) {
+      result = await runRepeatedly(
+        conditionalStatement.condition,
+        untilTrue: false,
+      );
+      isConditionMet = result is Expression && result.asBool;
+    }
+    if (statement.elseIfStatement != null && !isConditionMet) {
+      conditionalStatement = statement.elseIfStatement;
+      result = await runRepeatedly(
+        conditionalStatement.condition,
+        untilTrue: false,
+      );
+      isConditionMet = result is Expression && result.asBool;
+    }
+    if (statement.elseStatement != null && !isConditionMet) {
+      conditionalStatement = statement.elseStatement;
+      isConditionMet = true;
+    }
+
+    if (isConditionMet) {
+      queue.addAll(conditionalStatement.statements.reversed);
+    }
+
+    return result;
   }
 }
