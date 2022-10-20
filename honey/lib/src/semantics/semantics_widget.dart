@@ -93,22 +93,22 @@ Widget SemanticsWidget({
 }
 
 class _SemanticsWidget extends StatefulWidget {
-  final _SemanticsBuilder builder;
-  final Map<String, dynamic>? properties;
-
   const _SemanticsWidget({
-    Key? key,
+    super.key,
     required this.builder,
     required this.properties,
-  }) : super(key: key);
+  });
+
+  final _SemanticsBuilder builder;
+  final Map<String, dynamic>? properties;
 
   @override
   _SemanticsWidgetState createState() => _SemanticsWidgetState();
 }
 
 class _SemanticsWidgetState extends State<_SemanticsWidget> {
-  static var _tagCounter = 0;
-  final _tag = SemanticsTag('__honey{$_tagCounter++}');
+  static const _tagCounter = 0;
+  final _tag = const SemanticsTag('__honey{$_tagCounter++}');
 
   @override
   void initState() {

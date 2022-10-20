@@ -1,10 +1,8 @@
-import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/compiler/antlr.dart';
-import 'package:honey_core/honey_core.dart';
-import 'package:honey_parser/src/antlr.dart';
-
-import 'direction_visitor.dart';
-import 'visitors.dart';
+import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/consts/direction.dart';
+import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/models/widget_reference.dart';
 
 class WidgetReferenceVisitor extends HoneyTalkBaseVisitor<WidgetReference> {
   @override
@@ -17,15 +15,19 @@ class WidgetReferenceVisitor extends HoneyTalkBaseVisitor<WidgetReference> {
 
 class WidgetReferencePositionVisitor
     extends HoneyTalkBaseVisitor<WidgetReference> {
+  WidgetReferencePositionVisitor(this.widget);
+
   static const ds = 0.1;
   static const dl = 0.3;
 
   final Expression widget;
 
-  WidgetReferencePositionVisitor(this.widget);
-
   WidgetReference _referenceFraction(
-      bool horizontal, double fraction, int index, bool parent) {
+    bool horizontal,
+    double fraction,
+    int index,
+    bool parent,
+  ) {
     if (horizontal) {
       return WidgetReference(
         widget: widget,
@@ -156,10 +158,11 @@ class WidgetReferencePositionVisitor
 
   @override
   WidgetReference visitWidgetReferenceFraction(
-      WidgetReferenceFractionContext ctx) {
+    WidgetReferenceFractionContext ctx,
+  ) {
     final direction = ctx.singleDirection()!.accept(singleDirectionVisitor)!;
-    final fraction = 0.2;
-    final index = 1;
+    const fraction = 0.2;
+    const index = 1;
     final parent = ctx.parent != null;
     switch (direction) {
       case Direction.top:
@@ -175,7 +178,8 @@ class WidgetReferencePositionVisitor
 
   @override
   WidgetReference visitWidgetReferencePercentage(
-      WidgetReferencePercentageContext ctx) {
+    WidgetReferencePercentageContext ctx,
+  ) {
     final direction = ctx.singleDirection()!.accept(singleDirectionVisitor)!;
     final percentage = int.parse(ctx.literal()!.accept(literalVisitor)!.value);
     final parent = ctx.parent != null;
@@ -183,7 +187,11 @@ class WidgetReferencePositionVisitor
       case Direction.top:
       case Direction.bottom:
         return _referenceFraction(
-            false, percentage.toDouble() / 100, 0, parent);
+          false,
+          percentage.toDouble() / 100,
+          0,
+          parent,
+        );
       case Direction.left:
       case Direction.right:
         return _referenceFraction(true, percentage.toDouble() / 100, 0, parent);

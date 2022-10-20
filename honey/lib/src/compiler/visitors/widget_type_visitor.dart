@@ -1,53 +1,49 @@
 import 'package:honey/src/compiler/antlr.dart';
+import 'package:honey/src/consts/property.dart';
 
-class WidgetTypeVisitor extends HoneyTalkBaseVisitor<String> {
+class WidgetTypeVisitor extends HoneyTalkBaseVisitor<Property> {
   @override
-  String visitWidgetTypeWidget(WidgetTypeWidgetContext ctx) {
-    return "widget";
+  Property visitWidgetTypeWidget(WidgetTypeWidgetContext ctx) {
+    return Property.widget;
   }
 
   @override
-  String visitWidgetTypeButton(WidgetTypeButtonContext ctx) {
-    return "button";
+  Property visitWidgetTypeButton(WidgetTypeButtonContext ctx) {
+    return Property.button;
   }
 
   @override
-  String visitWidgetTypeLink(WidgetTypeLinkContext ctx) {
-    return "link";
+  Property visitWidgetTypeLink(WidgetTypeLinkContext ctx) {
+    return Property.link;
   }
 
   @override
-  String visitWidgetTypeTextField(WidgetTypeTextFieldContext ctx) {
-    return "textfield";
+  Property visitWidgetTypeTextField(WidgetTypeTextFieldContext ctx) {
+    return Property.textfield;
   }
 
   @override
-  String visitWidgetTypeImage(WidgetTypeImageContext ctx) {
-    return "image";
+  Property visitWidgetTypeImage(WidgetTypeImageContext ctx) {
+    return Property.image;
   }
 
   @override
-  String visitWidgetTypeSlider(WidgetTypeSliderContext ctx) {
-    return "slider";
+  Property visitWidgetTypeSlider(WidgetTypeSliderContext ctx) {
+    return Property.slider;
   }
 
   @override
-  String visitWidgetTypeCheckBox(WidgetTypeCheckBoxContext ctx) {
-    return "checkbox";
+  Property visitWidgetTypeCheckBox(WidgetTypeCheckBoxContext ctx) {
+    return Property.checkbox;
   }
 
   @override
-  String visitWidgetTypeSwitch(WidgetTypeSwitchContext ctx) {
-    return "switch";
+  Property visitWidgetTypeSwitch(WidgetTypeSwitchContext ctx) {
+    return Property.sswitch;
   }
 
   @override
-  String visitWidgetTypeList(WidgetTypeListContext ctx) {
-    return "list";
-  }
-
-  @override
-  String visitWidgetTypeHeader(WidgetTypeHeaderContext ctx) {
-    return "header";
+  Property visitWidgetTypeHeader(WidgetTypeHeaderContext ctx) {
+    return Property.header;
   }
 }

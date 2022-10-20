@@ -29,7 +29,7 @@ class AppiumClient {
   }
 
   Future<WebDriverResponse> delete(String command,
-      [Map<String, dynamic>? body]) {
+      [Map<String, dynamic>? body,]) {
     return _rawRequest('DELETE', command, body);
   }
 

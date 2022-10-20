@@ -1,7 +1,7 @@
 import 'package:flutter/semantics.dart';
+import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
-import 'context/honey_context.dart';
-import '../models/expression/widget_expression.dart';
 
 List<WidgetExp> findWidgetCandidates(
   HoneyContext context, {
@@ -19,8 +19,11 @@ List<WidgetExp> findWidgetCandidates(
 
       final data = n.getSemanticsData();
       if (names.isNotEmpty) {
-        //name.hasMatch(label) || name.hasMatch(value) || name.hasMatch(hint)
-        final anyNameMatches = names.any((name) => data.matchesName(name));
+        final anyNameMatches = names.any((name) {
+          return name.hasMatch(data.label) ||
+              name.hasMatch(data.value) ||
+              name.hasMatch(data.hint);
+        });
         if (!anyNameMatches) {
           return true;
         }

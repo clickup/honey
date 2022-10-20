@@ -1,15 +1,32 @@
+import 'package:honey/src/models/expression/expression.dart';
+
 class Statement {
-  const Statement({
-    required this.source,
-    required this.startLine,
-    required this.startColumn,
-    required this.endLine,
-    required this.endColumn,
-  });
+  const Statement({required this.source, required this.line});
 
   final String source;
-  final int startLine;
-  final int startColumn;
-  final int endLine;
-  final int endColumn;
+  final int line;
+}
+
+class ExpressionStatement extends Statement {
+  const ExpressionStatement({
+    required this.expression,
+    required super.source,
+    required super.line,
+  });
+
+  final Expression expression;
+}
+
+class IfStatement extends Statement {
+  const IfStatement({
+    required this.condition,
+    required this.thenStatements,
+    required this.elseStatements,
+    required super.source,
+    required super.line,
+  });
+
+  final Expression condition;
+  final List<Statement> thenStatements;
+  final List<Statement> elseStatements;
 }

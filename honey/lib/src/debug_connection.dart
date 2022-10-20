@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:honey/src/compiler/compile.dart';
 import 'package:honey/src/consts/markers.dart';
 import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/models/honey_message.dart';

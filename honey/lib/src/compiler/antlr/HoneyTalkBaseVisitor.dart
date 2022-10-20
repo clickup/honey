@@ -359,10 +359,6 @@ class HoneyTalkBaseVisitor<T> extends ParseTreeVisitor<T> implements HoneyTalkVi
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitWidgetTypeList(WidgetTypeListContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
   T? visitWidgetTypeCheckBox(WidgetTypeCheckBoxContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].

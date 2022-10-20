@@ -1,5 +1,5 @@
-import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/compiler/antlr.dart';
+import 'package:honey/src/consts/property.dart';
 
 class PropertyVisitor extends HoneyTalkBaseVisitor<String> {
   @override

@@ -1,5 +1,5 @@
-import 'package:honey/src/models/expression/expression.dart';
 import 'package:honey/src/compiler/antlr.dart';
+import 'package:honey/src/models/expression/expression.dart';
 
 class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExp> {
   @override
@@ -27,7 +27,8 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExp> {
         return ValueExp(9);
       default:
         throw StateError(
-            'Unrecognized cardinal literal: ${ctx.cardinalValue()}');
+          'Unrecognized cardinal literal: ${ctx.cardinalValue()}',
+        );
     }
   }
 

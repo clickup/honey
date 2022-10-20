@@ -7,12 +7,12 @@ import 'package:honey/src/overlay/semantics_popup.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
 
 class HoneyOverlay extends StatefulWidget {
-  final Widget child;
 
   const HoneyOverlay({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
+  final Widget child;
 
   @override
   _HoneyOverlayState createState() => _HoneyOverlayState();
@@ -22,7 +22,7 @@ class _HoneyOverlayState extends State<HoneyOverlay>
     with SingleTickerProviderStateMixin {
   late final _controller = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: 250),
+    duration: const Duration(milliseconds: 250),
   );
 
   late SemanticsHandle _semanticsHandle;

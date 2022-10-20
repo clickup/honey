@@ -102,8 +102,8 @@ class HoneyBinding extends WidgetsFlutterBinding {
       _setStatus(HoneyStatus.test);
       await restartApp();
       await Future<void>.delayed(const Duration(seconds: 3));
-      _testRunner = TestRunner(statements, customFunctions);
-      yield* _testRunner!.executeAll();
+      //_testRunner = TestRunner(statements, customFunctions);
+      //yield* _testRunner!.executeAll();
     } finally {
       await cancelTests();
     }

@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:honey/src/cli/flutter_tools.dart';
-import 'package:honey/src/const.dart';
+import 'package:honey/src/consts/markers.dart';
 import 'package:honey/src/models/honey_message.dart';
 
 typedef ConnectedDevicesCallback = void Function(List<Device> devices);
@@ -24,23 +24,26 @@ class DeviceConnector {
         _monitoredDevices.containsKey(device);
   }
 
-  Future refresh() async {
+  Future<void> refresh() async {
     final devices = await deviceManager!.refreshAllConnectedDevices();
-    final mobileDevices = devices.where((d) =>
-        d.platformType == PlatformType.android ||
-        d.platformType == PlatformType.ios);
+    final mobileDevices = devices.where(
+      (d) =>
+          d.platformType == PlatformType.android ||
+          d.platformType == PlatformType.ios,
+    );
 
-    for (var device in mobileDevices) {
+    for (final device in mobileDevices) {
       if (!_isDeviceKnown(device)) {
-        _addDevice(device);
+        unawaited(_addDevice(device));
       }
     }
   }
 
-  void _addDevice(Device device) async {
+  Future<void> _addDevice(Device device) async {
     _newDevices.add(device);
     try {
       final logReader = await device.getLogReader();
+      // ignore: cancel_subscriptions
       final sub = logReader.logLines.listen(
         (line) => _onMonitoredLine(device, line),
         onDone: () {
@@ -64,24 +67,26 @@ class DeviceConnector {
 
   void _callConnectedDevicesListener() {
     final devices = _devices.keys.toList();
-    for (var callback in _connectedCallbacks) {
+    for (final callback in _connectedCallbacks) {
       try {
         callback(devices);
       } catch (_) {}
     }
   }
 
-  void _connectDevice(Device device, int port) async {
+  Future<void> _connectDevice(Device device, int port) async {
     try {
       final localPort = await device.portForwarder!.forward(port);
       final socket = await WebSocket.connect('ws://127.0.0.1:$localPort');
-      socket.pingInterval = Duration(seconds: 5);
+      socket.pingInterval = const Duration(seconds: 5);
       _devices[device] = socket;
       socket.listen(
         (data) {
-          for (var callback in _messageCallbacks) {
+          for (final callback in _messageCallbacks) {
             try {
-              callback(device, data);
+              if (data is String) {
+                callback(device, data);
+              }
             } catch (_) {}
           }
         },
@@ -92,7 +97,7 @@ class DeviceConnector {
       );
       _callConnectedDevicesListener();
     } finally {
-      _monitoredDevices[device]?.cancel();
+      unawaited(_monitoredDevices[device]?.cancel());
       _monitoredDevices.remove(device);
     }
   }
@@ -113,8 +118,8 @@ class DeviceConnector {
     _messageCallbacks.remove(callback);
   }
 
-  void sendMessage(String deviceId, DebugMessage message) {
-    final messageJson = jsonEncode(message.toJson());
+  void sendMessage(String deviceId, HoneyMessage message) {
+    final messageJson = jsonEncode(message);
     final device = _devices.keys.firstWhereOrNull((d) => d.id == deviceId);
     _devices[device]?.add(messageJson);
   }

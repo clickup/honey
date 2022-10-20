@@ -2,16 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:honey/src/semantics/semantics_widget.dart';
 
 class SemanticsSlider extends StatelessWidget {
-  final Widget child;
-  final double value;
-  final String? label;
-  final double adjustmentUnit;
-  final ValueChanged<double>? onChanged;
-  final Map<String, dynamic>? properties;
-  final bool testOnly;
-
   const SemanticsSlider({
-    Key? key,
+    super.key,
     required this.child,
     required this.value,
     this.label,
@@ -19,7 +11,15 @@ class SemanticsSlider extends StatelessWidget {
     this.onChanged,
     this.properties,
     this.testOnly = false,
-  }) : super(key: key);
+  });
+
+  final Widget child;
+  final double value;
+  final String? label;
+  final double adjustmentUnit;
+  final ValueChanged<double>? onChanged;
+  final Map<String, dynamic>? properties;
+  final bool testOnly;
 
   @override
   Widget build(BuildContext context) {

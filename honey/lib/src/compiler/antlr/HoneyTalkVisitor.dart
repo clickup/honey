@@ -517,12 +517,6 @@ abstract class HoneyTalkVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitWidgetTypeImage(WidgetTypeImageContext ctx);
 
-  /// Visit a parse tree produced by the {@code widgetTypeList}
-  /// labeled alternative in {@link HoneyTalkParser#widgetType}.
-  /// [ctx] the parse tree.
-  /// Return the visitor result.
-  T? visitWidgetTypeList(WidgetTypeListContext ctx);
-
   /// Visit a parse tree produced by the {@code widgetTypeCheckBox}
   /// labeled alternative in {@link HoneyTalkParser#widgetType}.
   /// [ctx] the parse tree.

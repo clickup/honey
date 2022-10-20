@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-import 'semantics_widget.dart';
+import 'package:honey/src/semantics/semantics_widget.dart';
 
 class SemanticsSwitch extends StatelessWidget {
-  final Widget child;
-  final bool value;
-  final String? label;
-  final ValueChanged<bool>? onChanged;
-  final Map<String, dynamic>? properties;
-  final bool testOnly;
-
   const SemanticsSwitch({
-    Key? key,
+    super.key,
     required this.child,
     required this.value,
     this.label,
     this.onChanged,
     this.properties,
     this.testOnly = false,
-  }) : super(key: key);
+  });
+
+  final Widget child;
+  final bool value;
+  final String? label;
+  final ValueChanged<bool>? onChanged;
+  final Map<String, dynamic>? properties;
+  final bool testOnly;
 
   @override
   Widget build(BuildContext context) {

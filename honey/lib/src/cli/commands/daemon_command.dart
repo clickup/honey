@@ -21,7 +21,7 @@ class DaemonCommand extends Command<void> {
 
   @override
   void run() {
-    String? flutterRoot = argResults!['flutter'];
+    var flutterRoot = argResults!['flutter'] as String?;
     flutterRoot ??= Platform.environment['FLUTTER_ROOT'];
 
     if (flutterRoot == null) {

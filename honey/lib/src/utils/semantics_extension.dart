@@ -1,6 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:collection/collection.dart';
 import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/models/expression/widget_expression.dart';
 
@@ -19,6 +19,7 @@ extension SemanticsNodeX on SemanticsNode {
       data: data ?? getSemanticsData(),
       rect: globalRect,
       properties: properties ?? {},
+      retry: false,
     );
   }
 

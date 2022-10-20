@@ -220,7 +220,6 @@ widgetType:
     )                                                         # widgetTypeTextField
     | ('slider' | 'sliders')                                  # widgetTypeSlider
     | ('image' | 'images')                                    # widgetTypeImage
-    | ( 'list' | 'lists')                                     # widgetTypeList
     | ('check' ('box' | 'boxes') | 'checkbox' | 'checkboxes') # widgetTypeCheckBox
     | ('switch' | 'switches')                                 # widgetTypeSwitch
     | ( 'header' | 'headers')                                 # widgetTypeHeader;

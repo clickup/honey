@@ -1,12 +1,6 @@
 import 'package:honey/src/models/expression/expression.dart';
 
 class WidgetReference {
-  final Expression? widget;
-  final bool parent;
-  final double topLeftX;
-  final double topLeftY;
-  final double bottomRightX;
-  final double bottomRightY;
 
   WidgetReference({
     required this.widget,
@@ -30,11 +24,17 @@ class WidgetReference {
     }
     throw 'Invalid widget reference';
   }
+  final Expression? widget;
+  final bool parent;
+  final double topLeftX;
+  final double topLeftY;
+  final double bottomRightX;
+  final double bottomRightY;
 
   ListExp toExp() {
     return ListExp(
       [
-        widget.nullable,
+        //widget.nullable,
         ValueExp(parent),
         ValueExp(topLeftX),
         ValueExp(topLeftY),

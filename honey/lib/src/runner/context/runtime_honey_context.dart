@@ -1,19 +1,15 @@
-import 'dart:convert';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/function_params.dart';
-import 'package:honey/src/runner/function_registry.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/runner/functions.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
-import 'package:honey/src/utils/expression_extension.dart';
-
-import 'honey_context.dart';
 
 class RuntimeHoneyContext with HoneyContext {
   RuntimeHoneyContext(this.fakeTextInput);
@@ -41,9 +37,7 @@ class RuntimeHoneyContext with HoneyContext {
   @override
   Future<void> setVariable(String name, Expression expression) async {
     final evaluatedValue = await eval(expression);
-    if (!evaluatedValue.retry) {
-      value = evaluatedValue;
-    }
+    final value = evaluatedValue.retry ? expression : evaluatedValue;
     if (value is! ValueExp && value is! ListExp && value is! FunctionExp) {
       throw HoneyError(
         'Only list, value abd function expressions can be stored in variables',
@@ -92,13 +86,13 @@ class RuntimeHoneyContext with HoneyContext {
       if (canceled || remaining <= Duration.zero) {
         break;
       } else if (remaining > const Duration(milliseconds: 200)) {
-        await Future.delayed(const Duration(milliseconds: 200));
+        await Future<void>.delayed(const Duration(milliseconds: 200));
       } else {
-        await Future.delayed(remaining);
+        await Future<void>.delayed(remaining);
       }
     }
     if (canceled) {
-      throw const HoneyError('Test canceled', false);
+      throw HoneyError('Test canceled', false);
     }
   }
 
@@ -106,15 +100,14 @@ class RuntimeHoneyContext with HoneyContext {
   Future<Expression> eval(Expression expression) async {
     if (expression is FunctionExp) {
       final params = FunctionParams(expression.params);
-      final result = await functions.run(this, expression.name, params);
-      return result;
+      final function = functions[expression.function]!;
+      return function(this, params);
     } else {
       return Future.value(expression);
     }
   }
 
   RuntimeHoneyContext clone() {
-    return RuntimeHoneyContext(functions, fakeTextInput)
-      ..variables.addAll(variables);
+    return RuntimeHoneyContext(fakeTextInput)..variables.addAll(variables);
   }
 }

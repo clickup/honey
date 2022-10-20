@@ -1,9 +1,9 @@
 import 'package:antlr4/antlr4.dart';
 // ignore: implementation_imports
 import 'package:antlr4/src/util/bit_set.dart';
-import 'package:honey/src/models/statement.dart';
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/script_visitor.dart';
+import 'package:honey/src/models/statement.dart';
 
 final strRegex = RegExp(
   r'[^"]+|"(?:"|[^\"])*"',

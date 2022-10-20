@@ -1,7 +1,6 @@
-import 'package:honey/src/models/expression/expression.dart';
 import 'package:honey/src/compiler/antlr.dart';
-
-import 'visitors.dart';
+import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/models/expression/expression.dart';
 
 class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
   final _identVisitor = _WidgetIdentVisitor();
@@ -38,7 +37,7 @@ class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
     final type = ctx.widgetType()!.accept(typeVisitor)!;
     final attrs = ctx.attr.map((e) => e.text!).toList();
     var attrFilter = Builtin.equal(Builtin.variable(type), ValueExp(true));
-    for (var attr in attrs) {
+    for (final attr in attrs) {
       final attrExp = Builtin.equal(Builtin.variable(attr), ValueExp(true));
       attrFilter = Builtin.and(attrExp, attrFilter);
     }
@@ -47,17 +46,17 @@ class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
 }
 
 class _WidgetIdentResult {
-  final List<ValueExp> names;
-  final Expression attrFilter;
 
   _WidgetIdentResult(this.names, this.attrFilter);
+  final List<ValueExp> names;
+  final Expression attrFilter;
 }
 
 class _WidgetNameModifierVisitor
     extends HoneyTalkBaseVisitor<ValueExp Function(ValueExp)> {
   @override
   ValueExp Function(ValueExp) visitWidgetNameCaseSensitive(
-      WidgetNameCaseSensitiveContext ctx) {
+      WidgetNameCaseSensitiveContext ctx,) {
     return (e) {
       if (e.isRegExp) {
         return e;
@@ -69,7 +68,7 @@ class _WidgetNameModifierVisitor
 
   @override
   ValueExp Function(ValueExp) visitWidgetNameCaseInsensitive(
-      WidgetNameCaseInsensitiveContext ctx) {
+      WidgetNameCaseInsensitiveContext ctx,) {
     return (e) {
       if (e.isRegExp) {
         return e;
@@ -81,7 +80,7 @@ class _WidgetNameModifierVisitor
 
   @override
   ValueExp Function(ValueExp) visitWidgetNameExactly(
-      WidgetNameExactlyContext ctx) {
+      WidgetNameExactlyContext ctx,) {
     return (e) {
       if (e.isRegExp) {
         return e;

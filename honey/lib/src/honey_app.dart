@@ -18,7 +18,7 @@ class HoneyApp extends StatefulWidget {
 
 class _HoneyAppState extends State<HoneyApp> {
   late final StreamSubscription<void> _subscription;
-  var overlay = false;
+  bool overlay = false;
 
   @override
   void initState() {

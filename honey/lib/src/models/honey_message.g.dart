@@ -73,7 +73,7 @@ Map<String, dynamic> _$TestFinishedToJson(TestFinished instance) =>
     };
 
 CancelTestsCommand _$CancelTestsCommandFromJson(Map<String, dynamic> json) =>
-    CancelTestsCommand();
+    const CancelTestsCommand();
 
 Map<String, dynamic> _$CancelTestsCommandToJson(CancelTestsCommand instance) =>
     <String, dynamic>{};

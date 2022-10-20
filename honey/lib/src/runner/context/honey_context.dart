@@ -15,7 +15,7 @@ abstract class HoneyContext {
   var _canceled = false;
   bool get canceled => _canceled;
 
-  var message = '';
+  String message = '';
 
   void cancel() {
     _canceled = true;
@@ -83,12 +83,12 @@ abstract class HoneyContext {
     dispatchPointerEvent(PointerMoveEvent(
       position: offset,
       delta: delta,
-    ));
+    ),);
     offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
     dispatchPointerEvent(PointerMoveEvent(
       position: offset,
       delta: delta,
-    ));
+    ),);
     dispatchPointerEvent(const PointerUpEvent());
   }
 

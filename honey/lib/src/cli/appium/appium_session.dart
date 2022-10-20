@@ -25,7 +25,7 @@ class AppiumSession {
   }
 
   static Future<AppiumSession> create(
-      Uri url, Map<String, String> capabilities) async {
+      Uri url, Map<String, String> capabilities,) async {
     final client = AppiumClient(url);
     final response = await client.post('session', {
       'desiredCapabilities': capabilities,

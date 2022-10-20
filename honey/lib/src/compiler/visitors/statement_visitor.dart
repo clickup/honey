@@ -1,11 +1,10 @@
 import 'package:antlr4/antlr4.dart';
-import 'package:honey/src/models/statement.dart';
 import 'package:honey/src/compiler/antlr.dart';
+import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/models/statement.dart';
 import 'package:honey_core/honey_core.dart';
 import 'package:honey_parser/src/antlr.dart';
 import 'package:honey_parser/src/util.dart';
-
-import 'visitors.dart';
 
 class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   SourceInfo _getSourceInfo(ParserRuleContext context) {
@@ -35,7 +34,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
     if (condition == null) {
       return statement;
     } else {
-      final src = "if ${conditionCtx!.source}";
+      final src = 'if ${conditionCtx!.source}';
       return IfStatement(
         sourceInfo: _getSourceInfo(actionCtx).copyWith(source: src),
         condition: condition,

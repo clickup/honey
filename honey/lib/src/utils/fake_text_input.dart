@@ -11,7 +11,7 @@ class FakeTextInput {
   FakeTextInput() {
     final messenger = HoneyBinding.instance.defaultBinaryMessenger;
     messenger.setMockMethodCallHandler(
-        SystemChannels.textInput, _handleTextInputCall);
+        SystemChannels.textInput, _handleTextInputCall,);
   }
 
   void dispose() {
@@ -101,6 +101,6 @@ class FakeTextInput {
     updateEditingValue(TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
-    ));
+    ),);
   }
 }

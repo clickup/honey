@@ -16,6 +16,7 @@ void main(List<String> args) async {
       ..addCommand(DaemonCommand());
     await runner.run(args);
   } catch (e) {
+    // ignore: avoid_print
     print(e);
     exit(1);
   }

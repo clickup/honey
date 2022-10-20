@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
@@ -52,10 +54,10 @@ class AppiumCommand extends Command<void> {
     final capabilities = argResults!['capability'] as List<String>;
 
     final capsMap = <String, String>{};
-    for (var capa in capabilities) {
-      final parts = capa.split('=');
+    for (final cap in capabilities) {
+      final parts = cap.split('=');
       if (parts.length != 2) {
-        throw ArgumentError('Invalid capability: $capa');
+        throw ArgumentError('Invalid capability: $cap');
       }
       capsMap[parts[0].trim()] = parts[1].trim();
     }
@@ -78,20 +80,11 @@ class AppiumCommand extends Command<void> {
     }
   }
 
-  Map<String, List<Statement>> _getTests() {
-    final compiled = <String, List<Statement>>{};
-
+  Map<String, String> _getTests() {
+    final tests = <String, String>{};
     for (final testFile in _getTestFiles()) {
-      final content = testFile.readAsStringSync();
-      final result = compileHoneyTalk(content);
-      if (result.hasError) {
-        print(
-            'Compilation error in ${testFile.absolute.path} at line ${result.errorLine}');
-        exit(1);
-      }
-      compiled[testFile.path] = result.statements!;
+      tests[testFile.path] = testFile.readAsStringSync();
     }
-
-    return compiled;
+    return tests;
   }
 }

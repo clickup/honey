@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
+import 'package:honey/src/models/expression/widget_expression.dart';
+
 part 'function_expression.dart';
 part 'list_expression.dart';
 part 'value_expression.dart';
@@ -73,6 +76,18 @@ abstract class Expression {
 
   double get asDouble {
     return asNum.toDouble();
+  }
+
+  WidgetExp? get asWidget {
+    if (this is WidgetExp) {
+      return this as WidgetExp;
+    } else if (this is ListExp) {
+      final first = (this as ListExp).list.firstOrNull;
+      if (first is WidgetExp) {
+        return first;
+      }
+    }
+    return null;
   }
 
   // ignore: avoid_positional_boolean_parameters

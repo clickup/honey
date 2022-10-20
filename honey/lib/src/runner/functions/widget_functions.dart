@@ -15,7 +15,7 @@ abstract class WidgetFunctions {
 
     final names = <RegExp>[];
     if (namesExp is ListExp) {
-      for (var exp in namesExp.list) {
+      for (final exp in namesExp.list) {
         if (exp is ValueExp) {
           names.add(exp.asRegExp);
         }
@@ -25,7 +25,7 @@ abstract class WidgetFunctions {
     final candidates = findWidgetCandidates(ctx, names: names);
     final runtimeCtx = ctx as RuntimeHoneyContext;
     final filtered = <WidgetExp>[];
-    for (var w in candidates) {
+    for (final w in candidates) {
       runtimeCtx.referenceWidget = w;
       final filterResult = await runtimeCtx.eval(filter);
       runtimeCtx.referenceWidget = null;

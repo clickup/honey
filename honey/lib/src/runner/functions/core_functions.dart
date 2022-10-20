@@ -1,16 +1,16 @@
+import 'package:characters/characters.dart';
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/models/expression/expression.dart';
 import 'package:honey/src/models/expression/widget_expression.dart';
-import 'package:honey/src/consts/property.dart';
-import 'package:honey/src/runner/context/honey_context.dart';
-import 'package:characters/characters.dart';
-import 'package:honey/src/utils/expression_extension.dart';
 
 abstract class CoreFunctions {
   static Future<Expression> property(
-      HoneyContext ctx, FunctionParams params) async {
+    HoneyContext ctx,
+    FunctionParams params,
+  ) async {
     final property = await params.getAndEval(ctx, 0);
-    var target = await params.getAndEval(ctx, 1);
+    final target = await params.getAndEval(ctx, 1);
     final retry = property.retry || target.retry;
 
     switch (Property.fromName(property.asString)) {
@@ -61,11 +61,13 @@ abstract class CoreFunctions {
       }
     }
 
-    throw 'Unknown property ${property.value}';
+    return ValueExp.empty(retry: retry);
   }
 
   static Future<Expression> item(
-      HoneyContext ctx, FunctionParams params) async {
+    HoneyContext ctx,
+    FunctionParams params,
+  ) async {
     final item = await params.getAndEval(ctx, 0);
     final target = await params.getAndEval(ctx, 1);
     if (item is ValueExp && target is ListExp) {
@@ -79,7 +81,9 @@ abstract class CoreFunctions {
   }
 
   static Future<Expression> variable(
-      HoneyContext ctx, FunctionParams params) async {
+    HoneyContext ctx,
+    FunctionParams params,
+  ) async {
     final variable = await params.getAndEval(ctx, 0);
     final value = await params.getAndEval(ctx, 1);
 
@@ -93,7 +97,9 @@ abstract class CoreFunctions {
   }
 
   static Future<Expression> concat(
-      HoneyContext ctx, FunctionParams params) async {
+    HoneyContext ctx,
+    FunctionParams params,
+  ) async {
     final left = await params.getAndEval(ctx, 0);
     final right = await params.getAndEval(ctx, 1);
     var result = '';
@@ -101,5 +107,19 @@ abstract class CoreFunctions {
       result = left.value + right.value;
     }
     return ValueExp(result, retry: left.retry || right.retry);
+  }
+
+  static Future<Expression> length(
+    HoneyContext ctx,
+    FunctionParams params,
+  ) async {
+    final value = await params.getAndEval(ctx, 0);
+    if (value is ValueExp) {
+      return ValueExp(value.value.length, retry: value.retry);
+    } else if (value is ListExp) {
+      return ValueExp(value.list.length, retry: value.retry);
+    } else {
+      return ValueExp.empty(retry: value.retry);
+    }
   }
 }

@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:honey/src/runner/errors/honey_error.dart';
 
 class ExitTestError extends HoneyError {
-  final bool success;
+  ExitTestError(this.success, String message) : super(message, false);
 
-  ExitTestError(this.success, String message) : super(message, retry: false);
+  final bool success;
 }

@@ -1,5 +1,5 @@
-import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/compiler/antlr.dart';
+import 'package:honey/src/consts/direction.dart';
 
 class SingleDirectionVisitor extends HoneyTalkBaseVisitor<Direction> {
   @override
