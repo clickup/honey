@@ -40,36 +40,24 @@ class ExpressionStatement extends Statement {
 @immutable
 class ConditionStatement extends Statement {
   const ConditionStatement({
-    this.ifStatement,
-    this.elseIfStatements,
-    this.elseStatements,
+    this.conditionStatements,
     required super.source,
     required super.line,
   });
-
-  final ConditionStatementItem? ifStatement;
-  final List<ConditionStatementItem>? elseIfStatements;
-  final ConditionStatementItem? elseStatements;
+  final List<ConditionStatementItem>? conditionStatements;
 
   @override
   bool operator ==(Object other) =>
       other is ConditionStatement &&
       const ListEquality<ConditionStatementItem>()
-          .equals(other.elseIfStatements, elseIfStatements) &&
-      other.ifStatement == ifStatement &&
-      other.elseStatements == elseStatements;
+          .equals(other.conditionStatements, conditionStatements);
 
   @override
-  int get hashCode => Object.hash(
-        ifStatement,
-        Object.hashAll(elseIfStatements ?? []),
-        elseStatements,
-      );
+  int get hashCode => Object.hashAll(conditionStatements ?? []);
 
   @override
-  String toString() => 'ConditionStatement{ifStatement: $ifStatement, '
-      'elseIfStatements: $elseIfStatements, '
-      'elseStatements: $elseStatements}';
+  String toString() =>
+      'ConditionStatement{condtionaStatements: $conditionStatements}';
 }
 
 @immutable

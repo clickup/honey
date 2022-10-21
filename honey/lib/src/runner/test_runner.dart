@@ -96,41 +96,21 @@ class TestRunner {
       ConditionStatement statement, ListQueue<Statement> queue) async {
     var isConditionMet = false;
     dynamic result;
-    var conditionalStatement = statement.ifStatement;
-    if (conditionalStatement != null &&
-        conditionalStatement.condition != null) {
-      result = await runRepeatedly(
-        conditionalStatement.condition!,
-      );
-      isConditionMet = result is Expression && result.asBool;
-    }
-
-    for (final elseIfStatement
-        in statement.elseIfStatements ?? <ConditionStatementItem>[]) {
-      if (isConditionMet) {
-        break;
-      }
-      conditionalStatement = elseIfStatement;
+    for (final conditionalStatement
+        in statement.conditionStatements ?? <ConditionStatementItem>[]) {
       if (conditionalStatement.condition != null) {
         result = await runRepeatedly(
           conditionalStatement.condition!,
         );
         isConditionMet = result is Expression && result.asBool;
         if (isConditionMet) {
+          queue.addAll(conditionalStatement.statements);
           break;
         }
+      } else {
+        queue.addAll(conditionalStatement.statements);
       }
     }
-
-    if (!isConditionMet && statement.elseStatements != null) {
-      conditionalStatement = statement.elseStatements;
-      isConditionMet = true;
-    }
-
-    if (isConditionMet) {
-      queue.addAll((conditionalStatement?.statements ?? []).reversed);
-    }
-
     return result;
   }
 }

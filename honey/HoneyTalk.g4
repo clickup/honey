@@ -34,10 +34,9 @@ withOffset: 'at' | 'with'? 'offset';
 ifStat:
 	IF expression THEN NEWLINE* (actionStatement NEWLINE)* (
 		elseIfStat
-	)*? (elseStat)? END_IF;
+	)*? END_IF;
 elseIfStat:
-	ELSE IF expression THEN NEWLINE* (actionStatement NEWLINE)*;
-elseStat: ELSE NEWLINE* (actionStatement NEWLINE)*;
+	ELSE (IF expression THEN)? NEWLINE* (actionStatement NEWLINE)*;
 
 clickType:
 	('left' | 'single')? click	# clickTypeSingle
