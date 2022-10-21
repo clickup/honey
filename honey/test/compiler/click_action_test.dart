@@ -27,6 +27,19 @@ void main() {
       expectExp('slamming "myWidget"', result);
     });
 
+    test('Maybe', () {
+      final result = func(
+        HoneyFunction.click,
+        [val('single'), val('myWidget'), empty],
+      );
+
+      expectExp('maybe click "myWidget"', result, optional: true);
+      expectExp('try clicking "myWidget"', result, optional: true);
+      expectExp('try to click "myWidget"', result, optional: true);
+      expectExp('optional click "myWidget"', result, optional: true);
+      expectExp('optionally click "myWidget"', result, optional: true);
+    });
+
     test('Left', () {
       final result = func(
         HoneyFunction.click,
@@ -79,14 +92,26 @@ void main() {
       expectExp('long click "myWidget"', result);
     });
 
-    test('Offset', () {
+    test('Widget Offset', () {
       final result = func(
         HoneyFunction.click,
         [val('single'), val('myWidget'), val('0.5,0.5')],
       );
 
       expectExp('click "myWidget" at "0.5,0.5"', result);
+      expectExp('click "myWidget" offset "0.5,0.5"', result);
       expectExp('click "myWidget" with offset "0.5,0.5"', result);
+    });
+
+    test('Offset', () {
+      final result = func(
+        HoneyFunction.click,
+        [val('single'), empty, val('0.5,0.5')],
+      );
+
+      expectExp('click at "0.5,0.5"', result);
+      expectExp('click offset "0.5,0.5"', result);
+      expectExp('click with offset "0.5,0.5"', result);
     });
   });
 }

@@ -13,7 +13,8 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
   @override
   FunctionExp visitActionSee(ActionSeeContext ctx) {
     final target = ctx.expression()!.accept(expressionVisitor)!;
-    final countExp = FunctionExp(HoneyFunction.length, [target]);
+    final widgetExp = FunctionExp(HoneyFunction.widgets, [target]);
+    final countExp = FunctionExp(HoneyFunction.length, [widgetExp]);
     final gtZero = FunctionExp(HoneyFunction.greater, [countExp, ValueExp(0)]);
     return FunctionExp(HoneyFunction.verify, [gtZero]);
   }

@@ -121,11 +121,11 @@ function:
 handler: 'on' name = ID ();
 
 literal:
-	cardinalValue					# literalCardinal
-	| STRING_LITERAL				# literalString
-	| REGEX_LITERAL REGEX_MODIFIER?	# literalRegex
-	| NUMBER_LITERAL				# literalNumber
-	| BOOL_LITERAL					# literalBool;
+	cardinalValue		# literalCardinal
+	| STRING_LITERAL	# literalString
+	| REGEX_LITERAL		# literalRegex
+	| NUMBER_LITERAL	# literalNumber
+	| BOOL_LITERAL		# literalBool;
 
 cardinalValue:
 	'zero'
@@ -307,9 +307,8 @@ BOOL_LITERAL: 'true' | 'false';
 
 STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
 
-REGEX_LITERAL: '/' ( '\\/' | ~[/\n])* '/';
-
-REGEX_MODIFIER: ('a' .. 'z' | 'A' .. 'Z');
+REGEX_LITERAL:
+	'/' ('\\/' | ~[/\n])* '/' ('a' .. 'z' | 'A' .. 'Z')*;
 
 THE: 'the' -> channel(HIDDEN);
 
