@@ -19,6 +19,8 @@ void main() {
       expectExpr('seeing "myWidget"', result);
       expectExpr('look "myWidget"', result);
       expectExpr('looking "myWidget"', result);
+      expectExpr('watch "myWidget"', result);
+      expectExpr('watching "myWidget"', result);
     });
 
     test('Maybe', () {

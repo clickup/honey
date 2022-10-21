@@ -211,7 +211,10 @@ void main() {
     test('attribute', () {
       final result = func(HoneyFunction.equal, [
         func(HoneyFunction.property, [
-          func(HoneyFunction.widgets, [val('test')]),
+          func(HoneyFunction.item, [
+            func(HoneyFunction.widgets, [val('test')]),
+            val(0)
+          ]),
           val('clickable')
         ]),
         val(true),

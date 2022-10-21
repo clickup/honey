@@ -139,7 +139,10 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
     final getProperty = FunctionExp(
       HoneyFunction.property,
       [
-        FunctionExp(HoneyFunction.widgets, [target]),
+        FunctionExp(HoneyFunction.item, [
+          FunctionExp(HoneyFunction.widgets, [target]),
+          ValueExp(0),
+        ]),
         ValueExp(property)
       ],
     );

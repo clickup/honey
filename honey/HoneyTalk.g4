@@ -1,4 +1,5 @@
 grammar HoneyTalk;
+import HoneyTalkSynonyms;
 
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
@@ -16,10 +17,10 @@ actionStatement:
 	)?																		# actionClick
 	| clickType ('on'? target = expression)? withOffset offset = expression	# actionClick
 	| enter value = expression												# actionEnter
-	| 'set' variable = ID ('to' | 'as') expression							# actionSetVariable
-	| ('put' | 'store') expression ('in' | 'into') variable = ID			# actionSetVariable
-	| 'wait' 'for'? expression												# actionWait
-	| ('print' | 'output' | 'message') expression							# actionPrint
+	| set variable = ID ('to' | 'as') expression							# actionSetVariable
+	| store expression ('in' | 'into') variable = ID						# actionSetVariable
+	| wait 'for'? expression												# actionWait
+	| print expression														# actionPrint
 	| swipeType 'on'? target = expression (
 		withOffset offset = expression
 	)? ('by')? pixels = expression # actionSwipe
@@ -60,24 +61,6 @@ expression:
 	| expression (isAre | isAreNot) property		# expressionIsAttr
 	| expression 'and' expression					# expressionAnd
 	| expression 'or' expression					# expressionOr;
-
-exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
-starts:
-	'start'
-	| 'starts'
-	| 'starting'
-	| 'begin'
-	| 'begins'
-	| 'beginning';
-ends: 'end' | 'ends' | 'ending';
-contains:
-	'contain'
-	| 'contains'
-	| 'containing'
-	| 'include'
-	| 'includes'
-	| 'including';
-matches: 'match' | 'matches' | 'matching';
 
 comparisonOp:
 	('==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
@@ -245,67 +228,6 @@ doubleDirection:
 	| ((('top' | 'upper') '-'? 'right') | 'right' 'top')		# doubleDirectionTopRight
 	| ((('bottom' | 'lower') '-'? 'left') | 'left' 'bottom')	# doubleDirectionBottomLeft
 	| ((('bottom' | 'lower') '-'? 'right') | 'right' 'bottom')	# doubleDirectionBottomRight;
-
-character: 'character' | 'characters' | 'char' | 'chars';
-
-word: 'word' | 'words';
-
-line: 'line' | 'lines';
-
-item: 'item' | 'items';
-
-of: 'of' | 'from' | 'in';
-
-verify:
-	'verify'
-	| 'verifying'
-	| 'check'
-	| 'checking'
-	| 'assert'
-	| 'asserting'
-	| 'expect'
-	| 'expecting'
-	| 'test'
-	| 'testing'
-	| 'make' 'sure'
-	| 'making' 'sure';
-
-see: 'see' | 'seeing' | 'look' | 'looking';
-
-click:
-	'click'
-	| 'clicking'
-	| 'tap'
-	| 'tapping'
-	| 'touch'
-	| 'touching'
-	| 'press'
-	| 'pressing'
-	| 'push'
-	| 'pushing'
-	| 'hit'
-	| 'hitting'
-	| 'slam'
-	| 'slamming';
-
-enter:
-	'enter'
-	| 'entering'
-	| 'type'
-	| 'typing'
-	| 'input'
-	| 'inputting';
-
-swipe: 'swipe' | 'slide' | 'scroll';
-
-isAre: 'is' | 'are' | 'does';
-isAreNot:
-	'is' 'not'
-	| 'isn\'t'
-	| 'are' 'not'
-	| 'aren\'t'
-	| 'does' 'not'
-	| 'doesn\'t';
 
 NUMBER_LITERAL:
 	DIGIT+
