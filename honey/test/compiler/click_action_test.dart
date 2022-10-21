@@ -11,20 +11,33 @@ void main() {
         [val('single'), val('myWidget'), empty],
       );
 
-      expectExp('click "myWidget"', result);
-      expectExp('clicking "myWidget"', result);
-      expectExp('tap "myWidget"', result);
-      expectExp('tapping "myWidget"', result);
-      expectExp('touch "myWidget"', result);
-      expectExp('touching "myWidget"', result);
-      expectExp('push "myWidget"', result);
-      expectExp('pushing "myWidget"', result);
-      expectExp('press "myWidget"', result);
-      expectExp('pressing "myWidget"', result);
-      expectExp('hit "myWidget"', result);
-      expectExp('hitting "myWidget"', result);
-      expectExp('slam "myWidget"', result);
-      expectExp('slamming "myWidget"', result);
+      expectExpr('click "myWidget"', result);
+      expectExpr('clicking "myWidget"', result);
+      expectExpr('tap "myWidget"', result);
+      expectExpr('tapping "myWidget"', result);
+      expectExpr('touch "myWidget"', result);
+      expectExpr('touching "myWidget"', result);
+      expectExpr('push "myWidget"', result);
+      expectExpr('pushing "myWidget"', result);
+      expectExpr('press "myWidget"', result);
+      expectExpr('pressing "myWidget"', result);
+      expectExpr('hit "myWidget"', result);
+      expectExpr('hitting "myWidget"', result);
+      expectExpr('slam "myWidget"', result);
+      expectExpr('slamming "myWidget"', result);
+    });
+
+    test('Maybe', () {
+      final result = func(
+        HoneyFunction.click,
+        [val('single'), val('myWidget'), empty],
+      );
+
+      expectExpr('maybe click "myWidget"', result, optional: true);
+      expectExpr('try clicking "myWidget"', result, optional: true);
+      expectExpr('try to click "myWidget"', result, optional: true);
+      expectExpr('optional click "myWidget"', result, optional: true);
+      expectExpr('optionally click "myWidget"', result, optional: true);
     });
 
     test('Left', () {
@@ -33,14 +46,14 @@ void main() {
         [val('single'), val('myWidget'), empty],
       );
 
-      expectExp('click "myWidget"', result);
-      expectExp('click the "myWidget"', result);
-      expectExp('click on "myWidget"', result);
-      expectExp('click on the "myWidget"', result);
-      expectExp('left click "myWidget"', result);
-      expectExp('left click on "myWidget"', result);
-      expectExp('left click on the "myWidget"', result);
-      expectExp('single click "myWidget"', result);
+      expectExpr('click "myWidget"', result);
+      expectExpr('click the "myWidget"', result);
+      expectExpr('click on "myWidget"', result);
+      expectExpr('click on the "myWidget"', result);
+      expectExpr('left click "myWidget"', result);
+      expectExpr('left click on "myWidget"', result);
+      expectExpr('left click on the "myWidget"', result);
+      expectExpr('single click "myWidget"', result);
     });
 
     test('Right', () {
@@ -49,10 +62,10 @@ void main() {
         [val('right'), val('myWidget'), empty],
       );
 
-      expectExp('right click "myWidget"', result);
-      expectExp('right click on "myWidget"', result);
-      expectExp('right click on the "myWidget"', result);
-      expectExp('right click "myWidget"', result);
+      expectExpr('right click "myWidget"', result);
+      expectExpr('right click on "myWidget"', result);
+      expectExpr('right click on the "myWidget"', result);
+      expectExpr('right click "myWidget"', result);
     });
 
     test('Double', () {
@@ -61,10 +74,10 @@ void main() {
         [val('double'), val('myWidget'), empty],
       );
 
-      expectExp('double click "myWidget"', result);
-      expectExp('double click on "myWidget"', result);
-      expectExp('double click on the "myWidget"', result);
-      expectExp('double click "myWidget"', result);
+      expectExpr('double click "myWidget"', result);
+      expectExpr('double click on "myWidget"', result);
+      expectExpr('double click on the "myWidget"', result);
+      expectExpr('double click "myWidget"', result);
     });
 
     test('Long', () {
@@ -73,20 +86,32 @@ void main() {
         [val('long'), val('myWidget'), empty],
       );
 
-      expectExp('long click "myWidget"', result);
-      expectExp('long click on "myWidget"', result);
-      expectExp('long click on the "myWidget"', result);
-      expectExp('long click "myWidget"', result);
+      expectExpr('long click "myWidget"', result);
+      expectExpr('long click on "myWidget"', result);
+      expectExpr('long click on the "myWidget"', result);
+      expectExpr('long click "myWidget"', result);
     });
 
-    test('Offset', () {
+    test('Widget Offset', () {
       final result = func(
         HoneyFunction.click,
         [val('single'), val('myWidget'), val('0.5,0.5')],
       );
 
-      expectExp('click "myWidget" at "0.5,0.5"', result);
-      expectExp('click "myWidget" with offset "0.5,0.5"', result);
+      expectExpr('click "myWidget" at "0.5,0.5"', result);
+      expectExpr('click "myWidget" offset "0.5,0.5"', result);
+      expectExpr('click "myWidget" with offset "0.5,0.5"', result);
+    });
+
+    test('Offset', () {
+      final result = func(
+        HoneyFunction.click,
+        [val('single'), empty, val('0.5,0.5')],
+      );
+
+      expectExpr('click at "0.5,0.5"', result);
+      expectExpr('click offset "0.5,0.5"', result);
+      expectExpr('click with offset "0.5,0.5"', result);
     });
   });
 }

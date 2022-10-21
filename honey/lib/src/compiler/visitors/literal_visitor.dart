@@ -25,6 +25,8 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExp> {
         return ValueExp(8);
       case 'nine':
         return ValueExp(9);
+      case 'ten':
+        return ValueExp(10);
       default:
         throw StateError(
           'Unrecognized cardinal literal: ${ctx.cardinalValue()}',
@@ -42,9 +44,8 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExp> {
   @override
   ValueExp visitLiteralRegex(LiteralRegexContext ctx) {
     final strRaw = ctx.REGEX_LITERAL()!.text!;
-    final str = strRaw.substring(1, strRaw.length - 1);
-    final modifier = ctx.REGEX_MODIFIER()?.text ?? '';
-    return ValueExp.str(str, regexFlags: modifier);
+    final str = strRaw.split('/');
+    return ValueExp.str(str[1], regexFlags: str.length == 3 ? str[2] : null);
   }
 
   @override

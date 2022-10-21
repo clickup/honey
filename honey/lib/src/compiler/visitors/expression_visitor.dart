@@ -89,15 +89,15 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
         return FunctionExp(HoneyFunction.greater, [left, right]);
       case '>=':
         return FunctionExp(HoneyFunction.or, [
-          FunctionExp(HoneyFunction.equal, [left, right]),
           FunctionExp(HoneyFunction.greater, [left, right]),
+          FunctionExp(HoneyFunction.equal, [left, right]),
         ]);
       case '<':
         return FunctionExp(HoneyFunction.less, [left, right]);
       case '<=':
         return FunctionExp(HoneyFunction.or, [
-          FunctionExp(HoneyFunction.equal, [left, right]),
           FunctionExp(HoneyFunction.less, [left, right]),
+          FunctionExp(HoneyFunction.equal, [left, right]),
         ]);
       default:
         throw UnsupportedError('Unknown expression cmpOp');
@@ -108,33 +108,21 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
   Expression visitExpressionStartsWith(ExpressionStartsWithContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final prefix = ctx.expression(1)!.accept(this)!;
-    final regex = ValueExp.str(
-      '^${RegExp.escape(prefix.asString)}',
-      regexFlags: '',
-    );
-    return FunctionExp(HoneyFunction.matches, [value, regex]);
+    return FunctionExp(HoneyFunction.startsWith, [value, prefix]);
   }
 
   @override
   Expression visitExpressionEndsWith(ExpressionEndsWithContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final postfix = ctx.expression(1)!.accept(this)!;
-    final regex = ValueExp.str(
-      '${RegExp.escape(postfix.asString)}\$',
-      regexFlags: '',
-    );
-    return FunctionExp(HoneyFunction.matches, [value, regex]);
+    return FunctionExp(HoneyFunction.endsWith, [value, postfix]);
   }
 
   @override
   Expression visitExpressionContains(ExpressionContainsContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final substr = ctx.expression(1)!.accept(this)!;
-    final regex = ValueExp.str(
-      RegExp.escape(substr.asString),
-      regexFlags: '',
-    );
-    return FunctionExp(HoneyFunction.matches, [value, regex]);
+    return FunctionExp(HoneyFunction.contains, [value, substr]);
   }
 
   @override
@@ -150,10 +138,18 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
     final property = ctx.property()!.accept(propertyVisitor)!;
     final getProperty = FunctionExp(
       HoneyFunction.property,
-      [target, ValueExp(property)],
+      [
+        FunctionExp(HoneyFunction.item, [
+          FunctionExp(HoneyFunction.widgets, [target]),
+          ValueExp(0),
+        ]),
+        ValueExp(property)
+      ],
     );
-    final result =
-        FunctionExp(HoneyFunction.equal, [getProperty, ValueExp(true)]);
+    final result = FunctionExp(
+      HoneyFunction.equal,
+      [getProperty, ValueExp(true)],
+    );
     if (ctx.isAreNot() != null) {
       return FunctionExp(HoneyFunction.not, [result]);
     } else {

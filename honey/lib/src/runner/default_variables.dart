@@ -1,5 +1,6 @@
-import 'package:honey/src/const.dart';
 import 'package:honey/src/models/expression/expression.dart';
+
+const defaultStepTimeout = Duration(seconds: 20);
 
 const _ms = 1;
 const _s = _ms * 1000;

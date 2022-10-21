@@ -6,14 +6,16 @@ import 'package:honey/src/compiler/visitors/script_visitor.dart';
 import 'package:honey/src/models/statement.dart';
 
 final strRegex = RegExp(
-  r'[^"]+|"(?:"|[^\"])*"',
+  r'[^"/]+|"(?:"|[^\"])*"|/(?:/|[^\/])*/',
   multiLine: true,
 );
 
 CompilationResult compileHoneyTalk(String script) {
   final scriptLc = script.replaceAllMapped(strRegex, (match) {
     final value = match.group(0)!;
-    return value.startsWith('"') ? value : value.toLowerCase();
+    return value.startsWith('"') || value.startsWith('/')
+        ? value
+        : value.toLowerCase();
   });
 
   final chars = InputStream.fromString(scriptLc);

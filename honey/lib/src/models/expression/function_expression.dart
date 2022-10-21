@@ -63,6 +63,9 @@ enum HoneyFunction {
   pow,
 
   // string
+  startsWith,
+  endsWith,
+  contains,
   matches,
   concat;
 }
