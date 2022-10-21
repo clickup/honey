@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/models/expression/expression.dart';
 import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/models/statement.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
@@ -23,19 +24,8 @@ class TestRunner {
     const stepIndex = 0;
     while (queue.isNotEmpty && !_canceled) {
       final expression = queue.removeLast();
-//       final startTime = DateTime.now();
-// <<<<<<< HEAD:packages/honey/lib/src/runner/test_runner.dart
-//       dynamic result;
-//       if (statement is ConditionStatement) {
-//         result = await _runCondition(statement, queue);
-//       } else if (statement is ExpressionStatement) {
-//         result = await runRepeatedly(
-//           statement.expression,
-//         );
-//       }
-// =======
+
       final dynamic result = await runRepeatedly(expression);
-//>>>>>>> clickup/rewrite:honey/lib/src/runner/test_runner.dart
 
       /*final step = TestStep(
         runId: runId,
@@ -78,7 +68,6 @@ class TestRunner {
       } catch (e, s) {
         error = UnknownError('$e $s');
       }
-
       if (error != null) {
         if (!error.retry) {
           return error;
@@ -103,35 +92,45 @@ class TestRunner {
     _fakeInput.dispose();
   }
 
-  // Future<dynamic> _runCondition(
-  //     ConditionStatement statement, ListQueue<Statement> queue) async {
-  //   var isConditionMet = false;
-  //   dynamic result;
-  //   dynamic conditionalStatement = statement.ifStatement;
-  //   if (conditionalStatement != null) {
-  //     result = await runRepeatedly(
-  //       conditionalStatement.condition,
-  //       untilTrue: false,
-  //     );
-  //     isConditionMet = result is Expression && result.asBool;
-  //   }
-  //   if (statement.elseIfStatement != null && !isConditionMet) {
-  //     conditionalStatement = statement.elseIfStatement;
-  //     result = await runRepeatedly(
-  //       conditionalStatement.condition,
-  //       untilTrue: false,
-  //     );
-  //     isConditionMet = result is Expression && result.asBool;
-  //   }
-  //   if (statement.elseStatement != null && !isConditionMet) {
-  //     conditionalStatement = statement.elseStatement;
-  //     isConditionMet = true;
-  //   }
+  Future<dynamic> _runCondition(
+      ConditionStatement statement, ListQueue<Statement> queue) async {
+    var isConditionMet = false;
+    dynamic result;
+    var conditionalStatement = statement.ifStatement;
+    if (conditionalStatement != null &&
+        conditionalStatement.condition != null) {
+      result = await runRepeatedly(
+        conditionalStatement.condition!,
+      );
+      isConditionMet = result is Expression && result.asBool;
+    }
 
-  //   if (isConditionMet) {
-  //     queue.addAll(conditionalStatement.statements.reversed);
-  //   }
+    for (final elseIfStatement
+        in statement.elseIfStatements ?? <ConditionStatementItem>[]) {
+      if (isConditionMet) {
+        break;
+      }
+      conditionalStatement = elseIfStatement;
+      if (conditionalStatement.condition != null) {
+        result = await runRepeatedly(
+          conditionalStatement.condition!,
+        );
+        isConditionMet = result is Expression && result.asBool;
+        if (isConditionMet) {
+          break;
+        }
+      }
+    }
 
-  //   return result;
-  // }
+    if (!isConditionMet && statement.elseStatements != null) {
+      conditionalStatement = statement.elseStatements;
+      isConditionMet = true;
+    }
+
+    if (isConditionMet) {
+      queue.addAll((conditionalStatement?.statements ?? []).reversed);
+    }
+
+    return result;
+  }
 }

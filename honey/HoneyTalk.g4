@@ -35,7 +35,7 @@ actionStatement:
 ifStat:
 	IF expression THEN NEWLINE* (actionStatement NEWLINE)* (
 		elseIfStat
-	)? (elseStat)? END_IF;
+	)*? (elseStat)? END_IF;
 elseIfStat:
 	ELSE IF expression THEN NEWLINE* (actionStatement NEWLINE)*;
 elseStat: ELSE NEWLINE* (actionStatement NEWLINE)*;

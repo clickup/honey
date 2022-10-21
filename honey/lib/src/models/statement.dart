@@ -19,28 +19,26 @@ class ExpressionStatement extends Statement {
   final bool optional;
 }
 
-class IfStatement extends Statement {
-  const IfStatement({
-    required this.condition,
-    required this.statements,
-    required super.source,
-    required super.line,
-  });
-
-  final Expression condition;
-  final List<Statement> statements;
-}
-
 class ConditionStatement extends Statement {
   const ConditionStatement({
-    required this.ifStatement,
-    required this.elseIfStatements,
-    required this.elseStatement,
+    this.ifStatement,
+    this.elseIfStatements,
+    this.elseStatements,
     required super.source,
     required super.line,
   });
 
-  final IfStatement ifStatement;
-  final List<IfStatement> elseIfStatements;
-  final IfStatement? elseStatement;
+  final ConditionStatementItem? ifStatement;
+  final List<ConditionStatementItem>? elseIfStatements;
+  final ConditionStatementItem? elseStatements;
+}
+
+class ConditionStatementItem {
+  const ConditionStatementItem({
+    this.condition,
+    required this.statements,
+  });
+
+  final Expression? condition;
+  final List<Statement> statements;
 }
