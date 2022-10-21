@@ -12,24 +12,22 @@ actionStatement:
 	verify 'that'? expression	# actionVerify
 	| see expression			# actionSee
 	| clickType 'on'? target = expression (
-		('at' | 'with'? 'offset') offset = expression
-	)? # actionClick
-	| clickType ('on'? target = expression)? (
-		'at'
-		| 'with'? 'offset'
-	) offset = expression											# actionClick
-	| enter value = expression										# actionEnter
-	| 'set' variable = ID ('to' | 'as') expression					# actionSetVariable
-	| ('put' | 'store') expression ('in' | 'into') variable = ID	# actionSetVariable
-	| 'wait' 'for'? expression										# actionWait
-	| ('print' | 'output' | 'message') expression					# actionPrint
+		withOffset offset = expression
+	)?																		# actionClick
+	| clickType ('on'? target = expression)? withOffset offset = expression	# actionClick
+	| enter value = expression												# actionEnter
+	| 'set' variable = ID ('to' | 'as') expression							# actionSetVariable
+	| ('put' | 'store') expression ('in' | 'into') variable = ID			# actionSetVariable
+	| 'wait' 'for'? expression												# actionWait
+	| ('print' | 'output' | 'message') expression							# actionPrint
 	| swipeType 'on'? target = expression (
-		('at' | 'with'? 'offset') offset = expression
+		withOffset offset = expression
 	)? ('by')? pixels = expression # actionSwipe
-	| swipeType ('on'? target = expression)? (
-		'at'
-		| 'with'? 'offset'
-	) offset = expression ('by') pixels = expression # actionSwipe;
+	| swipeType ('on'? target = expression)? () offset = expression (
+		'by'
+	) pixels = expression # actionSwipe;
+
+withOffset: 'at' | 'with'? 'offset';
 
 clickType:
 	('left' | 'single')? click	# clickTypeSingle
@@ -44,31 +42,45 @@ swipeType:
 	| swipe 'down'	# swipeTypeDown;
 
 expression:
-	'(' expression ')'						# expressionExpression
-	| term									# expressionTerm
-	| 'not' expression						# expressionNot
-	| '-' expression						# expressionNegate
-	| 'there' 'is' not = 'not'? expression	# expressionExists
-	| expression (isAre | isAreNot) (
-		'visible'
-		| 'exist'
-		| 'exists'
-	)											# expressionExists
-	| expression '^' expression					# expressionPow
-	| expression op = ('/' | '*') expression	# expressionBinaryOp
-	| expression op = ('+' | '-') expression	# expressionBinaryOp
-	| expression op = ('&&' | '&') expression	# expressionBinaryOp
-	| expression op = comparisonOp expression	# expressionComparison
-	| expression ('starts' 'with') expression	# expressionStartsWith
-	| expression ('ends' 'with') expression		# expressionEndsWith
-	| expression ('contains') expression		# expressionContains
-	| expression 'matches' expression			# expressionMatches
-	| expression (isAre | isAreNot) property	# expressionIsAttr
-	| expression 'and' expression				# expressionAnd
-	| expression 'or' expression				# expressionOr;
+	'(' expression ')'								# expressionExpression
+	| term											# expressionTerm
+	| 'not' expression								# expressionNot
+	| '-' expression								# expressionNegate
+	| 'there' (isAreNot | isAre) expression			# expressionExists
+	| expression (isAreNot | isAre)? exists			# expressionExists
+	| expression '^' expression						# expressionPow
+	| expression op = ('/' | '*') expression		# expressionBinaryOp
+	| expression op = ('+' | '-') expression		# expressionBinaryOp
+	| expression op = ('&&' | '&') expression		# expressionBinaryOp
+	| expression op = comparisonOp expression		# expressionComparison
+	| expression isAre? starts 'with'? expression	# expressionStartsWith
+	| expression isAre? ends 'with'? expression		# expressionEndsWith
+	| expression isAre? contains 'with'? expression	# expressionContains
+	| expression isAre? matches expression			# expressionMatches
+	| expression (isAre | isAreNot) property		# expressionIsAttr
+	| expression 'and' expression					# expressionAnd
+	| expression 'or' expression					# expressionOr;
+
+exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
+starts:
+	'start'
+	| 'starts'
+	| 'starting'
+	| 'begin'
+	| 'begins'
+	| 'beginning';
+ends: 'end' | 'ends' | 'ending';
+contains:
+	'contain'
+	| 'contains'
+	| 'containing'
+	| 'include'
+	| 'includes'
+	| 'including';
+matches: 'match' | 'matches' | 'matching';
 
 comparisonOp:
-	('=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
+	('==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
 	| (
 		'!='
 		| '<>'
@@ -78,15 +90,15 @@ comparisonOp:
 	| (
 		'>='
 		| isAre? 'gte'
-		| isAre? 'greater' 'than' 'or'? 'equal' 'to'?
+		| isAre? 'greater' 'than'? 'or' 'equal' 'to'?
 	)													# comparisonOpGte
-	| ('<' | isAre? 'gte' | isAre? 'greater' 'than'?)	# comparisonOpGt
+	| ('>' | isAre? 'gt' | isAre? 'greater' 'than'?)	# comparisonOpGt
 	| (
 		'<='
 		| isAre? 'lte'
-		| isAre? 'less' 'than' 'or'? 'equal' 'to'?
+		| isAre? 'less' 'than'? 'or' 'equal' 'to'?
 	)												# comparisonOpLte
-	| ('>' | isAre? 'lt' | isAre? 'less' 'than'?)	# comparisonOpLt;
+	| ('<' | isAre? 'lt' | isAre? 'less' 'than'?)	# comparisonOpLt;
 
 term:
 	'(' term ')'		# termTerm
@@ -117,8 +129,6 @@ function:
 	| 'now' ('(' ')')?					# functionNow
 	| ID '(' (term (','? term)*?)? ')'	# functionCustom
 	| ID 'with' (term (','? term)*?)	# functionCustom;
-
-handler: 'on' name = ID ();
 
 literal:
 	cardinalValue		# literalCardinal

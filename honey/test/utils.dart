@@ -19,11 +19,11 @@ FunctionExp func(HoneyFunction function, List<Expression> args) =>
 
 FunctionExp and(List<Expression> args) => func(HoneyFunction.and, args);
 
-FunctionExp or(List<Expression> args) => func(HoneyFunction.not, args);
+FunctionExp or(List<Expression> args) => func(HoneyFunction.or, args);
 
 FunctionExp not(List<Expression> args) => func(HoneyFunction.not, args);
 
-void expectExp(String test, Expression expression, {bool optional = false}) {
+void expectExpr(String test, Expression expression, {bool optional = false}) {
   final result = compileHoneyTalk(test);
   expect(result.hasError, false);
   expect(result.statements!.length, 1);

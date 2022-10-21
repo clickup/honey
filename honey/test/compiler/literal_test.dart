@@ -6,47 +6,47 @@ import '../utils.dart';
 void main() {
   group('Literal', () {
     test('String', () {
-      expectExp('"testString"', val('testString'));
+      expectExpr('"testString"', val('testString'));
 
       // TODO fix
-      /*expectExp(r'"st\"ring"', val('st"ring'));
-      expectExp(r'"st\nring"', val('st\nring'));*/
+      /*expectExpr(r'"st\"ring"', val('st"ring'));
+      expectExpr(r'"st\nring"', val('st\nring'));*/
     });
 
     test('Regex', () {
-      expectExp('/testRegex/', str('testRegex', ''));
-      expectExp('/testRegex/i', str('testRegex', 'i'));
-      expectExp('/testRegex/m', str('testRegex', 'm'));
-      expectExp('/testRegex/g', str('testRegex', 'g'));
-      expectExp('/testRegex/ig', str('testRegex', 'ig'));
-      expectExp('/testRegex/mg', str('testRegex', 'mg'));
-      expectExp('/testRegex/im', str('testRegex', 'im'));
-      expectExp('/testRegex/img', str('testRegex', 'img'));
+      expectExpr('/testRegex/', str('testRegex', ''));
+      expectExpr('/testRegex/i', str('testRegex', 'i'));
+      expectExpr('/testRegex/m', str('testRegex', 'm'));
+      expectExpr('/testRegex/g', str('testRegex', 'g'));
+      expectExpr('/testRegex/ig', str('testRegex', 'ig'));
+      expectExpr('/testRegex/mg', str('testRegex', 'mg'));
+      expectExpr('/testRegex/im', str('testRegex', 'im'));
+      expectExpr('/testRegex/img', str('testRegex', 'img'));
     });
 
     test('Number', () {
-      expectExp('123', val(123));
-      expectExp('123.456', val(123.456));
-      expectExp('-123', func(HoneyFunction.multiply, [val(123), val(-1)]));
+      expectExpr('123', val(123));
+      expectExpr('123.456', val(123.456));
+      expectExpr('-123', func(HoneyFunction.multiply, [val(123), val(-1)]));
     });
 
     test('Cardinal', () {
-      expectExp('zero', val(0));
-      expectExp('one', val(1));
-      expectExp('two', val(2));
-      expectExp('three', val(3));
-      expectExp('four', val(4));
-      expectExp('five', val(5));
-      expectExp('six', val(6));
-      expectExp('seven', val(7));
-      expectExp('eight', val(8));
-      expectExp('nine', val(9));
-      expectExp('ten', val(10));
+      expectExpr('zero', val(0));
+      expectExpr('one', val(1));
+      expectExpr('two', val(2));
+      expectExpr('three', val(3));
+      expectExpr('four', val(4));
+      expectExpr('five', val(5));
+      expectExpr('six', val(6));
+      expectExpr('seven', val(7));
+      expectExpr('eight', val(8));
+      expectExpr('nine', val(9));
+      expectExpr('ten', val(10));
     });
 
     test('Boolean', () {
-      expectExp('true', val(true));
-      expectExp('false', val(false));
+      expectExpr('true', val(true));
+      expectExpr('false', val(false));
     });
   });
 }

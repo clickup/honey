@@ -15,10 +15,10 @@ void main() {
         ]),
       ]);
 
-      expectExp('see "myWidget"', result);
-      expectExp('seeing "myWidget"', result);
-      expectExp('look "myWidget"', result);
-      expectExp('looking "myWidget"', result);
+      expectExpr('see "myWidget"', result);
+      expectExpr('seeing "myWidget"', result);
+      expectExpr('look "myWidget"', result);
+      expectExpr('looking "myWidget"', result);
     });
 
     test('Maybe', () {
@@ -31,11 +31,11 @@ void main() {
         ]),
       ]);
 
-      expectExp('maybe see "myWidget"', result, optional: true);
-      expectExp('try seeing "myWidget"', result, optional: true);
-      expectExp('try to see "myWidget"', result, optional: true);
-      expectExp('optional see "myWidget"', result, optional: true);
-      expectExp('optionally see "myWidget"', result, optional: true);
+      expectExpr('maybe see "myWidget"', result, optional: true);
+      expectExpr('try seeing "myWidget"', result, optional: true);
+      expectExpr('try to see "myWidget"', result, optional: true);
+      expectExpr('optional see "myWidget"', result, optional: true);
+      expectExpr('optionally see "myWidget"', result, optional: true);
     });
   });
 }
