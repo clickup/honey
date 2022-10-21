@@ -44,11 +44,7 @@ clickType:
 	| 'long' click				# clickTypeLong
 	| 'right' click				# clickTypeRight;
 
-swipeType:
-	swipe 'left'?	# swipeTypeLeft
-	| swipe 'right'	# swipeTypeRight
-	| swipe 'up'	# swipeTypeUp
-	| swipe 'down'	# swipeTypeDown;
+swipeType: swipe singleDirection?;
 
 expression:
 	'(' expression ')'								# expressionExpression
