@@ -15,7 +15,10 @@ ListExp list(List<Expression> expressions) => ListExp(expressions);
 FunctionExp func(HoneyFunction function, List<Expression> args) =>
     FunctionExp(function, args);
 
-//FunctionExp w()
+FunctionExp w(List<Expression> names) => FunctionExp(
+      HoneyFunction.widgets,
+      [ListExp(names), const ListExp([]), const ListExp([])],
+    );
 
 FunctionExp and(List<Expression> args) => func(HoneyFunction.and, args);
 

@@ -138,10 +138,15 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
     final property = ctx.property()!.accept(propertyVisitor)!;
     final getProperty = FunctionExp(
       HoneyFunction.property,
-      [target, ValueExp(property)],
+      [
+        FunctionExp(HoneyFunction.widgets, [target]),
+        ValueExp(property)
+      ],
     );
-    final result =
-        FunctionExp(HoneyFunction.equal, [getProperty, ValueExp(true)]);
+    final result = FunctionExp(
+      HoneyFunction.equal,
+      [getProperty, ValueExp(true)],
+    );
     if (ctx.isAreNot() != null) {
       return FunctionExp(HoneyFunction.not, [result]);
     } else {
