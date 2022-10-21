@@ -4,7 +4,8 @@ import HoneyTalkSynonyms;
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
 statement:
-	maybe? actionStatement ('if' expression)?	# statementAction
+	ifStat										# statementIf
+	| maybe? actionStatement ('if' expression)?	# statementAction
 	| maybe? expression							# statementExpression;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
@@ -30,17 +31,20 @@ actionStatement:
 
 withOffset: 'at' | 'with'? 'offset';
 
+ifStat:
+	IF expression THEN NEWLINE* (actionStatement NEWLINE)* (
+		elseIfStat
+	)*? END_IF;
+elseIfStat:
+	ELSE (IF expression THEN)? NEWLINE* (actionStatement NEWLINE)*;
+
 clickType:
 	('left' | 'single')? click	# clickTypeSingle
 	| 'double' click			# clickTypeDouble
 	| 'long' click				# clickTypeLong
 	| 'right' click				# clickTypeRight;
 
-swipeType:
-	swipe 'left'?	# swipeTypeLeft
-	| swipe 'right'	# swipeTypeRight
-	| swipe 'up'	# swipeTypeUp
-	| swipe 'down'	# swipeTypeDown;
+swipeType: swipe singleDirection?;
 
 expression:
 	'(' expression ')'								# expressionExpression
@@ -234,6 +238,11 @@ NUMBER_LITERAL:
 	| '.' DIGIT+
 	| DIGIT+ '.'
 	| DIGIT+ '.' DIGIT+;
+
+IF: 'if';
+ELSE: 'else';
+END_IF: 'endif';
+THEN: 'then';
 
 BOOL_LITERAL: 'true' | 'false';
 
