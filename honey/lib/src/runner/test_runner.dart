@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:honey/src/honey_binding.dart';
 import 'package:honey/src/models/expression/expression.dart';
 import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/models/statement.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
@@ -23,7 +24,7 @@ class TestRunner {
     const stepIndex = 0;
     while (queue.isNotEmpty && !_canceled) {
       final expression = queue.removeLast();
-      final startTime = DateTime.now();
+
       final dynamic result = await runRepeatedly(expression);
 
       /*final step = TestStep(
@@ -67,7 +68,6 @@ class TestRunner {
       } catch (e, s) {
         error = UnknownError('$e $s');
       }
-
       if (error != null) {
         if (!error.retry) {
           return error;
@@ -90,5 +90,27 @@ class TestRunner {
 
   void dispose() {
     _fakeInput.dispose();
+  }
+
+  Future<dynamic> _runCondition(
+      ConditionStatement statement, ListQueue<Statement> queue) async {
+    var isConditionMet = false;
+    dynamic result;
+    for (final conditionalStatement
+        in statement.conditionStatements ?? <ConditionStatementItem>[]) {
+      if (conditionalStatement.condition != null) {
+        result = await runRepeatedly(
+          conditionalStatement.condition!,
+        );
+        isConditionMet = result is Expression && result.asBool;
+        if (isConditionMet) {
+          queue.addAll(conditionalStatement.statements);
+          break;
+        }
+      } else {
+        queue.addAll(conditionalStatement.statements);
+      }
+    }
+    return result;
   }
 }

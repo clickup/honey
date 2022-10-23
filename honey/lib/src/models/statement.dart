@@ -38,36 +38,51 @@ class ExpressionStatement extends Statement {
 }
 
 @immutable
-class IfStatement extends Statement {
-  const IfStatement({
-    required this.condition,
-    required this.thenStatements,
-    required this.elseStatements,
+class ConditionStatement extends Statement {
+  const ConditionStatement({
+    this.conditionStatements,
     required super.source,
     required super.line,
   });
-
-  final Expression condition;
-  final List<Statement> thenStatements;
-  final List<Statement> elseStatements;
+  final List<ConditionStatementItem>? conditionStatements;
 
   @override
   bool operator ==(Object other) =>
-      other is IfStatement &&
+      other is ConditionStatement &&
+      const ListEquality<ConditionStatementItem>()
+          .equals(other.conditionStatements, conditionStatements);
+
+  @override
+  int get hashCode => Object.hashAll(conditionStatements ?? []);
+
+  @override
+  String toString() =>
+      'ConditionStatement{condtionaStatements: $conditionStatements}';
+}
+
+@immutable
+class ConditionStatementItem {
+  const ConditionStatementItem({
+    this.condition,
+    required this.statements,
+  });
+
+  final Expression? condition;
+  final List<Statement> statements;
+
+  @override
+  bool operator ==(Object other) =>
+      other is ConditionStatementItem &&
       other.condition == condition &&
-      const ListEquality<Statement>()
-          .equals(other.thenStatements, thenStatements) &&
-      const ListEquality<Statement>()
-          .equals(other.elseStatements, elseStatements) &&
-      other.source == source &&
-      other.line == line;
+      const ListEquality<Statement>().equals(other.statements, statements);
 
   @override
   int get hashCode => Object.hash(
         condition,
-        Object.hashAll(thenStatements),
-        Object.hashAll(elseStatements),
-        source,
-        line,
+        Object.hashAll(statements),
       );
+
+  @override
+  String toString() =>
+      'ConditionStatementItem{condition: $condition, statements: $statements}';
 }

@@ -37,3 +37,17 @@ void expectExpr(String test, Expression expression, {bool optional = false}) {
   expect(statement.optional, optional);
   expect(statement.expression, expression);
 }
+
+void expectCondition(String test, ConditionStatement item) {
+  final result = compileHoneyTalk(test);
+  expect(result.hasError, false);
+  final statements = result.statements;
+  expect(statements, isNotNull);
+  expect(statements!.length, item.conditionStatements?.length ?? 0);
+  for (final statement in statements ?? []) {
+    statement as ConditionStatement;
+    expect(statement.source, test);
+    expect(statement.line, 0);
+    expect(statement.conditionStatements, item.conditionStatements);
+  }
+}

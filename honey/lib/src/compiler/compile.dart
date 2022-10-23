@@ -33,7 +33,6 @@ CompilationResult compileHoneyTalk(String script) {
     );
 
   final statements = parser.script().accept(ScriptVisitor())!;
-
   return error ?? CompilationResult(statements: statements);
 }
 

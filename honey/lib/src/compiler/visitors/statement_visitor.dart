@@ -37,4 +37,65 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
       line: ctx.line,
     );
   }
+
+  @override
+  Statement? visitStatementIf(StatementIfContext ctx) {
+    return ConditionStatement(
+      conditionStatements: _conditionStatements(ctx),
+      source: ctx.source,
+      line: ctx.line,
+    );
+  }
+
+  List<ConditionStatementItem>? _conditionStatements(StatementIfContext ctx) {
+    if (ctx.ifStat() == null) {
+      return null;
+    }
+
+    final items = <ConditionStatementItem>[];
+    final ifActionStatements = ctx.ifStat()!.actionStatements();
+    final ifConditionContext = ctx.ifStat()!.expression();
+    items.add(_prepareItem(ifActionStatements, ifConditionContext!));
+
+    if (ctx.ifStat()?.elseIfStats() == null) {
+      return items;
+    }
+
+    for (final element
+        in ctx.ifStat()?.elseIfStats() ?? <ElseIfStatContext>[]) {
+      final item = _prepareItem(
+        element.actionStatements(),
+        element.expression(),
+      );
+      items.add(item);
+    }
+
+    return items.toList();
+  }
+
+  ConditionStatementItem _prepareItem(
+    List<ActionStatementContext> actionStatements,
+    ExpressionContext? expressionContext,
+  ) {
+    final condition = expressionContext?.accept(expressionVisitor);
+    final statements = <Statement>[];
+    for (final element in actionStatements) {
+      final e = element.accept(actionVisitor);
+      if (e != null) {
+        statements.add(
+          ExpressionStatement(
+            source: element.source,
+            optional: false,
+            expression: e,
+            line: element.line,
+          ),
+        );
+      }
+    }
+
+    return ConditionStatementItem(
+      condition: condition,
+      statements: statements.toList(),
+    );
+  }
 }
