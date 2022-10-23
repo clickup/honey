@@ -1,216 +1,213 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/function_expr.dart';
+import 'package:honey/src/expression/list_expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
 
-class ExpressionVisitor extends HoneyTalkBaseVisitor<Expression> {
+class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   @override
-  Expression visitTermTerm(TermTermContext ctx) {
+  Expr visitTermTerm(TermTermContext ctx) {
     return ctx.term()!.accept(this)!;
   }
 
   @override
-  Expression visitExpressionExpression(ExpressionExpressionContext ctx) {
+  Expr visitExpressionExpression(ExpressionExpressionContext ctx) {
     return ctx.expression()!.accept(this)!;
   }
 
   @override
-  Expression visitExpressionTerm(ExpressionTermContext ctx) {
+  Expr visitExpressionTerm(ExpressionTermContext ctx) {
     return super.visitExpressionTerm(ctx)!;
   }
 
   @override
-  Expression visitExpressionNot(ExpressionNotContext ctx) {
+  Expr visitExpressionNot(ExpressionNotContext ctx) {
     final expression = ctx.expression()!.accept(this)!;
-    return FunctionExp(HoneyFunction.not, [expression]);
+    return func(F.not, {pValue: expression});
   }
 
   @override
-  Expression visitExpressionNegate(ExpressionNegateContext ctx) {
+  Expr visitExpressionNegate(ExpressionNegateContext ctx) {
     final expression = ctx.expression()!.accept(this)!;
-    return FunctionExp(HoneyFunction.not, [expression, ValueExp(-1)]);
+    return func(F.multiply, {pLeft: expression, pRight: val(-1)});
   }
 
   @override
-  Expression visitExpressionExists(ExpressionExistsContext ctx) {
+  Expr visitExpressionExists(ExpressionExistsContext ctx) {
     final target = ctx.expression()!.accept(this)!;
-    final widgets = FunctionExp(HoneyFunction.widgets, [target]);
-    final count = FunctionExp(HoneyFunction.length, [widgets]);
+    final widgets = func(F.widgets, {pTarget: target});
+    final count = func(F.length, {pValue: widgets});
     if (ctx.isAreNot() == null) {
-      return FunctionExp(HoneyFunction.greater, [count, ValueExp(0)]);
+      return func(F.greater, {pLeft: count, pRight: val(0)});
     } else {
-      return FunctionExp(HoneyFunction.equal, [count, ValueExp(0)]);
+      return func(F.equal, {pLeft: count, pRight: val(0)});
     }
   }
 
   @override
-  Expression visitExpressionPow(ExpressionPowContext ctx) {
+  Expr visitExpressionPow(ExpressionPowContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.pow, [left, right]);
+    return func(F.pow, {pLeft: left, pRight: right});
   }
 
   @override
-  Expression visitExpressionBinaryOp(ExpressionBinaryOpContext ctx) {
+  Expr visitExpressionBinaryOp(ExpressionBinaryOpContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
     switch (ctx.op?.text) {
       case '+':
-        return FunctionExp(HoneyFunction.plus, [left, right]);
+        return func(F.plus, {pLeft: left, pRight: right});
       case '-':
-        return FunctionExp(HoneyFunction.minus, [left, right]);
+        return func(F.minus, {pLeft: left, pRight: right});
       case '*':
-        return FunctionExp(HoneyFunction.multiply, [left, right]);
+        return func(F.multiply, {pLeft: left, pRight: right});
       case '/':
-        return FunctionExp(HoneyFunction.divide, [left, right]);
+        return func(F.divide, {pLeft: left, pRight: right});
       case '&':
-        return FunctionExp(HoneyFunction.concat, [left, right]);
+        return func(F.concat, {pLeft: left, pRight: right});
       case '&&':
-        return FunctionExp(HoneyFunction.concat, [left, ValueExp(' '), right]);
+        return func(F.concat, {
+          pValue: list([left, val(' '), right])
+        });
       default:
         throw UnsupportedError('Unknown expression op');
     }
   }
 
   @override
-  Expression visitExpressionComparison(ExpressionComparisonContext ctx) {
+  Expr visitExpressionComparison(ExpressionComparisonContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
     switch (ctx.op!.accept(comparisonOpVisitor)) {
       case '=':
-        return FunctionExp(HoneyFunction.equal, [left, right]);
+        return func(F.equal, {pLeft: left, pRight: right});
       case '!=':
-        return FunctionExp(
-          HoneyFunction.not,
-          [
-            FunctionExp(HoneyFunction.equal, [left, right])
-          ],
-        );
+        return func(F.not, {
+          pValue: func(F.equal, {pLeft: left, pRight: right})
+        });
       case '>':
-        return FunctionExp(HoneyFunction.greater, [left, right]);
+        return func(F.greater, {pLeft: left, pRight: right});
       case '>=':
-        return FunctionExp(HoneyFunction.or, [
-          FunctionExp(HoneyFunction.greater, [left, right]),
-          FunctionExp(HoneyFunction.equal, [left, right]),
-        ]);
+        return func(F.or, {
+          pLeft: func(F.greater, {pLeft: left, pRight: right}),
+          pRight: func(F.equal, {pLeft: left, pRight: right}),
+        });
       case '<':
-        return FunctionExp(HoneyFunction.less, [left, right]);
+        return func(F.less, {pLeft: left, pRight: right});
       case '<=':
-        return FunctionExp(HoneyFunction.or, [
-          FunctionExp(HoneyFunction.less, [left, right]),
-          FunctionExp(HoneyFunction.equal, [left, right]),
-        ]);
+        return func(F.or, {
+          pLeft: func(F.less, {pLeft: left, pRight: right}),
+          pRight: func(F.equal, {pLeft: left, pRight: right}),
+        });
       default:
         throw UnsupportedError('Unknown expression cmpOp');
     }
   }
 
   @override
-  Expression visitExpressionStartsWith(ExpressionStartsWithContext ctx) {
+  Expr visitExpressionStartsWith(ExpressionStartsWithContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final prefix = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.startsWith, [value, prefix]);
+    return func(F.startsWith, {pValue: value, pInput: prefix});
   }
 
   @override
-  Expression visitExpressionEndsWith(ExpressionEndsWithContext ctx) {
+  Expr visitExpressionEndsWith(ExpressionEndsWithContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final postfix = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.endsWith, [value, postfix]);
+    return func(F.endsWith, {pValue: value, pInput: postfix});
   }
 
   @override
-  Expression visitExpressionContains(ExpressionContainsContext ctx) {
+  Expr visitExpressionContains(ExpressionContainsContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final substr = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.contains, [value, substr]);
+    return func(F.contains, {pValue: value, pInput: substr});
   }
 
   @override
-  Expression? visitExpressionMatches(ExpressionMatchesContext ctx) {
+  Expr? visitExpressionMatches(ExpressionMatchesContext ctx) {
     final value = ctx.expression(0)!.accept(this)!;
     final regex = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.matches, [value, regex]);
+    return func(F.matches, {pValue: value, pInput: regex});
   }
 
   @override
-  Expression visitExpressionIsAttr(ExpressionIsAttrContext ctx) {
+  Expr visitExpressionIsAttr(ExpressionIsAttrContext ctx) {
     final target = ctx.expression()!.accept(this)!;
     final property = ctx.property()!.accept(propertyVisitor)!;
-    final getProperty = FunctionExp(
-      HoneyFunction.property,
-      [
-        FunctionExp(HoneyFunction.item, [
-          FunctionExp(HoneyFunction.widgets, [target]),
-          ValueExp(0),
-        ]),
-        ValueExp(property)
-      ],
-    );
-    final result = FunctionExp(
-      HoneyFunction.equal,
-      [getProperty, ValueExp(true)],
-    );
+    final result = func(F.equal, {
+      pLeft: func(F.property, {
+        pValue: func(F.widgets, {pTarget: target}),
+        pName: val(property)
+      }),
+      pRight: val(true)
+    });
     if (ctx.isAreNot() != null) {
-      return FunctionExp(HoneyFunction.not, [result]);
+      return func(F.not, {pValue: result});
     } else {
       return result;
     }
   }
 
   @override
-  Expression visitExpressionAnd(ExpressionAndContext ctx) {
+  Expr visitExpressionAnd(ExpressionAndContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.and, [left, right]);
+    return func(F.and, {pLeft: left, pRight: right});
   }
 
   @override
-  Expression visitExpressionOr(ExpressionOrContext ctx) {
+  Expr visitExpressionOr(ExpressionOrContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
-    return FunctionExp(HoneyFunction.or, [left, right]);
+    return func(F.or, {pLeft: left, pRight: right});
   }
 
   @override
-  Expression visitTermLiteral(TermLiteralContext ctx) {
+  Expr visitTermLiteral(TermLiteralContext ctx) {
     return ctx.literal()!.accept(literalVisitor)!;
   }
 
   @override
-  Expression visitTermNegate(TermNegateContext ctx) {
+  Expr visitTermNegate(TermNegateContext ctx) {
     final exp = ctx.term()!.accept(this)!;
-    return FunctionExp(HoneyFunction.multiply, [exp, ValueExp(-1)]);
+    return func(F.multiply, {pLeft: exp, pRight: val(-1)});
   }
 
   @override
-  Expression visitTermFunction(TermFunctionContext ctx) {
+  Expr visitTermFunction(TermFunctionContext ctx) {
     return ctx.function()!.accept(functionVisitor)!;
   }
 
   @override
-  Expression visitTermOrdinal(TermOrdinalContext ctx) {
+  Expr visitTermOrdinal(TermOrdinalContext ctx) {
     final target = ctx.term()!.accept(this)!;
     var index = ctx.ordinal()!.ruleIndex + 1;
     if (index == 11) {
       index = -1;
     }
-    return FunctionExp(HoneyFunction.item, [target, ValueExp(index)]);
+    return func(F.property, {pValue: target, pName: val(index)});
   }
 
   @override
-  Expression visitTermSymbol(TermSymbolContext ctx) {
-    return FunctionExp(HoneyFunction.variable, [ValueExp(ctx.ID()!.text)]);
+  Expr visitTermSymbol(TermSymbolContext ctx) {
+    final name = ctx.ID()!.text!;
+    return func(F.variable, {pName: val(name)});
   }
 
   @override
-  Expression visitTermProperty(TermPropertyContext ctx) {
+  Expr visitTermProperty(TermPropertyContext ctx) {
     final target = ctx.term()!.accept(this)!;
     final prop = ctx.property()!.accept(propertyVisitor)!;
-    return FunctionExp(HoneyFunction.property, [target, ValueExp(prop)]);
+    return func(F.property, {pValue: target, pName: val(prop)});
   }
 
   @override
-  Expression visitTermWidget(TermWidgetContext ctx) {
-    return ctx.widget()!.accept(widgetVisitor)!;
+  Expr visitTermWidget(TermWidgetContext ctx) {
+    return ctx.widgetTerm()!.accept(widgetVisitor)!;
   }
 }

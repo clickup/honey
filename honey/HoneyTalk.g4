@@ -93,14 +93,13 @@ term:
 	| '-' term			# termNegate
 	| function			# termFunction
 	| ordinal term		# termOrdinal
-	| widget			# termWidget
+	| widgetTerm		# termWidget
 	| property of term	# termProperty
 	| ID				# termSymbol;
 
 property:
 	('length' | 'number' | 'count' | 'size')	# builtinPropLength
 	| character									# builtinPropChars
-	| item										# builtinPropItems
 	| word										# builtinPropWords
 	| line										# builtinPropLines
 	| ID										# otherProperty;
@@ -112,19 +111,21 @@ function:
 	) targetFormat = term # functionFormat
 	| 'format' date = term 'from' sourceFormat = term (
 		('as' | 'to') targetFormat = term
-	)?									# functionFormat
-	| 'now' ('(' ')')?					# functionNow
-	| ID '(' (term (','? term)*?)? ')'	# functionCustom
-	| ID 'with' (term (','? term)*?)	# functionCustom;
+	)?																# functionFormat
+	| 'now' ('(' ')')?												# functionNow
+	| ID '(' (functionParam ((',' | 'and') functionParam)*?)? ')'	# functionCustom
+	| ID 'with' functionParam ((',' | 'and')? functionParam)*?		# functionCustom;
+
+functionParam: (ID ':'?)? term;
 
 literal:
-	cardinalValue		# literalCardinal
+	cardinal			# literalCardinal
 	| STRING_LITERAL	# literalString
 	| REGEX_LITERAL		# literalRegex
 	| NUMBER_LITERAL	# literalNumber
 	| BOOL_LITERAL		# literalBool;
 
-cardinalValue:
+cardinal:
 	'zero'
 	| 'one'
 	| 'two'
@@ -195,31 +196,22 @@ widgetWhere:
 	('where' | 'with' | 'whose') '(' expression ')'
 	| ('where' | 'with' | 'whose') expression;
 
-widget:
+widgetTerm:
 	widgetIdent widgetReference 'and'? widgetReference 'and'? widgetReference 'and'? widgetWhere?
 	| widgetIdent widgetReference 'and'? widgetReference 'and'? widgetWhere?
 	| widgetIdent widgetReference 'and'? widgetWhere?
 	| widgetIdent widgetWhere?;
 
 widgetType:
-	('widget' | 'widgets')						# widgetTypeWidget
-	| ('button' | 'buttons' | 'btn' | 'btns')	# widgetTypeButton
-	| ('link' | 'links')						# widgetTypeLink
-	| (
-		('text' | 'input') ( 'field' | 'fields')
-		| 'edit' ('text' | 'texts')
-		| 'textfield'
-		| 'textfields'
-		| 'inputfield'
-		| 'inputfields'
-		| 'edittext'
-		| 'edittexts'
-	)															# widgetTypeTextField
-	| ('slider' | 'sliders')									# widgetTypeSlider
-	| ('image' | 'images')										# widgetTypeImage
-	| ('check' ('box' | 'boxes') | 'checkbox' | 'checkboxes')	# widgetTypeCheckBox
-	| ('switch' | 'switches')									# widgetTypeSwitch
-	| ( 'header' | 'headers')									# widgetTypeHeader;
+	widget
+	| button
+	| link
+	| textfield
+	| slider
+	| image
+	| checkbox
+	| sswitch
+	| header;
 
 singleDirection:
 	'left'							# singleDirectionLeft
@@ -251,11 +243,17 @@ STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
 REGEX_LITERAL:
 	'/' ('\\/' | ~[/\n])* '/' ('a' .. 'z' | 'A' .. 'Z')*;
 
-THE: 'the' -> channel(HIDDEN);
+IGNORE: (
+		'the'
+		| 'a'
+		| 'an'
+		| 'actually'
+		| 'just'
+		| 'yet'
+		| 'soon'
+	) -> channel(HIDDEN);
 
-A_AN: ('a' | 'an') -> channel(HIDDEN);
-
-ID: (ALPHA (ALPHA | DIGIT)*);
+ID: ( ALPHA (ALPHA | DIGIT)*);
 
 ALPHA: ('a' .. 'z' | 'A' .. 'Z' | '_')+;
 

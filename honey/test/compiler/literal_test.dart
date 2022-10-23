@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
@@ -27,7 +27,7 @@ void main() {
     test('Number', () {
       expectExpr('123', val(123));
       expectExpr('123.456', val(123.456));
-      expectExpr('-123', func(HoneyFunction.multiply, [val(123), val(-1)]));
+      expectExpr('-123', func(F.multiply, [val(123), val(-1)]));
     });
 
     test('Cardinal', () {

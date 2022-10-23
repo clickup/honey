@@ -1,4 +1,4 @@
-import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/protocol/honey_message.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'daemon_message.g.dart';

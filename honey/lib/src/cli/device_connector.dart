@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:honey/src/cli/flutter_tools.dart';
 import 'package:honey/src/consts/markers.dart';
-import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/protocol/honey_message.dart';
 
 typedef ConnectedDevicesCallback = void Function(List<Device> devices);
 typedef MessageCallback = void Function(Device device, String message);

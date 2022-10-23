@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:honey/src/consts/markers.dart';
-import 'package:honey/src/honey_binding.dart';
-import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
+import 'package:honey/src/protocol/honey_message.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DebugConnection {
@@ -12,7 +12,7 @@ class DebugConnection {
     _startServer();
 
     _statusSubscription =
-        HoneyBinding.instance.statusStream.listen((status) async {
+        HoneyWidgetsBinding.instance.statusStream.listen((status) async {
       _packageInfo ??= await PackageInfo.fromPlatform();
       _send(
         DeviceStatus(
@@ -81,11 +81,11 @@ class DebugConnection {
       );
 
       if (msg is StartTestCommand) {
-        HoneyBinding.instance
+        HoneyWidgetsBinding.instance
             .compileAndRunTest(msg.runId, msg.test)
             .listen(_send);
       } else if (msg is CancelTestsCommand) {
-        HoneyBinding.instance.cancelTests();
+        HoneyWidgetsBinding.instance.cancelTests();
       }
     }
   }

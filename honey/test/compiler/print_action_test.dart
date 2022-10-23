@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Print Action', () {
     test('Synonyms', () {
-      final result = func(HoneyFunction.print, [val('some TEXT')]);
+      final result = func(F.print, [val('some TEXT')]);
 
       expectExpr('print "some TEXT"', result);
       expectExpr('printing "some TEXT"', result);
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(HoneyFunction.print, [val('test123')]);
+      final result = func(F.print, [val('test123')]);
 
       expectExpr('maybe print "test123"', result, optional: true);
       expectExpr('try printing "test123"', result, optional: true);

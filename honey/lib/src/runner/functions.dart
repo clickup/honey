@@ -1,4 +1,5 @@
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/expression/function_expr.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/runner/functions/action_functions.dart';
 import 'package:honey/src/runner/functions/core_functions.dart';
 import 'package:honey/src/runner/functions/date_functions.dart';
@@ -6,35 +7,31 @@ import 'package:honey/src/runner/functions/logic_functions.dart';
 import 'package:honey/src/runner/functions/math_functions.dart';
 import 'package:honey/src/runner/functions/widget_functions.dart';
 
-const functions = {
-  HoneyFunction.click: ActionFunctions.click,
-  HoneyFunction.verify: ActionFunctions.verify,
-  HoneyFunction.enter: ActionFunctions.enter,
-  HoneyFunction.wait: ActionFunctions.wait,
-  HoneyFunction.swipe: ActionFunctions.swipe,
-  HoneyFunction.print: ActionFunctions.print,
-  // HoneyFunction.error,
-  HoneyFunction.and: LogicFunctions.and,
-  HoneyFunction.or: LogicFunctions.or,
-  HoneyFunction.not: LogicFunctions.not,
-  //HoneyFunction.controlIf: LogicFunctions.and,
-  //HoneyFunction.controlWhile: LogicFunctions.and,
-  HoneyFunction.widgets: WidgetFunctions.widgets,
-  HoneyFunction.property: CoreFunctions.property,
-  HoneyFunction.item: CoreFunctions.item,
-  HoneyFunction.length: CoreFunctions.length,
-  HoneyFunction.variable: CoreFunctions.variable,
-  //HoneyFunction.function,
-  HoneyFunction.now: DateFunctions.now,
-  HoneyFunction.format: DateFunctions.format,
-  HoneyFunction.equal: MathFunctions.equal,
-  HoneyFunction.greater: MathFunctions.greater,
-  HoneyFunction.less: MathFunctions.less,
-  HoneyFunction.plus: MathFunctions.plus,
-  HoneyFunction.minus: MathFunctions.minus,
-  HoneyFunction.multiply: MathFunctions.multiply,
-  HoneyFunction.divide: MathFunctions.divide,
-  HoneyFunction.pow: MathFunctions.pow,
-  //HoneyFunction.matches:Str.cat,
-  //HoneyFunction.concat;
+const functions = <F, HoneyFunction>{
+  F.click: ActionFunctions.click,
+  F.verify: ActionFunctions.verify,
+  F.enter: ActionFunctions.enter,
+  F.wait: ActionFunctions.wait,
+  F.swipe: ActionFunctions.swipe,
+  F.print: ActionFunctions.print,
+  // F.error,
+  F.and: LogicFunctions.and,
+  F.or: LogicFunctions.or,
+  F.not: LogicFunctions.not,
+  //F.widgets: WidgetFunctions.widgets,
+  F.property: CoreFunctions.property,
+  F.variable: CoreFunctions.variable,
+  //F.function,
+  F.now: DateFunctions.now,
+  F.format: DateFunctions.format,
+  F.equal: MathFunctions.equal,
+  F.greater: MathFunctions.greater,
+  F.less: MathFunctions.less,
+  F.plus: MathFunctions.plus,
+  F.minus: MathFunctions.minus,
+  F.multiply: MathFunctions.multiply,
+  F.divide: MathFunctions.divide,
+  F.pow: MathFunctions.pow,
+  //F.matches:Str.cat,
+  //F.concat;
 };

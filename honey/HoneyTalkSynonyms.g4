@@ -90,9 +90,47 @@ swipe:
 	| 'drag'
 	| 'dragging';
 
-// Expressions
+// Widgets
 
-exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
+widget: 'widget' | 'widgets';
+
+button: 'button' | 'buttons' | 'btn' | 'btns';
+
+link: 'link' | 'links' | 'hyperlink' | 'hyperlinks';
+
+textfield: ('text' | 'input') ('field' | 'fields')
+	| 'edit' ('text' | 'texts')
+	| 'textfield'
+	| 'textfields'
+	| 'inputfield'
+	| 'inputfields'
+	| 'edittext'
+	| 'edittexts';
+
+slider: 'slider' | 'sliders';
+
+image:
+	'image'
+	| 'images'
+	| 'picture'
+	| 'pictures'
+	| 'photo'
+	| 'photos'
+	| 'icon'
+	| 'icons';
+
+checkbox: 'check' ('box' | 'boxes') | 'checkbox' | 'checkboxes';
+
+sswitch: 'switch' | 'switches';
+
+header: 'header' | 'headers';
+
+exists: // Expressions
+	'exist'
+	| 'exists'
+	| 'existing'
+	| 'visible'
+	| 'there';
 
 starts:
 	'start'
@@ -121,8 +159,6 @@ character: 'character' | 'characters' | 'char' | 'chars';
 word: 'word' | 'words';
 
 line: 'line' | 'lines';
-
-item: 'item' | 'items';
 
 of: 'of' | 'from' | 'in';
 

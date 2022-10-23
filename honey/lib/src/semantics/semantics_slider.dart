@@ -18,7 +18,7 @@ class SemanticsSlider extends StatelessWidget {
   final String? label;
   final double adjustmentUnit;
   final ValueChanged<double>? onChanged;
-  final Map<String, dynamic>? properties;
+  final Map<String, String>? properties;
   final bool testOnly;
 
   @override

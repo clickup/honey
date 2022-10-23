@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Condition', () {
     test('exists', () {
-      final result = func(HoneyFunction.greater, [
-        func(HoneyFunction.length, [
-          func(HoneyFunction.widgets, [val('test')])
+      final result = func(F.greater, [
+        func(F.length, [
+          func(F.widgets, [val('test')])
         ]),
         val(0),
       ]);
@@ -26,9 +26,9 @@ void main() {
     });
 
     test('exists not', () {
-      final result = func(HoneyFunction.equal, [
-        func(HoneyFunction.length, [
-          func(HoneyFunction.widgets, [val('test')])
+      final result = func(F.equal, [
+        func(F.length, [
+          func(F.widgets, [val('test')])
         ]),
         val(0),
       ]);
@@ -45,7 +45,7 @@ void main() {
     });
 
     test('greater than', () {
-      final result = func(HoneyFunction.greater, [val(10), val('abc')]);
+      final result = func(F.greater, [val(10), val('abc')]);
 
       expectExpr('10 > "abc"', result);
       expectExpr('10 gt "abc"', result);
@@ -59,7 +59,7 @@ void main() {
     });
 
     test('less than', () {
-      final result = func(HoneyFunction.less, [val(10), val('abc')]);
+      final result = func(F.less, [val(10), val('abc')]);
 
       expectExpr('10 < "abc"', result);
       expectExpr('10 lt "abc"', result);
@@ -74,8 +74,8 @@ void main() {
 
     test('greater than or equal', () {
       final result = or([
-        func(HoneyFunction.greater, [val(10), val('abc')]),
-        func(HoneyFunction.equal, [val(10), val('abc')]),
+        func(F.greater, [val(10), val('abc')]),
+        func(F.equal, [val(10), val('abc')]),
       ]);
 
       expectExpr('10 >= "abc"', result);
@@ -98,8 +98,8 @@ void main() {
 
     test('less than or equal', () {
       final result = or([
-        func(HoneyFunction.less, [val(10), val('abc')]),
-        func(HoneyFunction.equal, [val(10), val('abc')]),
+        func(F.less, [val(10), val('abc')]),
+        func(F.equal, [val(10), val('abc')]),
       ]);
 
       expectExpr('10 <= "abc"', result);
@@ -121,7 +121,7 @@ void main() {
     });
 
     test('equal', () {
-      final result = func(HoneyFunction.equal, [val(10), val('abc')]);
+      final result = func(F.equal, [val(10), val('abc')]);
 
       expectExpr('10 = "abc"', result);
       expectExpr('10 == "abc"', result);
@@ -138,7 +138,7 @@ void main() {
 
     test('not equal', () {
       final result = not([
-        func(HoneyFunction.equal, [val(10), val('abc')])
+        func(F.equal, [val(10), val('abc')])
       ]);
 
       expectExpr('10 != "abc"', result);
@@ -155,7 +155,7 @@ void main() {
     });
 
     test('starts with', () {
-      final result = func(HoneyFunction.startsWith, [val(10), val('abc')]);
+      final result = func(F.startsWith, [val(10), val('abc')]);
 
       expectExpr('10 start with "abc"', result);
       expectExpr('10 starts with "abc"', result);
@@ -172,7 +172,7 @@ void main() {
     });
 
     test('ends with', () {
-      final result = func(HoneyFunction.endsWith, [val(10), val('abc')]);
+      final result = func(F.endsWith, [val(10), val('abc')]);
 
       expectExpr('10 end with "abc"', result);
       expectExpr('10 ends with "abc"', result);
@@ -183,7 +183,7 @@ void main() {
     });
 
     test('contains', () {
-      final result = func(HoneyFunction.contains, [val(10), val('abc')]);
+      final result = func(F.contains, [val(10), val('abc')]);
 
       expectExpr('10 contains "abc"', result);
       expectExpr('10 does contain "abc"', result);
@@ -199,7 +199,7 @@ void main() {
     });
 
     test('matches', () {
-      final result = func(HoneyFunction.matches, [val(10), val('abc')]);
+      final result = func(F.matches, [val(10), val('abc')]);
 
       expectExpr('10 match "abc"', result);
       expectExpr('10 matches "abc"', result);
@@ -209,10 +209,10 @@ void main() {
     });
 
     test('attribute', () {
-      final result = func(HoneyFunction.equal, [
-        func(HoneyFunction.property, [
-          func(HoneyFunction.item, [
-            func(HoneyFunction.widgets, [val('test')]),
+      final result = func(F.equal, [
+        func(F.property, [
+          func(F.item, [
+            func(F.widgets, [val('test')]),
             val(0)
           ]),
           val('clickable')

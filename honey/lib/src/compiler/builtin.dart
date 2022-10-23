@@ -1,59 +1,59 @@
 
 /*class Builtin {
   static FunctionExp and(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.and, params: [left, right]);
+    return FunctionExp(function: F.and, params: [left, right]);
   }
 
   static FunctionExp or(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.or, params: [left, right]);
+    return FunctionExp(function: F.or, params: [left, right]);
   }
 
   static FunctionExp not(Expression expression) {
-    return FunctionExp(function: HoneyFunction.not, params: [expression]);
+    return FunctionExp(function: F.not, params: [expression]);
   }
 
   static FunctionExp equal(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.equal, params: [left, right]);
+    return FunctionExp(function: F.equal, params: [left, right]);
   }
 
   static FunctionExp greater(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.greater, params: [left, right]);
+    return FunctionExp(function: F.greater, params: [left, right]);
   }
 
   static FunctionExp less(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.less, params: [left, right]);
+    return FunctionExp(function: F.less, params: [left, right]);
   }
 
   static FunctionExp plus(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.plus, params: [left, right]);
+    return FunctionExp(function: F.plus, params: [left, right]);
   }
 
   static FunctionExp minus(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.minus, params: [left, right]);
+    return FunctionExp(function: F.minus, params: [left, right]);
   }
 
   static FunctionExp multiply(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.multiply, params: [left, right]);
+    return FunctionExp(function: F.multiply, params: [left, right]);
   }
 
   static FunctionExp divide(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.divide, params: [left, right]);
+    return FunctionExp(function: F.divide, params: [left, right]);
   }
 
   static FunctionExp pow(Expression left, Expression right) {
-    return FunctionExp(function: HoneyFunction.pow, params: [left, right]);
+    return FunctionExp(function: F.pow, params: [left, right]);
   }
 
   static FunctionExp property(String property, Expression target) {
     return FunctionExp(
-      function: HoneyFunction.property,
+      function: F.property,
       params: [ValueExp(property.toLowerCase()), target],
     );
   }
 
   static FunctionExp item(int item, Expression target) {
     return FunctionExp(
-      function: HoneyFunction.item,
+      function: F.item,
       params: [ValueExp(item), target],
     );
   }
@@ -63,7 +63,7 @@
     if (value != null) {
       params.add(value);
     }
-    return FunctionExp(function: HoneyFunction.variable, params: params);
+    return FunctionExp(function: F.variable, params: params);
   }
 
   static FunctionExp concat(
@@ -74,12 +74,12 @@
     var l = left;
     if (space) {
       l = FunctionExp(
-        function: HoneyFunction.plus,
+        function: F.plus,
         params: [left, ValueExp(' ')],
       );
     }
     return FunctionExp(
-      function: HoneyFunction.plus,
+      function: F.plus,
       params: [l, right],
     );
   }
@@ -144,7 +144,7 @@
   }
 
   static FunctionExp verify(Expression expression) {
-    return FunctionExp(HoneyFunction.verify, [expression]);
+    return FunctionExp(F.verify, [expression]);
   }
 
   static FunctionExp enter(Expression value) {

@@ -14,7 +14,7 @@ class SemanticsButton extends StatelessWidget {
   final Widget child;
   final String label;
   final VoidCallback? onTap;
-  final Map<String, dynamic>? properties;
+  final Map<String, String>? properties;
   final bool testOnly;
 
   @override

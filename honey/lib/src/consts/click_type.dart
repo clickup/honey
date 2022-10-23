@@ -4,7 +4,12 @@ enum ClickType {
   long,
   right;
 
-  static ClickType fromName(String name) {
-    return ClickType.values.firstWhere((e) => e.name == name);
+  static ClickType? fromName(String name) {
+    for (final value in values) {
+      if (value.name == name) {
+        return value;
+      }
+    }
+    return null;
   }
 }

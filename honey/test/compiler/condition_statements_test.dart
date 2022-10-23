@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
-import 'package:honey/src/models/statement.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
@@ -13,9 +12,9 @@ void main() {
         conditionStatements: [
           ConditionStatementItem(
             statements: [],
-            condition: func(HoneyFunction.greater, [
-              func(HoneyFunction.length, [
-                func(HoneyFunction.widgets, [val('MyWidget')])
+            condition: func(F.greater, [
+              func(F.length, [
+                func(F.widgets, [val('MyWidget')])
               ]),
               val(0),
             ]),
@@ -36,7 +35,7 @@ void main() {
               ExpressionStatement(
                 optional: false,
                 expression: func(
-                  HoneyFunction.click,
+                  F.click,
                   [
                     val('single'),
                     val('MyWidget'),
@@ -47,9 +46,9 @@ void main() {
                 line: 1,
               )
             ],
-            condition: func(HoneyFunction.greater, [
-              func(HoneyFunction.length, [
-                func(HoneyFunction.widgets, [val('MyWidget')])
+            condition: func(F.greater, [
+              func(F.length, [
+                func(F.widgets, [val('MyWidget')])
               ]),
               val(0),
             ]),

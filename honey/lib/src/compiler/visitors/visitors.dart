@@ -7,13 +7,11 @@ import 'package:honey/src/compiler/visitors/literal_visitor.dart';
 import 'package:honey/src/compiler/visitors/property_visitor.dart';
 import 'package:honey/src/compiler/visitors/statement_visitor.dart';
 import 'package:honey/src/compiler/visitors/widget_reference_visitor.dart';
-import 'package:honey/src/compiler/visitors/widget_type_visitor.dart';
 import 'package:honey/src/compiler/visitors/widget_visitor.dart';
 
 final clickTypeVisitor = ClickTypeVisitor();
 final expressionVisitor = ExpressionVisitor();
 final widgetVisitor = WidgetVisitor();
-final widgetTypeVisitor = WidgetTypeVisitor();
 final literalVisitor = LiteralVisitor();
 final comparisonOpVisitor = ComparisonOpVisitor();
 final propertyVisitor = PropertyVisitor();

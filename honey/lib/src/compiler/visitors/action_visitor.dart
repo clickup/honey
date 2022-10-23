@@ -1,73 +1,75 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
 import 'package:honey/src/consts/click_type.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/function_expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
 
-class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExp> {
+class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
   @override
-  FunctionExp visitActionVerify(ActionVerifyContext ctx) {
+  FunctionExpr visitActionVerify(ActionVerifyContext ctx) {
     final expression = ctx.expression()!.accept(expressionVisitor)!;
-    return FunctionExp(HoneyFunction.verify, [expression]);
+    return func(F.verify, {pValue: expression});
   }
 
   @override
-  FunctionExp visitActionSee(ActionSeeContext ctx) {
+  FunctionExpr visitActionSee(ActionSeeContext ctx) {
     final target = ctx.expression()!.accept(expressionVisitor)!;
-    final widgetExp = FunctionExp(HoneyFunction.widgets, [target]);
-    final countExp = FunctionExp(HoneyFunction.length, [widgetExp]);
-    final gtZero = FunctionExp(HoneyFunction.greater, [countExp, ValueExp(0)]);
-    return FunctionExp(HoneyFunction.verify, [gtZero]);
+    final widgetExp = func(F.widgets, {pTarget: target});
+    final countExp = func(F.length, {pValue: widgetExp});
+    final gtZero = func(F.greater, {pLeft: countExp, pRight: val(0)});
+    return func(F.verify, {pValue: gtZero});
   }
 
   @override
-  FunctionExp visitActionClick(ActionClickContext ctx) {
+  FunctionExpr visitActionClick(ActionClickContext ctx) {
     final type = ctx.clickType()!.accept(clickTypeVisitor)!;
     final target = ctx.target?.accept(expressionVisitor);
     final offset = ctx.offset?.accept(expressionVisitor);
-    return FunctionExp(HoneyFunction.click, [
-      ValueExp(type.name),
-      target ?? const ValueExp.empty(),
-      offset ?? const ValueExp.empty()
-    ]);
+    return func(F.click, {
+      pType: val(type.name),
+      if (target != null) pTarget: target,
+      if (offset != null) pOffset: offset,
+    });
   }
 
   @override
-  FunctionExp? visitActionSwipe(ActionSwipeContext ctx) {
+  FunctionExpr? visitActionSwipe(ActionSwipeContext ctx) {
     final direction = ctx.swipeType()!.accept(singleDirectionVisitor)!;
     final target = ctx.target?.accept(expressionVisitor);
     final offset = ctx.offset?.accept(expressionVisitor);
     final distance = ctx.pixels?.accept(expressionVisitor);
-    return FunctionExp(HoneyFunction.swipe, [
-      ValueExp(direction.name),
-      target ?? const ValueExp.empty(),
-      offset ?? const ValueExp.empty(),
-      distance ?? const ValueExp.empty()
-    ]);
+    return func(F.swipe, {
+      pType: val(direction.name),
+      if (target != null) pTarget: target,
+      if (offset != null) pOffset: offset,
+      if (distance != null) pValue: distance,
+    });
   }
 
   @override
-  FunctionExp visitActionEnter(ActionEnterContext ctx) {
+  FunctionExpr visitActionEnter(ActionEnterContext ctx) {
     final value = ctx.value!.accept(expressionVisitor)!;
-    return FunctionExp(HoneyFunction.enter, [value]);
+    return func(F.enter, {pValue: value});
   }
 
   @override
-  FunctionExp visitActionSetVariable(ActionSetVariableContext ctx) {
+  FunctionExpr visitActionSetVariable(ActionSetVariableContext ctx) {
     final variable = ctx.variable!.text!;
     final value = ctx.expression()!.accept(expressionVisitor)!;
-    return FunctionExp(HoneyFunction.variable, [ValueExp(variable), value]);
+    return func(F.variable, {pName: val(variable), pValue: value});
   }
 
   @override
-  FunctionExp visitActionWait(ActionWaitContext ctx) {
+  FunctionExpr visitActionWait(ActionWaitContext ctx) {
     final value = ctx.expression()!.accept(expressionVisitor)!;
-    return FunctionExp(HoneyFunction.wait, [value]);
+    return func(F.wait, {pValue: value});
   }
 
   @override
-  FunctionExp? visitActionPrint(ActionPrintContext ctx) {
+  FunctionExpr visitActionPrint(ActionPrintContext ctx) {
     final value = ctx.expression()!.accept(expressionVisitor)!;
-    return FunctionExp(HoneyFunction.print, [value]);
+    return func(F.print, {pValue: value});
   }
 }
 

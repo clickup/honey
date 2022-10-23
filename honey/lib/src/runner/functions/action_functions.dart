@@ -1,112 +1,119 @@
 import 'dart:ui';
 
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/widget_not_found_error.dart';
 
 abstract class ActionFunctions {
-  static Future<Expression> click(
+  static Future<EvaluatedExpr> click(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final type = await params.getAndEval(ctx, 0);
-    final target = await params.getAndEval(ctx, 1);
-    final offsetExp = await params.getAndEval(ctx, 2);
+    final type = await ctx.eval(params[pType]);
+    final clickType = type is ValueExpr ? ClickType.fromName(type.value) : null;
+    final target = await ctx.eval(params[pTarget]);
+    final offsetExp = await ctx.eval(params[pOffset]);
 
-    final targetWidget = target.asWidget;
+    final targetWidget = target.widgetExpr;
 
     Offset? offset;
-    if (offsetExp is ValueExp && offsetExp.isNotEmpty) {
+    if (offsetExp is ValueExpr && !offsetExp.isEmpty) {
       offset = offsetExp.asOffset;
     }
 
     if (targetWidget == null && offset == null) {
       throw WidgetNotFoundError('some widget');
     } else {
-      await ctx.click(widget: targetWidget, offset: offset);
-      return const ValueExp.empty();
+      await ctx.click(
+        widget: targetWidget,
+        offset: offset,
+        type: clickType ?? ClickType.single,
+      );
+      return empty();
     }
   }
 
-  static Future<Expression> verify(
+  static Future<EvaluatedExpr> verify(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final expression = await params.getAndEval(ctx, 0);
+    final expression = await ctx.eval(params[pValue]);
 
-    if (expression.asBool) {
-      return const ValueExp.empty();
+    if (expression is ValueExpr && expression.asBool) {
+      return empty();
     } else {
       throw HoneyError('verification failed', expression.retry);
     }
   }
 
-  static Future<Expression> enter(
+  static Future<EvaluatedExpr> enter(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final value = await params.getAndEval(ctx, 0);
+    final value = await ctx.eval(params[pValue]);
 
-    if (value is ValueExp) {
+    if (value is ValueExpr) {
       if (ctx.fakeTextInput.hasClient) {
         ctx.fakeTextInput.enterText(value.value);
+        return empty();
       } else {
         throw HoneyError('no text field focused', false);
       }
     } else {
       throw HoneyError('no string value given', value.retry);
     }
-    return const ValueExp.empty();
   }
 
-  static Future<Expression> wait(
+  static Future<EvaluatedExpr> wait(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final duration = await params.getAndEval(ctx, 0);
-    await ctx.delay(Duration(milliseconds: duration.asNum.toInt()));
-    return const ValueExp.empty();
+    final duration = await ctx.eval(params[pValue]);
+    if (duration is ValueExpr) {
+      await ctx.delay(Duration(milliseconds: duration.asNum.toInt()));
+    }
+    return empty();
   }
 
-  static Future<Expression> print(
+  static Future<EvaluatedExpr> print(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final value = await params.getAndEval(ctx, 0);
-    final message = value.value ?? '';
-    ctx.message = message;
-    return const ValueExp.empty();
+    final value = await ctx.eval(params[pValue]);
+    ctx.message = value.toDisplayString();
+    return empty();
   }
 
-  static Future<Expression> swipe(
+  static Future<EvaluatedExpr> swipe(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final type = await params.getAndEval(ctx, 0);
-    final target = await params.getAndEval(ctx, 1);
-    final offsetExp = await params.getAndEval(ctx, 2);
-    final pixelsExp = await params.getAndEval(ctx, 3);
+    final type = await ctx.eval(params[pType]);
+    final direction = type is ValueExpr ? Direction.fromName(type.value) : null;
+    final target = await ctx.eval(params[pTarget]);
+    final offsetExp = await ctx.eval(params[pOffset]);
+    final pixelsExp = await ctx.eval(params[pValue]);
 
-    final targetWidget = target.asWidget;
+    final targetWidget = target.widgetExpr;
     Offset? offset;
-    if (offsetExp is ValueExp && offsetExp.isNotEmpty) {
+    if (offsetExp is ValueExpr && !offsetExp.isEmpty) {
       offset = offsetExp.asOffset;
     }
 
     var pixels = 0.0;
-    if (pixelsExp is ValueExp && pixelsExp.isNotEmpty) {
-      pixels = pixelsExp.asDouble;
+    if (pixelsExp is ValueExpr) {
+      pixels = pixelsExp.asNum.toDouble();
     }
 
     await ctx.swipe(
       widget: targetWidget,
       offset: offset,
-      direction:
-          type.value != null ? Direction.fromName(type.value!) : Direction.left,
+      direction: direction ?? Direction.left,
       distance: pixels,
     );
-    return const ValueExp.empty();
+    return empty();
   }
 }

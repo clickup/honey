@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Swipe Action', () {
     test('Synonyms', () {
-      final result = func(HoneyFunction.swipe, [
+      final result = func(F.swipe, [
         val('left'),
         val('myWidget'),
         val(''),
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('Direction up', () {
-      final result = func(HoneyFunction.swipe, [
+      final result = func(F.swipe, [
         val('top'),
         val('myWidget'),
         val(''),
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('Direction down', () {
-      final result = func(HoneyFunction.swipe, [
+      final result = func(F.swipe, [
         val('bottom'),
         val('myWidget'),
         val(''),
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('Direction right', () {
-      final result = func(HoneyFunction.swipe, [
+      final result = func(F.swipe, [
         val('right'),
         val('myWidget'),
         val(''),

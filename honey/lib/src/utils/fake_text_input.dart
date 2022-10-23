@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 
 class FakeTextInput {
   /// Create a fake keyboard backend.
@@ -9,13 +9,15 @@ class FakeTextInput {
   /// The [onCleared] argument may be set to be notified of when the keyboard
   /// is dismissed.
   FakeTextInput() {
-    final messenger = HoneyBinding.instance.defaultBinaryMessenger;
+    final messenger = HoneyWidgetsBinding.instance.defaultBinaryMessenger;
     messenger.setMockMethodCallHandler(
-        SystemChannels.textInput, _handleTextInputCall,);
+      SystemChannels.textInput,
+      _handleTextInputCall,
+    );
   }
 
   void dispose() {
-    final messenger = HoneyBinding.instance.defaultBinaryMessenger;
+    final messenger = HoneyWidgetsBinding.instance.defaultBinaryMessenger;
     messenger.setMockMethodCallHandler(SystemChannels.textInput, null);
   }
 
@@ -98,9 +100,11 @@ class FakeTextInput {
   /// Calling this method replaces the content of the connected input field with
   /// `text`, and places the caret at the end of the text.
   void enterText(String text) {
-    updateEditingValue(TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
-    ),);
+    updateEditingValue(
+      TextEditingValue(
+        text: text,
+        selection: TextSelection.collapsed(offset: text.length),
+      ),
+    );
   }
 }

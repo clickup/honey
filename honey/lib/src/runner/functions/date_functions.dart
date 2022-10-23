@@ -1,37 +1,46 @@
-import 'package:honey/honey.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:intl/intl.dart';
 
 abstract class DateFunctions {
-  static Future<Expression> format(
+  static Future<EvaluatedExpr> format(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final dateStr = await params.getAndEval(ctx, 0);
-    final sourceFormat = await params.getAndEval(ctx, 1);
-    final targetFormat = await params.getAndEval(ctx, 2);
+    final dateExpr = await ctx.eval(params[pValue]);
+    final sourceFormat = await ctx.eval(params[pInput]);
+    final targetFormat = await ctx.eval(params[pOutput]);
+
+    if (dateExpr is! ValueExpr) {
+      return ValueExpr.empty(retry: dateExpr.retry);
+    }
 
     DateTime date;
-    if (sourceFormat.isNotEmpty) {
-      date = DateFormat(sourceFormat.value).parse(dateStr.value ?? '');
+    if (sourceFormat is ValueExpr && !sourceFormat.isEmpty) {
+      date = DateFormat(sourceFormat.value).parse(dateExpr.value);
     } else {
-      date = DateTime.parse(dateStr.value ?? '');
+      date = DateTime.parse(dateExpr.value);
     }
 
     String formattedDate;
-    if (targetFormat.isNotEmpty) {
-      formattedDate = DateFormat(targetFormat.value ?? '').format(date);
+    if (targetFormat is ValueExpr && !targetFormat.isEmpty) {
+      formattedDate = DateFormat(targetFormat.value).format(date);
     } else {
       formattedDate = date.toIso8601String();
     }
 
-    return ValueExp(
+    return val(
       formattedDate,
-      retry: dateStr.retry || sourceFormat.retry || targetFormat.retry,
+      retry: dateExpr.retry || sourceFormat.retry || targetFormat.retry,
     );
   }
 
-  static Future<Expression> now(HoneyContext ctx, FunctionParams params) async {
-    return ValueExp(DateTime.now());
+  static Future<EvaluatedExpr> now(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    return val(DateTime.now());
   }
 }

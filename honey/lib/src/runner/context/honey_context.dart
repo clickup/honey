@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
-import 'package:honey/src/models/expression/expression.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/widget_expr.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
 
@@ -25,9 +25,9 @@ abstract class HoneyContext {
 
   FakeTextInput get fakeTextInput;
 
-  Future<Expression> getVariable(String name);
+  EvaluatedExpr getVariable(String name);
 
-  Future<void> setVariable(String name, Expression expression);
+  void setVariable(String name, EvaluatedExpr expression);
 
   void deleteVariable(String name);
 
@@ -40,7 +40,7 @@ abstract class HoneyContext {
   Future<void> delay(Duration duration);
 
   Future<void> click({
-    WidgetExp? widget,
+    WidgetExpr? widget,
     Offset? offset,
     ClickType type = ClickType.single,
   }) async {
@@ -59,7 +59,7 @@ abstract class HoneyContext {
   }
 
   Future<void> swipe({
-    WidgetExp? widget,
+    WidgetExpr? widget,
     Offset? offset,
     Direction direction = Direction.left,
     double distance = 0.0,
@@ -80,17 +80,21 @@ abstract class HoneyContext {
     dispatchPointerEvent(PointerDownEvent(position: offset));
     dispatchPointerEvent(PointerMoveEvent(position: offset));
     offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
-    dispatchPointerEvent(PointerMoveEvent(
-      position: offset,
-      delta: delta,
-    ),);
+    dispatchPointerEvent(
+      PointerMoveEvent(
+        position: offset,
+        delta: delta,
+      ),
+    );
     offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
-    dispatchPointerEvent(PointerMoveEvent(
-      position: offset,
-      delta: delta,
-    ),);
+    dispatchPointerEvent(
+      PointerMoveEvent(
+        position: offset,
+        delta: delta,
+      ),
+    );
     dispatchPointerEvent(const PointerUpEvent());
   }
 
-  Future<Expression> eval(Expression expression);
+  Future<EvaluatedExpr> eval(Expr? expression);
 }

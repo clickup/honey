@@ -4,8 +4,13 @@ enum Direction {
   bottom,
   right;
 
-  static Direction fromName(String name) {
-    return Direction.values.firstWhere((e) => e.name == name);
+  static Direction? fromName(String name) {
+    for (final value in values) {
+      if (value.name == name) {
+        return value;
+      }
+    }
+    return null;
   }
 
   int get xValue {

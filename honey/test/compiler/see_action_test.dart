@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
 
 import '../utils.dart';
 
 void main() {
   group('See Action', () {
     test('Synonyms', () {
-      final result = func(HoneyFunction.verify, [
-        func(HoneyFunction.greater, [
-          func(HoneyFunction.length, [
-            func(HoneyFunction.widgets, [val('myWidget')])
+      final result = func(F.verify, [
+        func(F.greater, [
+          func(F.length, [
+            func(F.widgets, [val('myWidget')])
           ]),
           val(0),
         ]),
@@ -24,10 +24,10 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(HoneyFunction.verify, [
-        func(HoneyFunction.greater, [
-          func(HoneyFunction.length, [
-            func(HoneyFunction.widgets, [val('myWidget')])
+      final result = func(F.verify, [
+        func(F.greater, [
+          func(F.length, [
+            func(F.widgets, [val('myWidget')])
           ]),
           val(0),
         ]),

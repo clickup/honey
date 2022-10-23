@@ -1,4 +1,4 @@
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'honey_message.g.dart';

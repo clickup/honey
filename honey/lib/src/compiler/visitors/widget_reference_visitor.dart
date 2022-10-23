@@ -1,8 +1,8 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
 import 'package:honey/src/consts/direction.dart';
-import 'package:honey/src/models/expression/expression.dart';
-import 'package:honey/src/models/widget_reference.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/runner/widget_reference.dart';
 
 class WidgetReferenceVisitor extends HoneyTalkBaseVisitor<WidgetReference> {
   @override
@@ -20,7 +20,7 @@ class WidgetReferencePositionVisitor
   static const ds = 0.1;
   static const dl = 0.3;
 
-  final Expression widget;
+  final Expr widget;
 
   WidgetReference _referenceFraction(
     bool horizontal,
