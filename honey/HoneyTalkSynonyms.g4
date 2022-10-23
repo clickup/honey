@@ -125,12 +125,31 @@ sswitch: 'switch' | 'switches';
 
 header: 'header' | 'headers';
 
-exists: // Expressions
-    'exist'
-    | 'exists'
-    | 'existing'
-    | 'visible'
-    | 'there';
+// Expressions
+
+eq: '==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals';
+
+neq:
+    '!='
+    | '<>'
+    | isAre? 'neq'
+    | (isAreNot | 'not') 'equal' 'to'?;
+
+gte:
+    '>='
+    | isAre? 'gte'
+    | isAre? 'greater' 'than'? 'or' 'equal' 'to'?;
+
+gt: '>' | isAre? 'gt' | isAre? 'greater' 'than'?;
+
+lte:
+    '<='
+    | isAre? 'lte'
+    | isAre? 'less' 'than'? 'or' 'equal' 'to'?;
+
+lt: '<' | isAre? 'lt' | isAre? 'less' 'than'?;
+
+exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
 
 starts:
     'start'
@@ -165,6 +184,8 @@ run:
     | 'exec'
     | 'execute'
     | 'eval';
+
+length: 'length' | 'number' | 'count' | 'size';
 
 character: 'character' | 'characters' | 'char' | 'chars';
 

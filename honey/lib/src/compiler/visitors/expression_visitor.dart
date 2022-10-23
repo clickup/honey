@@ -1,9 +1,9 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
 import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/function_expr.dart';
-import 'package:honey/src/expression/list_expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
 
 class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
@@ -66,12 +66,6 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
         return func(F.multiply, {pLeft: left, pRight: right});
       case '/':
         return func(F.divide, {pLeft: left, pRight: right});
-      case '&':
-        return func(F.concat, {pLeft: left, pRight: right});
-      case '&&':
-        return func(F.concat, {
-          pValue: list([left, val(' '), right])
-        });
       default:
         throw UnsupportedError('Unknown expression op');
     }
@@ -81,29 +75,28 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   Expr visitExpressionComparison(ExpressionComparisonContext ctx) {
     final left = ctx.expression(0)!.accept(this)!;
     final right = ctx.expression(1)!.accept(this)!;
-    switch (ctx.op!.accept(comparisonOpVisitor)) {
-      case '=':
-        return func(F.equal, {pLeft: left, pRight: right});
-      case '!=':
-        return func(F.not, {
-          pValue: func(F.equal, {pLeft: left, pRight: right})
-        });
-      case '>':
-        return func(F.greater, {pLeft: left, pRight: right});
-      case '>=':
-        return func(F.or, {
-          pLeft: func(F.greater, {pLeft: left, pRight: right}),
-          pRight: func(F.equal, {pLeft: left, pRight: right}),
-        });
-      case '<':
-        return func(F.less, {pLeft: left, pRight: right});
-      case '<=':
-        return func(F.or, {
-          pLeft: func(F.less, {pLeft: left, pRight: right}),
-          pRight: func(F.equal, {pLeft: left, pRight: right}),
-        });
-      default:
-        throw UnsupportedError('Unknown expression cmpOp');
+    if (ctx.eq() != null) {
+      return func(F.equal, {pLeft: left, pRight: right});
+    } else if (ctx.neq() != null) {
+      return func(F.not, {
+        pValue: func(F.equal, {pLeft: left, pRight: right})
+      });
+    } else if (ctx.gt() != null) {
+      return func(F.greater, {pLeft: left, pRight: right});
+    } else if (ctx.gte() != null) {
+      return func(F.or, {
+        pLeft: func(F.greater, {pLeft: left, pRight: right}),
+        pRight: func(F.equal, {pLeft: left, pRight: right}),
+      });
+    } else if (ctx.lt() != null) {
+      return func(F.less, {pLeft: left, pRight: right});
+    } else if (ctx.lte() != null) {
+      return func(F.or, {
+        pLeft: func(F.less, {pLeft: left, pRight: right}),
+        pRight: func(F.equal, {pLeft: left, pRight: right}),
+      });
+    } else {
+      throw UnsupportedError('Unknown expression comparison');
     }
   }
 
@@ -138,7 +131,7 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   @override
   Expr visitExpressionIsAttr(ExpressionIsAttrContext ctx) {
     final target = ctx.expression()!.accept(this)!;
-    final property = ctx.property()!.accept(propertyVisitor)!;
+    final property = ctx.property()!.name;
     final result = func(F.equal, {
       pLeft: func(F.property, {
         pValue: func(F.widgets, {pTarget: target}),
@@ -202,12 +195,28 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   @override
   Expr visitTermProperty(TermPropertyContext ctx) {
     final target = ctx.term()!.accept(this)!;
-    final prop = ctx.property()!.accept(propertyVisitor)!;
+    final prop = ctx.property()!.name;
     return func(F.property, {pValue: target, pName: val(prop)});
   }
 
   @override
   Expr visitTermWidget(TermWidgetContext ctx) {
     return ctx.widgetTerm()!.accept(widgetVisitor)!;
+  }
+}
+
+extension on PropertyContext {
+  String get name {
+    if (length() != null) {
+      return Property.length.name;
+    } else if (character() != null) {
+      return Property.characters.name;
+    } else if (word() != null) {
+      return Property.words.name;
+    } else if (line() != null) {
+      return Property.lines.name;
+    } else {
+      return ID()!.text!;
+    }
   }
 }

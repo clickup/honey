@@ -15,14 +15,13 @@ void main() {
     });
 
     test('Regex', () {
-      expectExpr('/testRegex/', str('testRegex', regexFlags: ''));
-      expectExpr('/testRegex/i', str('testRegex', regexFlags: 'i'));
-      expectExpr('/testRegex/m', str('testRegex', regexFlags: 'm'));
-      expectExpr('/testRegex/g', str('testRegex', regexFlags: 'g'));
-      expectExpr('/testRegex/ig', str('testRegex', regexFlags: 'ig'));
-      expectExpr('/testRegex/mg', str('testRegex', regexFlags: 'mg'));
-      expectExpr('/testRegex/im', str('testRegex', regexFlags: 'im'));
-      expectExpr('/testRegex/img', str('testRegex', regexFlags: 'img'));
+      expectExpr('"testRegex"i', str('testRegex', regexFlags: 'i'));
+      expectExpr('"testRegex"m', str('testRegex', regexFlags: 'm'));
+      expectExpr('"testRegex"g', str('testRegex', regexFlags: 'g'));
+      expectExpr('"testRegex"ig', str('testRegex', regexFlags: 'ig'));
+      expectExpr('"testRegex"mg', str('testRegex', regexFlags: 'mg'));
+      expectExpr('"testRegex"im', str('testRegex', regexFlags: 'im'));
+      expectExpr('"testRegex"img', str('testRegex', regexFlags: 'img'));
     });
 
     test('Number', () {

@@ -47,45 +47,23 @@ clickType:
 swipeType: swipe singleDirection?;
 
 expression:
-    '(' expression ')'                              # expressionExpression
-    | term                                          # expressionTerm
-    | 'not' expression                              # expressionNot
-    | '-' expression                                # expressionNegate
-    | 'there' (isAreNot | isAre) expression         # expressionExists
-    | expression (isAreNot | isAre)? exists         # expressionExists
-    | expression '^' expression                     # expressionPow
-    | expression op = ('/' | '*') expression        # expressionBinaryOp
-    | expression op = ('+' | '-') expression        # expressionBinaryOp
-    | expression op = ('&&' | '&') expression       # expressionBinaryOp
-    | expression op = comparisonOp expression       # expressionComparison
-    | expression isAre? starts 'with'? expression   # expressionStartsWith
-    | expression isAre? ends 'with'? expression     # expressionEndsWith
-    | expression isAre? contains 'with'? expression # expressionContains
-    | expression isAre? matches expression          # expressionMatches
-    | expression (isAre | isAreNot) property        # expressionIsAttr
-    | expression 'and' expression                   # expressionAnd
-    | expression 'or' expression                    # expressionOr;
-
-comparisonOp:
-    ('==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
-    | (
-        '!='
-        | '<>'
-        | isAre? 'neq'
-        | (isAreNot | 'not') 'equal' 'to'?
-    ) # comparisonOpNeq
-    | (
-        '>='
-        | isAre? 'gte'
-        | isAre? 'greater' 'than'? 'or' 'equal' 'to'?
-    )                                                # comparisonOpGte
-    | ('>' | isAre? 'gt' | isAre? 'greater' 'than'?) # comparisonOpGt
-    | (
-        '<='
-        | isAre? 'lte'
-        | isAre? 'less' 'than'? 'or' 'equal' 'to'?
-    )                                             # comparisonOpLte
-    | ('<' | isAre? 'lt' | isAre? 'less' 'than'?) # comparisonOpLt;
+    '(' expression ')'                                       # expressionExpression
+    | term                                                   # expressionTerm
+    | ('not' | '!') expression                               # expressionNot
+    | '-' expression                                         # expressionNegate
+    | 'there' (isAreNot | isAre) expression                  # expressionExists
+    | expression (isAreNot | isAre)? exists                  # expressionExists
+    | expression '^' expression                              # expressionPow
+    | expression op = ('/' | '*') expression                 # expressionBinaryOp
+    | expression op = ('+' | '-') expression                 # expressionBinaryOp
+    | expression (eq | neq | gte | gt | lte | lt) expression # expressionComparison
+    | expression isAre? starts 'with'? expression            # expressionStartsWith
+    | expression isAre? ends 'with'? expression              # expressionEndsWith
+    | expression isAre? contains 'with'? expression          # expressionContains
+    | expression isAre? matches expression                   # expressionMatches
+    | expression (isAre | isAreNot) property                 # expressionIsAttr
+    | expression ('&&' | '&' | 'and') expression             # expressionAnd
+    | expression ('||' | '|' | 'or') expression              # expressionOr;
 
 term:
     '(' term ')'       # termTerm
@@ -97,12 +75,7 @@ term:
     | property of term # termProperty
     | ID               # termSymbol;
 
-property:
-    ('length' | 'number' | 'count' | 'size') # builtinPropLength
-    | character                              # builtinPropChars
-    | word                                   # builtinPropWords
-    | line                                   # builtinPropLines
-    | ID                                     # otherProperty;
+property: length | character | word | line | ID;
 
 function:
     'format' date = term ('from' sourceFormat = term)? (
@@ -122,7 +95,6 @@ functionParam: (ID ':'?)? term;
 literal:
     cardinal         # literalCardinal
     | STRING_LITERAL # literalString
-    | REGEX_LITERAL  # literalRegex
     | NUMBER_LITERAL # literalNumber
     | BOOL_LITERAL   # literalBool;
 
@@ -239,10 +211,7 @@ THEN: 'then';
 
 BOOL_LITERAL: 'true' | 'false';
 
-STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
-
-REGEX_LITERAL:
-    '/' ('\\/' | ~[/\n])* '/' ('a' .. 'z' | 'A' .. 'Z')*;
+STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"' ('a' .. 'z')*;
 
 IGNORE: (
         'the'
