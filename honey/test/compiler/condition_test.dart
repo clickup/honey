@@ -1,17 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Condition', () {
     test('exists', () {
-      final result = func(F.greater, [
-        func(F.length, [
-          func(F.widgets, [val('test')])
-        ]),
-        val(0),
-      ]);
+      final result = func(F.greater, {
+        pLeft: func(F.length, {
+          pValue: func(F.widgets, {pTarget: val('test')})
+        }),
+        pRight: val(0),
+      });
 
       expectExpr('there is "test"', result);
       expectExpr('there are "test"', result);
@@ -26,12 +27,12 @@ void main() {
     });
 
     test('exists not', () {
-      final result = func(F.equal, [
-        func(F.length, [
-          func(F.widgets, [val('test')])
-        ]),
-        val(0),
-      ]);
+      final result = func(F.equal, {
+        pLeft: func(F.length, {
+          pValue: func(F.widgets, {pTarget: val('test')})
+        }),
+        pRight: val(0)
+      });
 
       expectExpr('there isn\'t "test"', result);
       expectExpr('there aren\'t "test"', result);
@@ -45,7 +46,7 @@ void main() {
     });
 
     test('greater than', () {
-      final result = func(F.greater, [val(10), val('abc')]);
+      final result = func(F.greater, {pLeft: val(10), pRight: val('abc')});
 
       expectExpr('10 > "abc"', result);
       expectExpr('10 gt "abc"', result);
@@ -59,7 +60,7 @@ void main() {
     });
 
     test('less than', () {
-      final result = func(F.less, [val(10), val('abc')]);
+      final result = func(F.less, {pLeft: val(10), pRight: val('abc')});
 
       expectExpr('10 < "abc"', result);
       expectExpr('10 lt "abc"', result);
@@ -73,10 +74,10 @@ void main() {
     });
 
     test('greater than or equal', () {
-      final result = or([
-        func(F.greater, [val(10), val('abc')]),
-        func(F.equal, [val(10), val('abc')]),
-      ]);
+      final result = func(F.or, {
+        pLeft: func(F.greater, {pLeft: val(10), pRight: val('abc')}),
+        pRight: func(F.equal, {pLeft: val(10), pRight: val('abc')}),
+      });
 
       expectExpr('10 >= "abc"', result);
       expectExpr('10 gte "abc"', result);
@@ -97,10 +98,10 @@ void main() {
     });
 
     test('less than or equal', () {
-      final result = or([
-        func(F.less, [val(10), val('abc')]),
-        func(F.equal, [val(10), val('abc')]),
-      ]);
+      final result = func(F.or, {
+        pLeft: func(F.less, {pLeft: val(10), pRight: val('abc')}),
+        pRight: func(F.equal, {pLeft: val(10), pRight: val('abc')}),
+      });
 
       expectExpr('10 <= "abc"', result);
       expectExpr('10 lte "abc"', result);
@@ -121,7 +122,7 @@ void main() {
     });
 
     test('equal', () {
-      final result = func(F.equal, [val(10), val('abc')]);
+      final result = func(F.equal, {pLeft: val(10), pRight: val('abc')});
 
       expectExpr('10 = "abc"', result);
       expectExpr('10 == "abc"', result);
@@ -137,9 +138,9 @@ void main() {
     });
 
     test('not equal', () {
-      final result = not([
-        func(F.equal, [val(10), val('abc')])
-      ]);
+      final result = func(F.not, {
+        pValue: func(F.equal, {pLeft: val(10), pRight: val('abc')})
+      });
 
       expectExpr('10 != "abc"', result);
       expectExpr('10 neq "abc"', result);
@@ -155,7 +156,7 @@ void main() {
     });
 
     test('starts with', () {
-      final result = func(F.startsWith, [val(10), val('abc')]);
+      final result = func(F.startsWith, {pValue: val(10), pInput: val('abc')});
 
       expectExpr('10 start with "abc"', result);
       expectExpr('10 starts with "abc"', result);
@@ -172,7 +173,7 @@ void main() {
     });
 
     test('ends with', () {
-      final result = func(F.endsWith, [val(10), val('abc')]);
+      final result = func(F.endsWith, {pValue: val(10), pInput: val('abc')});
 
       expectExpr('10 end with "abc"', result);
       expectExpr('10 ends with "abc"', result);
@@ -183,7 +184,7 @@ void main() {
     });
 
     test('contains', () {
-      final result = func(F.contains, [val(10), val('abc')]);
+      final result = func(F.contains, {pValue: val(10), pInput: val('abc')});
 
       expectExpr('10 contains "abc"', result);
       expectExpr('10 does contain "abc"', result);
@@ -199,7 +200,7 @@ void main() {
     });
 
     test('matches', () {
-      final result = func(F.matches, [val(10), val('abc')]);
+      final result = func(F.matches, {pValue: val(10), pInput: val('abc')});
 
       expectExpr('10 match "abc"', result);
       expectExpr('10 matches "abc"', result);
@@ -209,23 +210,33 @@ void main() {
     });
 
     test('attribute', () {
-      final result = func(F.equal, [
-        func(F.property, [
-          func(F.item, [
-            func(F.widgets, [val('test')]),
-            val(0)
-          ]),
-          val('clickable')
-        ]),
-        val(true),
-      ]);
+      final result = func(F.equal, {
+        pLeft: func(F.property, {
+          pValue: func(F.widgets, {pTarget: val('test')}),
+          pName: val('clickable')
+        }),
+        pRight: val(true),
+      });
 
       expectExpr('"test" is clickable', result);
       expectExpr('"test" are clickable', result);
-      expectExpr('"test" is not clickable', not([result]));
-      expectExpr('"test" isn\'t clickable', not([result]));
-      expectExpr('"test" are not clickable', not([result]));
-      expectExpr('"test" aren\'t clickable', not([result]));
+    });
+
+    test('not attribute', () {
+      final result = func(F.not, {
+        pValue: func(F.equal, {
+          pLeft: func(F.property, {
+            pValue: func(F.widgets, {pTarget: val('test')}),
+            pName: val('clickable')
+          }),
+          pRight: val(true),
+        }),
+      });
+
+      expectExpr('"test" is not clickable', result);
+      expectExpr('"test" isn\'t clickable', result);
+      expectExpr('"test" are not clickable', result);
+      expectExpr('"test" aren\'t clickable', result);
     });
   });
 }

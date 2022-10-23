@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/statement.dart';
 
 import '../utils.dart';
 
@@ -12,12 +14,12 @@ void main() {
         conditionStatements: [
           ConditionStatementItem(
             statements: [],
-            condition: func(F.greater, [
-              func(F.length, [
-                func(F.widgets, [val('MyWidget')])
-              ]),
-              val(0),
-            ]),
+            condition: func(F.greater, {
+              pLeft: func(F.length, {
+                pValue: func(F.widgets, {pTarget: val('MyWidget')})
+              }),
+              pRight: val(0),
+            }),
           )
         ],
       );
@@ -34,24 +36,20 @@ void main() {
             statements: [
               ExpressionStatement(
                 optional: false,
-                expression: func(
-                  F.click,
-                  [
-                    val('single'),
-                    val('MyWidget'),
-                    val(''),
-                  ],
-                ),
+                expression: func(F.click, {
+                  pType: val('single'),
+                  pTarget: val('MyWidget'),
+                }),
                 source: 'tap "MyWidget"',
                 line: 1,
               )
             ],
-            condition: func(F.greater, [
-              func(F.length, [
-                func(F.widgets, [val('MyWidget')])
-              ]),
-              val(0),
-            ]),
+            condition: func(F.greater, {
+              pLeft: func(F.length, {
+                pValue: func(F.widgets, {pTarget: val('MyWidget')})
+              }),
+              pRight: val(0),
+            }),
           )
         ],
       );

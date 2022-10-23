@@ -13,10 +13,10 @@ class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
   @override
   FunctionExpr visitWidgetTerm(WidgetTermContext ctx) {
     final ident = ctx.widgetIdent()!.accept(_identVisitor)!;
-    final references = ctx
+    /*final references = ctx
         .widgetReferences()
         .map((e) => e.accept(referenceVisitor)!.toExp())
-        .toList();
+        .toList();*/
     final filter = ctx.widgetWhere()?.expression()?.accept(expressionVisitor);
     final allFilters = [
       if (filter != null) filter,
@@ -24,7 +24,7 @@ class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
     ];
     return func(F.widgets, {
       pTarget: list(ident.names),
-      pReference: list(references),
+      //pReference: list(references),
       pFilter: list(allFilters),
     });
   }

@@ -6,7 +6,7 @@ import 'package:honey/src/compiler/visitors/script_visitor.dart';
 import 'package:honey/src/expression/statement.dart';
 
 final strRegex = RegExp(
-  r'[^"/]+|"(?:"|[^\"])*"|/(?:/|[^\/])*/',
+  r'[^"/]+|"(?:"|[^\"])*?"|/(?:/|[^\/])*?/',
   multiLine: true,
 );
 

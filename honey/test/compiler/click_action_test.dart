@@ -60,7 +60,7 @@ void main() {
 
     test('Right', () {
       final result = func(F.click, {
-        pType: val(ClickType.single.name),
+        pType: val(ClickType.right.name),
         pTarget: val('myWidget'),
       });
 

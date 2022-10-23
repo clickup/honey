@@ -154,6 +154,18 @@ matches: 'match' | 'matches' | 'matching';
 
 // Misc
 
+run:
+    'do'
+    | 'run'
+    | 'call'
+    | 'invoke'
+    | 'perform'
+    | 'trigger'
+    | 'exe'
+    | 'exec'
+    | 'execute'
+    | 'eval';
+
 character: 'character' | 'characters' | 'char' | 'chars';
 
 word: 'word' | 'words';

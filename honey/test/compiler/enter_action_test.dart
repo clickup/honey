@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Enter Action', () {
     test('Synonyms', () {
-      final result = func(F.enter, [val('some TEXT')]);
+      final result = func(F.enter, {pValue: val('some TEXT')});
 
       expectExpr('enter "some TEXT"', result);
       expectExpr('entering "some TEXT"', result);
@@ -17,7 +18,7 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(F.enter, [val('test123')]);
+      final result = func(F.enter, {pValue: val('test123')});
 
       expectExpr('maybe enter "test123"', result, optional: true);
       expectExpr('try entering "test123"', result, optional: true);

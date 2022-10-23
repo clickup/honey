@@ -113,8 +113,9 @@ function:
         ('as' | 'to') targetFormat = term
     )?                                                            # functionFormat
     | 'now' ('(' ')')?                                            # functionNow
-    | ID '(' (functionParam ((',' | 'and') functionParam)*?)? ')' # functionCustom
-    | ID 'with' functionParam ((',' | 'and')? functionParam)*?    # functionCustom;
+    | ID '(' (functionParam ((',' | 'and') functionParam)*)? ')'  # functionCustom
+    | run? ID 'with' functionParam ((',' | 'and') functionParam)* # functionCustom
+    | run ID                                                      # functionCustom;
 
 functionParam: (ID ':'?)? term;
 

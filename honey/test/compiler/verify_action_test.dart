@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Verify Action', () {
     test('Synonyms', () {
-      final result = func(F.verify, [val(true)]);
+      final result = func(F.verify, {pValue: val(true)});
 
       expectExpr('verify true', result);
       expectExpr('verifying true', result);
@@ -35,7 +36,7 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(F.verify, [val(true)]);
+      final result = func(F.verify, {pValue: val(true)});
 
       expectExpr('maybe verify true', result, optional: true);
       expectExpr('try verifying true', result, optional: true);
