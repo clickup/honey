@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:honey/src/cli/appium/appium_session.dart';
 import 'package:honey/src/consts/markers.dart';
-import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/protocol/honey_message.dart';
 
 class AppiumRunner {
   AppiumRunner({required this.url, required this.capabilities});

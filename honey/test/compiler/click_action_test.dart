@@ -1,15 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
+import 'package:honey/src/consts/click_type.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Click Action', () {
     test('Synonyms', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('single'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.single.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('click "myWidget"', result);
       expectExpr('clicking "myWidget"', result);
@@ -28,10 +30,10 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('single'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.single.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('maybe click "myWidget"', result, optional: true);
       expectExpr('try clicking "myWidget"', result, optional: true);
@@ -41,10 +43,10 @@ void main() {
     });
 
     test('Left', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('single'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.single.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('click "myWidget"', result);
       expectExpr('click the "myWidget"', result);
@@ -57,10 +59,10 @@ void main() {
     });
 
     test('Right', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('right'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.right.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('right click "myWidget"', result);
       expectExpr('right click on "myWidget"', result);
@@ -69,10 +71,10 @@ void main() {
     });
 
     test('Double', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('double'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.double.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('double click "myWidget"', result);
       expectExpr('double click on "myWidget"', result);
@@ -81,10 +83,10 @@ void main() {
     });
 
     test('Long', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('long'), val('myWidget'), empty],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.long.name),
+        pTarget: val('myWidget'),
+      });
 
       expectExpr('long click "myWidget"', result);
       expectExpr('long click on "myWidget"', result);
@@ -93,10 +95,11 @@ void main() {
     });
 
     test('Widget Offset', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('single'), val('myWidget'), val('0.5,0.5')],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.single.name),
+        pTarget: val('myWidget'),
+        pOffset: val('0.5,0.5'),
+      });
 
       expectExpr('click "myWidget" at "0.5,0.5"', result);
       expectExpr('click "myWidget" offset "0.5,0.5"', result);
@@ -104,10 +107,10 @@ void main() {
     });
 
     test('Offset', () {
-      final result = func(
-        HoneyFunction.click,
-        [val('single'), empty, val('0.5,0.5')],
-      );
+      final result = func(F.click, {
+        pType: val(ClickType.single.name),
+        pOffset: val('0.5,0.5'),
+      });
 
       expectExpr('click at "0.5,0.5"', result);
       expectExpr('click offset "0.5,0.5"', result);

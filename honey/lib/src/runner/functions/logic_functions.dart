@@ -1,33 +1,44 @@
-import 'package:honey/honey.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 
 abstract class LogicFunctions {
-  static Future<Expression> and(HoneyContext ctx, FunctionParams params) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+  static Future<EvaluatedExpr> and(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     var result = false;
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       result = left.asBool && right.asBool;
     }
-    return ValueExp(result, retry: left.retry || right.retry);
+    return val(result, retry: left.retry || right.retry);
   }
 
-  static Future<Expression> or(HoneyContext ctx, FunctionParams params) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+  static Future<EvaluatedExpr> or(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     var result = false;
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       result = left.asBool || right.asBool;
     }
-    return ValueExp(result, retry: left.retry || right.retry);
+    return val(result, retry: left.retry || right.retry);
   }
 
-  static Future<Expression> not(HoneyContext ctx, FunctionParams params) async {
-    final exp = await params.getAndEval(ctx, 0);
-    if (exp is ValueExp) {
-      return ValueExp(exp.asBool, retry: exp.retry);
+  static Future<EvaluatedExpr> not(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final exp = await ctx.eval(params[pValue]);
+    if (exp is ValueExpr) {
+      return val(!exp.asBool, retry: exp.retry);
     } else {
-      return ValueExp.empty(retry: exp.retry);
+      return empty(retry: exp.retry);
     }
   }
 }

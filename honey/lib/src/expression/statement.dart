@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/expression/expr.dart';
 
 class Statement {
   const Statement({required this.source, required this.line});
@@ -18,7 +18,7 @@ class ExpressionStatement extends Statement {
     required super.line,
   });
 
-  final Expression expression;
+  final Expr expression;
   final bool optional;
 
   @override
@@ -67,7 +67,7 @@ class ConditionStatementItem {
     required this.statements,
   });
 
-  final Expression? condition;
+  final Expr? condition;
   final List<Statement> statements;
 
   @override

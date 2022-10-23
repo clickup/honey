@@ -1,31 +1,33 @@
-part of 'expression.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:honey/src/expression/expr.dart';
 
 @immutable
-class FunctionExp extends Expression {
-  const FunctionExp(
-    this.function,
-    this.params, {
-    super.retry = false,
-  });
+class FunctionExpr implements Expr {
+  const FunctionExpr(this.function, this.params);
 
-  final HoneyFunction function;
+  final F function;
 
-  final List<Expression> params;
+  final Map<String, Expr> params;
 
   @override
   bool operator ==(Object other) =>
-      other is FunctionExp &&
+      other is FunctionExpr &&
       function == other.function &&
-      const ListEquality<Expression>().equals(params, other.params);
+      const MapEquality<String, Expr>().equals(params, other.params);
 
   @override
-  int get hashCode => Object.hashAll([function, ...params]);
+  int get hashCode =>
+      Object.hashAll([function, ...params.keys, ...params.values]);
 
   @override
   String toString() => 'FunctionExp(function: $function, params: $params)';
 }
 
-enum HoneyFunction {
+FunctionExpr func(F function, Map<String, Expr> params) =>
+    FunctionExpr(function, params);
+
+enum F {
   // actions
   click,
   verify,
@@ -43,7 +45,6 @@ enum HoneyFunction {
   controlWhile,
   widgets,
   property,
-  item,
   length,
   variable,
   function,

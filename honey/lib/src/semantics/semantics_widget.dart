@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 
 typedef _SemanticsBuilder = Widget Function(SemanticsTag? tag);
 
@@ -32,7 +32,7 @@ Widget SemanticsWidget({
   VoidCallback? onIncrease,
   VoidCallback? onDecrease,
   bool testOnly = false,
-  Map<String, dynamic>? properties,
+  Map<String, String>? properties,
 }) {
   _SemanticsBuilder semanticsBuilder() {
     return (tag) {
@@ -100,7 +100,7 @@ class _SemanticsWidget extends StatefulWidget {
   });
 
   final _SemanticsBuilder builder;
-  final Map<String, dynamic>? properties;
+  final Map<String, String>? properties;
 
   @override
   _SemanticsWidgetState createState() => _SemanticsWidgetState();
@@ -127,12 +127,13 @@ class _SemanticsWidgetState extends State<_SemanticsWidget> {
   }
 
   void _updateTag() {
-    HoneyBinding.instance.updateSemanticsProperties(_tag, widget.properties);
+    HoneyWidgetsBinding.instance
+        .updateSemanticsProperties(_tag, widget.properties);
   }
 
   @override
   void dispose() {
-    HoneyBinding.instance.updateSemanticsProperties(_tag, null);
+    HoneyWidgetsBinding.instance.updateSemanticsProperties(_tag, null);
     super.dispose();
   }
 

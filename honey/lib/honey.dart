@@ -1,8 +1,14 @@
 library honey;
 
-export 'src/honey.dart' show honey, CustomFunction;
+export 'src/expression/expr.dart';
+export 'src/expression/function_expr.dart';
+export 'src/expression/list_expr.dart';
+export 'src/expression/value_expr.dart';
+export 'src/expression/widget_expr.dart';
+
+export 'src/honey_widgets_binding.dart' show HoneyWidgetsBinding, HoneyFunction;
+
 export 'src/runner/context/honey_context.dart';
-export 'src/runner/function_params.dart';
 
 export 'src/semantics/semantics_button.dart';
 export 'src/semantics/semantics_checkbox.dart';

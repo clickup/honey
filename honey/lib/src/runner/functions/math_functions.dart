@@ -1,110 +1,115 @@
 import 'dart:math' as math;
 
-import 'package:honey/honey.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 
 abstract class MathFunctions {
-  static Future<Expression> equal(
+  static Future<EvaluatedExpr> equal(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     var result = false;
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       result = left.compareTo(right) == 0;
     }
-    return ValueExp(result, retry: left.retry || right.retry);
+    return val(result, retry: left.retry || right.retry);
   }
 
-  static Future<Expression> greater(
+  static Future<EvaluatedExpr> greater(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     var result = false;
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       result = left.compareTo(right) == 1;
     }
-    return ValueExp(result, retry: left.retry || right.retry);
+    return val(result, retry: left.retry || right.retry);
   }
 
-  static Future<Expression> less(
+  static Future<EvaluatedExpr> less(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     var result = false;
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       result = left.compareTo(right) == -1;
     }
-    return ValueExp(result, retry: left.retry || right.retry);
+    return val(result, retry: left.retry || right.retry);
   }
 
-  static Expression _arithmeticOp(
-    Expression left,
-    Expression right,
+  static EvaluatedExpr _arithmeticOp(
+    EvaluatedExpr left,
+    EvaluatedExpr right,
     num Function(num, num) operation,
   ) {
-    if (left is ValueExp && right is ValueExp) {
+    if (left is ValueExpr && right is ValueExpr) {
       final result = operation(left.asNum, right.asNum);
       if (left.isDate && right.isDate) {
-        return ValueExp(
+        return val(
           DateTime.fromMillisecondsSinceEpoch(result.toInt()),
           retry: left.retry || right.retry,
         );
       } else {
-        return ValueExp(
+        return val(
           left.asNum + right.asNum,
           retry: left.retry || right.retry,
         );
       }
     } else {
-      return ValueExp.empty(retry: left.retry || right.retry);
+      return empty(retry: left.retry || right.retry);
     }
   }
 
-  static Future<Expression> plus(
+  static Future<EvaluatedExpr> plus(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     return _arithmeticOp(left, right, (l, r) => l + r);
   }
 
-  static Future<Expression> minus(
+  static Future<EvaluatedExpr> minus(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     return _arithmeticOp(left, right, (l, r) => l - r);
   }
 
-  static Future<Expression> multiply(
+  static Future<EvaluatedExpr> multiply(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     return _arithmeticOp(left, right, (l, r) => l * r);
   }
 
-  static Future<Expression> divide(
+  static Future<EvaluatedExpr> divide(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     return _arithmeticOp(left, right, (l, r) => l / r);
   }
 
-  static Future<Expression> pow(HoneyContext ctx, FunctionParams params) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
+  static Future<EvaluatedExpr> pow(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final left = await ctx.eval(params[pLeft]);
+    final right = await ctx.eval(params[pRight]);
     return _arithmeticOp(left, right, math.pow);
   }
 }

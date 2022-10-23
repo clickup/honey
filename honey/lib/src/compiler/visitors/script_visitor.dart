@@ -1,6 +1,6 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
-import 'package:honey/src/models/statement.dart';
+import 'package:honey/src/expression/statement.dart';
 
 class ScriptVisitor extends HoneyTalkBaseVisitor<List<Statement>> {
   @override

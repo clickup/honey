@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
@@ -14,20 +15,20 @@ void main() {
     });
 
     test('Regex', () {
-      expectExpr('/testRegex/', str('testRegex', ''));
-      expectExpr('/testRegex/i', str('testRegex', 'i'));
-      expectExpr('/testRegex/m', str('testRegex', 'm'));
-      expectExpr('/testRegex/g', str('testRegex', 'g'));
-      expectExpr('/testRegex/ig', str('testRegex', 'ig'));
-      expectExpr('/testRegex/mg', str('testRegex', 'mg'));
-      expectExpr('/testRegex/im', str('testRegex', 'im'));
-      expectExpr('/testRegex/img', str('testRegex', 'img'));
+      expectExpr('/testRegex/', str('testRegex', regexFlags: ''));
+      expectExpr('/testRegex/i', str('testRegex', regexFlags: 'i'));
+      expectExpr('/testRegex/m', str('testRegex', regexFlags: 'm'));
+      expectExpr('/testRegex/g', str('testRegex', regexFlags: 'g'));
+      expectExpr('/testRegex/ig', str('testRegex', regexFlags: 'ig'));
+      expectExpr('/testRegex/mg', str('testRegex', regexFlags: 'mg'));
+      expectExpr('/testRegex/im', str('testRegex', regexFlags: 'im'));
+      expectExpr('/testRegex/img', str('testRegex', regexFlags: 'img'));
     });
 
     test('Number', () {
       expectExpr('123', val(123));
       expectExpr('123.456', val(123.456));
-      expectExpr('-123', func(HoneyFunction.multiply, [val(123), val(-1)]));
+      expectExpr('-123', func(F.multiply, {pLeft: val(123), pRight: val(-1)}));
     });
 
     test('Cardinal', () {

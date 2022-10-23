@@ -17,7 +17,7 @@ class SemanticsSwitch extends StatelessWidget {
   final bool value;
   final String? label;
   final ValueChanged<bool>? onChanged;
-  final Map<String, dynamic>? properties;
+  final Map<String, String>? properties;
   final bool testOnly;
 
   @override

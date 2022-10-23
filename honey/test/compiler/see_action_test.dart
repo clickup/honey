@@ -1,19 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/models/expression/expression.dart';
+import 'package:honey/honey.dart';
+import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
 
 void main() {
   group('See Action', () {
     test('Synonyms', () {
-      final result = func(HoneyFunction.verify, [
-        func(HoneyFunction.greater, [
-          func(HoneyFunction.length, [
-            func(HoneyFunction.widgets, [val('myWidget')])
-          ]),
-          val(0),
-        ]),
-      ]);
+      final result = func(F.verify, {
+        pValue: func(F.greater, {
+          pLeft: func(F.length, {
+            pValue: func(F.widgets, {pTarget: val('myWidget')})
+          }),
+          pRight: val(0),
+        }),
+      });
 
       expectExpr('see "myWidget"', result);
       expectExpr('seeing "myWidget"', result);
@@ -24,14 +25,14 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(HoneyFunction.verify, [
-        func(HoneyFunction.greater, [
-          func(HoneyFunction.length, [
-            func(HoneyFunction.widgets, [val('myWidget')])
-          ]),
-          val(0),
-        ]),
-      ]);
+      final result = func(F.verify, {
+        pValue: func(F.greater, {
+          pLeft: func(F.length, {
+            pValue: func(F.widgets, {pTarget: val('myWidget')})
+          }),
+          pRight: val(0),
+        }),
+      });
 
       expectExpr('maybe see "myWidget"', result, optional: true);
       expectExpr('try seeing "myWidget"', result, optional: true);

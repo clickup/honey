@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:honey/src/consts/property.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
 
 class _SemanticsPopupPositionDelegate extends SingleChildLayoutDelegate {
@@ -47,8 +46,8 @@ class SemanticsPopup extends StatelessWidget {
     final widget = node.toExp();
     final attrs = _semanticsAttrs
         .map((e) {
-          final result = widget.getProperty(e.name);
-          if ((result?.isBool ?? false) && result!.asBool) {
+          final result = widget.property(e.name);
+          if (result.isBool && result.asBool) {
             return e;
           }
         })

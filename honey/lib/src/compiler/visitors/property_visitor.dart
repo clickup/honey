@@ -9,12 +9,7 @@ class PropertyVisitor extends HoneyTalkBaseVisitor<String> {
 
   @override
   String visitBuiltinPropChars(BuiltinPropCharsContext ctx) {
-    return Property.items.name;
-  }
-
-  @override
-  String visitBuiltinPropItems(BuiltinPropItemsContext ctx) {
-    return Property.items.name;
+    return Property.characters.name;
   }
 
   @override

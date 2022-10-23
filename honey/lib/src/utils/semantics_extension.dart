@@ -1,21 +1,23 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:honey/src/honey_binding.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/honey.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
+import 'package:honey/src/expression/widget_expr.dart';
 
 extension SemanticsNodeX on SemanticsNode {
   bool get shouldBeConsidered =>
       !isInvisible && !hasFlag(SemanticsFlag.isHidden);
 
-  WidgetExp toExp({SemanticsData? data}) {
-    Map<String, dynamic>? properties;
+  WidgetExpr toExp({SemanticsData? data}) {
+    Map<String, String>? properties;
     final honeyTag =
         tags?.firstWhereOrNull((t) => t.name.startsWith('__honey'));
     if (honeyTag != null) {
-      properties = HoneyBinding.instance.getSemanticsProperties(honeyTag);
+      properties =
+          HoneyWidgetsBinding.instance.getSemanticsProperties(honeyTag);
     }
-    return WidgetExp(
+    return WidgetExpr(
       data: data ?? getSemanticsData(),
       rect: globalRect,
       properties: properties ?? {},

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:honey/src/honey_binding.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/overlay/honey_overlay.dart';
 
 class HoneyApp extends StatefulWidget {
@@ -22,7 +22,7 @@ class _HoneyAppState extends State<HoneyApp> {
 
   @override
   void initState() {
-    _subscription = HoneyBinding.instance.statusStream.listen((status) {
+    _subscription = HoneyWidgetsBinding.instance.statusStream.listen((status) {
       setState(() {
         overlay = status == HoneyStatus.overlay;
       });

@@ -33,10 +33,14 @@ enum Property {
   label,
   value,
   hint,
+  width,
+  height,
+  size,
+  area,
 
   // other properties
   length,
-  items,
+  characters,
   lines,
   words,
   custom;

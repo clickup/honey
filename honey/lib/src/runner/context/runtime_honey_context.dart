@@ -1,13 +1,14 @@
-
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:honey/src/honey_binding.dart';
-import 'package:honey/src/models/expression/expression.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/function_expr.dart';
+import 'package:honey/src/expression/list_expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
+import 'package:honey/src/expression/widget_expr.dart';
+import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
-import 'package:honey/src/runner/function_params.dart';
 import 'package:honey/src/runner/functions.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
 
@@ -18,33 +19,23 @@ class RuntimeHoneyContext with HoneyContext {
 
   @override
   final FakeTextInput fakeTextInput;
-  final variables = <String, Expression>{};
+  final variables = <String, EvaluatedExpr>{};
   final defaultVariables = getDefaultVariables();
 
-  WidgetExp? referenceWidget;
+  WidgetExpr? referenceWidget;
 
   @override
-  Future<Expression> getVariable(String name) {
+  EvaluatedExpr getVariable(String name) {
     final lcName = name.toLowerCase();
-    final widgetVal = referenceWidget?.getProperty(lcName);
-    final value = widgetVal ??
-        variables[lcName] ??
-        defaultVariables[lcName] ??
-        const ValueExp.empty();
-    return eval(value);
+    final widgetVal = referenceWidget?.property(lcName);
+    final value =
+        widgetVal ?? variables[lcName] ?? defaultVariables[lcName] ?? empty();
+    return value;
   }
 
   @override
-  Future<void> setVariable(String name, Expression expression) async {
-    final evaluatedValue = await eval(expression);
-    final value = evaluatedValue.retry ? expression : evaluatedValue;
-    if (value is! ValueExp && value is! ListExp && value is! FunctionExp) {
-      throw HoneyError(
-        'Only list, value abd function expressions can be stored in variables',
-        value.retry,
-      );
-    }
-    variables[name.toLowerCase()] = value.withRetry(false);
+  void setVariable(String name, EvaluatedExpr expression) {
+    variables[name.toLowerCase()] = expression.withRetry(false);
   }
 
   @override
@@ -55,15 +46,15 @@ class RuntimeHoneyContext with HoneyContext {
   @override
   bool hasVariable(String name) {
     final lcName = name.toLowerCase();
-    final widgetVal = referenceWidget?.getProperty(lcName);
-    return widgetVal != null ||
+    final widgetVal = referenceWidget?.property(lcName);
+    return (widgetVal != null && !widgetVal.isEmpty) ||
         variables.containsKey(lcName) ||
         defaultVariables.containsKey(lcName);
   }
 
   @override
   SemanticsNode get semanticsTree {
-    return HoneyBinding
+    return HoneyWidgetsBinding
         .instance.pipelineOwner.semanticsOwner!.rootSemanticsNode!;
   }
 
@@ -74,7 +65,7 @@ class RuntimeHoneyContext with HoneyContext {
 
   @override
   void dispatchSemanticAction(Offset offset, SemanticsAction action) {
-    HoneyBinding.instance.pipelineOwner.semanticsOwner!
+    HoneyWidgetsBinding.instance.pipelineOwner.semanticsOwner!
         .performActionAt(offset, action);
   }
 
@@ -97,13 +88,19 @@ class RuntimeHoneyContext with HoneyContext {
   }
 
   @override
-  Future<Expression> eval(Expression expression) async {
-    if (expression is FunctionExp) {
-      final params = FunctionParams(expression.params);
+  Future<EvaluatedExpr> eval(Expr? expression) async {
+    if (expression is FunctionExpr) {
       final function = functions[expression.function]!;
-      return function(this, params);
-    } else {
+      return function(this, expression.params);
+    } else if (expression is ListExpr) {
+      final list = <EvaluatedExpr>[
+        for (var i = 0; i < expression.length; i++) await eval(expression[i])
+      ];
+      return EvaluatedListExpr(list);
+    } else if (expression is EvaluatedExpr) {
       return Future.value(expression);
+    } else {
+      return empty();
     }
   }
 

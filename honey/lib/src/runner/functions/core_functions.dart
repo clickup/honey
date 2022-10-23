@@ -1,125 +1,59 @@
-import 'package:characters/characters.dart';
-import 'package:honey/honey.dart';
-import 'package:honey/src/consts/property.dart';
-import 'package:honey/src/models/expression/expression.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/expression/list_expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 
 abstract class CoreFunctions {
-  static Future<Expression> property(
+  static Future<EvaluatedExpr> property(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final property = await params.getAndEval(ctx, 0);
-    final target = await params.getAndEval(ctx, 1);
+    final property = await ctx.eval(params[pName]);
+    final target = await ctx.eval(params[pValue]);
     final retry = property.retry || target.retry;
-
-    switch (Property.fromName(property.asString)) {
-      case Property.length:
-        if (target is ListExp) {
-          return ValueExp(target.list.length, retry: retry);
-        } else if (target is ValueExp) {
-          return ValueExp(target.value.length, retry: retry);
-        }
-        break;
-      case Property.items:
-        if (target is ValueExp) {
-          final chars = target.value.characters
-              .map((e) => ValueExp(e, retry: target.retry))
-              .toList();
-          return ListExp(chars, retry: retry);
-        } else if (target is ListExp) {
-          return ListExp(target.list, retry: retry);
-        }
-        break;
-      case Property.words:
-        if (target is ValueExp) {
-          final words = target.value
-              .split(r'\b')
-              .map((e) => ValueExp(e, retry: target.retry))
-              .toList();
-          return ListExp(words, retry: retry);
-        }
-        break;
-      case Property.lines:
-        if (target is ValueExp) {
-          final lines = target.value
-              .split(r'\r?\n')
-              .map((e) => ValueExp(e, retry: target.retry))
-              .toList();
-          return ListExp(lines, retry: retry);
-        }
-        break;
-      // ignore: no_default_cases
-      default:
-        break;
-    }
-
-    if (target is WidgetExp) {
-      final prop = target.getProperty(property.value!);
-      if (prop != null) {
-        return prop;
-      }
-    }
-
-    return ValueExp.empty(retry: retry);
-  }
-
-  static Future<Expression> item(
-    HoneyContext ctx,
-    FunctionParams params,
-  ) async {
-    final item = await params.getAndEval(ctx, 0);
-    final target = await params.getAndEval(ctx, 1);
-    if (item is ValueExp && target is ListExp) {
-      final index = item.asNum.toInt();
-      if (index < target.list.length) {
-        final value = target.list[index];
-        return value.withRetry(item.retry || target.retry || value.retry);
-      }
-    }
-    return ValueExp.empty(retry: target.retry);
-  }
-
-  static Future<Expression> variable(
-    HoneyContext ctx,
-    FunctionParams params,
-  ) async {
-    final variable = await params.getAndEval(ctx, 0);
-    final value = await params.getAndEval(ctx, 1);
-
-    if (variable is ValueExp) {
-      if (value.isNotEmpty) {
-        await ctx.setVariable(variable.value, value);
-      }
-      return ctx.getVariable(variable.value);
-    }
-    return ValueExp.empty(retry: variable.retry);
-  }
-
-  static Future<Expression> concat(
-    HoneyContext ctx,
-    FunctionParams params,
-  ) async {
-    final left = await params.getAndEval(ctx, 0);
-    final right = await params.getAndEval(ctx, 1);
-    var result = '';
-    if (left is ValueExp && right is ValueExp) {
-      result = left.value + right.value;
-    }
-    return ValueExp(result, retry: left.retry || right.retry);
-  }
-
-  static Future<Expression> length(
-    HoneyContext ctx,
-    FunctionParams params,
-  ) async {
-    final value = await params.getAndEval(ctx, 0);
-    if (value is ValueExp) {
-      return ValueExp(value.value.length, retry: value.retry);
-    } else if (value is ListExp) {
-      return ValueExp(value.list.length, retry: value.retry);
+    if (property is ValueExpr) {
+      final value = target.property(property.value);
+      return value.withRetry(value.retry || retry);
     } else {
-      return ValueExp.empty(retry: value.retry);
+      return empty(retry: retry);
     }
+  }
+
+  static Future<EvaluatedExpr> variable(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final variable = await ctx.eval(params[pName]);
+    final value =
+        params.containsKey(pValue) ? await ctx.eval(params[pValue]) : null;
+
+    if (variable is ValueExpr) {
+      if (value != null) {
+        ctx.setVariable(variable.value, value);
+      }
+      final variableValue = ctx.getVariable(variable.value);
+      return variableValue.withRetry(variableValue.retry || variable.retry);
+    }
+    return empty(retry: variable.retry);
+  }
+
+  static Future<EvaluatedExpr> concat(
+    HoneyContext ctx,
+    Map<String, Expr> params,
+  ) async {
+    final value = await ctx.eval(params[pValue]);
+    var result = '';
+    var retry = value.retry;
+    if (value is EvaluatedListExpr) {
+      for (var i = 0; i < value.length; i++) {
+        final item = value[i];
+        if (item is ValueExpr) {
+          result += item.value;
+        }
+        retry |= value.retry;
+      }
+    }
+    return val(result, retry: retry);
   }
 }

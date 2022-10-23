@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:honey/src/cli/device_connector.dart';
 import 'package:honey/src/cli/flutter_tools.dart';
-import 'package:honey/src/models/daemon_message.dart';
-import 'package:honey/src/models/honey_message.dart';
+import 'package:honey/src/protocol/daemon_message.dart';
+import 'package:honey/src/protocol/honey_message.dart';
 
 class HoneyDaemon {
   HoneyDaemon(String flutterRoot) {

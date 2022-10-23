@@ -1,14 +1,14 @@
 import 'package:flutter/semantics.dart';
-import 'package:honey/src/models/expression/widget_expression.dart';
+import 'package:honey/src/expression/widget_expr.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
 
-List<WidgetExp> findWidgetCandidates(
+List<WidgetExpr> findWidgetCandidates(
   HoneyContext context, {
   List<RegExp> names = const [],
 }) {
-  List<WidgetExp> findCandidates(SemanticsNode root) {
-    final candidates = <WidgetExp>[];
+  List<WidgetExpr> findCandidates(SemanticsNode root) {
+    final candidates = <WidgetExpr>[];
     root.visitChildren((n) {
       if (!n.mergeAllDescendantsIntoThisNode) {
         candidates.addAll(findCandidates(n));
