@@ -48,21 +48,21 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   }
 
   List<ConditionStatementItem>? _conditionStatements(StatementIfContext ctx) {
-    if (ctx.ifStat() == null) {
+    if (ctx.ifStatement() == null) {
       return null;
     }
 
     final items = <ConditionStatementItem>[];
-    final ifActionStatements = ctx.ifStat()!.actionStatements();
-    final ifConditionContext = ctx.ifStat()!.expression();
+    final ifActionStatements = ctx.ifStatement()!.actionStatements();
+    final ifConditionContext = ctx.ifStatement()!.expression();
     items.add(_prepareItem(ifActionStatements, ifConditionContext!));
 
-    if (ctx.ifStat()?.elseIfStats() == null) {
-      return items;
+    if (ctx.ifStatement()?.elseIfStatements() == null) {
+      return items.toList();
     }
 
-    for (final element
-        in ctx.ifStat()?.elseIfStats() ?? <ElseIfStatContext>[]) {
+    for (final element in ctx.ifStatement()?.elseIfStatements() ??
+        <ElseIfStatementContext>[]) {
       final item = _prepareItem(
         element.actionStatements(),
         element.expression(),
@@ -92,7 +92,6 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
         );
       }
     }
-
     return ConditionStatementItem(
       condition: condition,
       statements: statements.toList(),

@@ -18,13 +18,24 @@ void expectExpr(String test, Expr expression, {bool optional = false}) {
 void expectCondition(String test, ConditionStatement item) {
   final result = compileHoneyTalk(test);
   expect(result.hasError, false);
-  final statements = result.statements;
-  expect(statements, isNotNull);
-  expect(statements!.length, item.conditionStatements?.length ?? 0);
-  for (final statement in statements) {
-    statement as ConditionStatement;
-    expect(statement.source, test);
-    expect(statement.line, 0);
-    expect(statement.conditionStatements, item.conditionStatements);
+  final statement = result.statements?.first;
+  expect(statement, isInstanceOf<ConditionStatement>());
+  expect(statement, isNotNull);
+  final conditionStatement = statement! as ConditionStatement;
+  expect(
+    conditionStatement.conditionStatements?.length,
+    item.conditionStatements?.length,
+  );
+
+  for (var i = 0; i < conditionStatement.conditionStatements!.length; i++) {
+    final condition = conditionStatement.conditionStatements![i];
+    final expectedCondition = item.conditionStatements![i];
+    expect(condition.condition, expectedCondition.condition);
+    expect(condition.statements.length, expectedCondition.statements.length);
+    for (var j = 0; j < condition.statements.length; j++) {
+      final statement = condition.statements[j];
+      final expectedStatement = expectedCondition.statements[j];
+      expect(statement, expectedStatement);
+    }
   }
 }
