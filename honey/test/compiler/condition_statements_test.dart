@@ -13,7 +13,7 @@ void main() {
         line: 0,
         conditionStatements: [
           ConditionStatementItem(
-            statements: [],
+            statements: const [],
             condition: func(F.greater, {
               pLeft: func(F.length, {
                 pValue: func(F.widgets, {pTarget: val('MyWidget')})

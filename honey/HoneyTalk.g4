@@ -144,26 +144,22 @@ widgetReference:
     | widgetReferencePosition term;
 
 widgetReferencePosition:
-    ('in' | 'on' | 'at') singleDirection 'edge'? 'of' isParent = 'parent'?     # widgetReferenceEdge
-    | ('in' | 'on' | 'at') doubleDirection 'corner'? 'of' isParent = 'parent'? #
-        widgetReferenceCorner
-    | ('in' | 'on' | 'at') singleDirection ('half' | 'side') 'of' isParent = 'parent'? #
-        widgetReferenceHalf
-    | ('in' | 'on' | 'at') ordinal singleDirection (
-        f = 'third'
-        | f = 'quarter'
-        | f = 'eighth'
-    ) 'of' isParent = 'parent'? # widgetReferenceFraction
-    | ('in' | 'on' | 'at') singleDirection literal (
-        '%'
-        | 'percent'
-    ) 'of' isParent = 'parent'?                         # widgetReferencePercentage
-    | ('within' | 'inside' | 'in') isParent = 'parent'? # widgetReferenceInside
+    inOnAt singleDirection 'edge'? 'of' parent?                     # widgetReferenceEdge
+    | inOnAt doubleDirection 'corner'? 'of' parent?                 # widgetReferenceCorner
+    | inOnAt singleDirection fraction 'of' parent?                  # widgetReferenceFraction
+    | inOnAt singleDirection literal ('%' | 'percent') 'of' parent? # widgetReferencePercentage
+    | ('within' | 'inside' | 'in') parent?                          # widgetReferenceInside
     | (
         below = 'below'
         | above = 'above'
-        | 'to' (singleDirection | doubleDirection)
+        | 'to' (singleDirection | doubleDirection) 'side'?
     ) 'of'? # widgetReferenceTo;
+
+fraction: 'half' | 'side' | 'third' | 'quarter' | 'eighth';
+
+parent: 'parent';
+
+inOnAt: 'in' | 'on' | 'at';
 
 widgetWhere:
     ('where' | 'with' | 'whose') '(' expression ')'
@@ -211,7 +207,7 @@ THEN: 'then';
 
 BOOL_LITERAL: 'true' | 'false';
 
-STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"' ('a' .. 'z')*;
+STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
 
 IGNORE: (
         'the'

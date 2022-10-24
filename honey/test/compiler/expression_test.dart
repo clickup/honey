@@ -164,16 +164,17 @@ void main() {
           pRight: val(3),
         }),
       );
-      expectExpr(
-        '1 and 2 and 3 and 4',
-        func(F.and, {
-          pLeft: func(F.and, {
-            pLeft: func(F.and, {pLeft: val(1), pRight: val(2)}),
-            pRight: val(3),
-          }),
-          pRight: val(4),
+
+      final threeAnd = func(F.and, {
+        pLeft: func(F.and, {
+          pLeft: func(F.and, {pLeft: val(1), pRight: val(2)}),
+          pRight: val(3),
         }),
-      );
+        pRight: val(4),
+      });
+      expectExpr('1 and 2 and 3 and 4', threeAnd);
+      expectExpr('1 & 2 & 3 & 4', threeAnd);
+      expectExpr('1 && 2 && 3 && 4', threeAnd);
     });
 
     test('Or', () {
@@ -188,16 +189,17 @@ void main() {
           pRight: val(3),
         }),
       );
-      expectExpr(
-        '1 or 2 or 3 or 4',
-        func(F.or, {
-          pLeft: func(F.or, {
-            pLeft: func(F.or, {pLeft: val(1), pRight: val(2)}),
-            pRight: val(3),
-          }),
-          pRight: val(4),
+
+      final threeOr = func(F.or, {
+        pLeft: func(F.or, {
+          pLeft: func(F.or, {pLeft: val(1), pRight: val(2)}),
+          pRight: val(3),
         }),
-      );
+        pRight: val(4),
+      });
+      expectExpr('1 or 2 or 3 or 4', threeOr);
+      expectExpr('1 | 2 | 3 | 4', threeOr);
+      expectExpr('1 || 2 || 3 || 4', threeOr);
     });
 
     test('And Or', () {

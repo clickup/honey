@@ -30,101 +30,100 @@ class WidgetExpr with EvaluatedExpr {
       );
 
   @override
-  ValueExpr property(String name) {
+  ValueExpr property(String name) => _property(name).withRetry(retry);
+
+  ValueExpr _property(String name) {
     if (properties.containsKey(property)) {
       final value = properties[property];
       if (value != null) {
-        return val(value, retry: retry);
+        return val(value);
       }
     }
 
     switch (Property.fromName(name)) {
       // widget types
       case Property.widget:
-        return val(true, retry: retry);
+        return val(true);
       case Property.button:
-        return val(data.hasFlag(SemanticsFlag.isButton), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isButton));
       case Property.link:
-        return val(data.hasFlag(SemanticsFlag.isLink), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isLink));
       case Property.textfield:
-        return val(data.hasFlag(SemanticsFlag.isTextField), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isTextField));
       case Property.image:
-        return val(data.hasFlag(SemanticsFlag.isImage), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isImage));
       case Property.slider:
-        return val(data.hasFlag(SemanticsFlag.isSlider), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isSlider));
       case Property.checkable:
       case Property.checkbox:
         final checkable = data.hasFlag(SemanticsFlag.hasCheckedState) ||
             data.hasFlag(SemanticsFlag.isChecked);
-        return val(checkable, retry: retry);
+        return val(checkable);
       case Property.toggleable:
       case Property.sswitch:
         final toggleable = data.hasFlag(SemanticsFlag.hasToggledState) ||
             data.hasFlag(SemanticsFlag.isToggled);
-        return val(toggleable, retry: retry);
+        return val(toggleable);
       case Property.header:
-        return val(data.hasFlag(SemanticsFlag.isHeader), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isHeader));
       // attributes
       case Property.clickable:
-        return val(data.hasAction(SemanticsAction.tap), retry: retry);
+        return val(data.hasAction(SemanticsAction.tap));
       case Property.longClickable:
-        return val(
-          data.hasAction(SemanticsAction.longPress),
-          retry: retry,
-        );
+        return val(data.hasAction(SemanticsAction.longPress));
       case Property.scrollable:
         final scrollable = data.hasAction(SemanticsAction.scrollUp) ||
             data.hasAction(SemanticsAction.scrollDown) ||
             data.hasAction(SemanticsAction.scrollLeft) ||
             data.hasAction(SemanticsAction.scrollRight);
-        return val(scrollable, retry: retry);
+        return val(scrollable);
       case Property.checked:
-        return val(data.hasFlag(SemanticsFlag.isChecked), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isChecked));
       case Property.unchecked:
         final unchecked = data.hasFlag(SemanticsFlag.hasCheckedState) &&
             !data.hasFlag(SemanticsFlag.isChecked);
-        return val(unchecked, retry: retry);
+        return val(unchecked);
       case Property.toggled:
-        return val(data.hasFlag(SemanticsFlag.isToggled), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isToggled));
       case Property.enableable:
         final enableable = data.hasFlag(SemanticsFlag.hasEnabledState) ||
             data.hasFlag(SemanticsFlag.isEnabled);
-        return val(enableable, retry: retry);
+        return val(enableable);
       case Property.enabled:
-        return val(data.hasFlag(SemanticsFlag.isEnabled), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isEnabled));
       case Property.disabled:
         final disabled = data.hasFlag(SemanticsFlag.hasEnabledState) &&
             !data.hasFlag(SemanticsFlag.isEnabled);
-        return val(disabled, retry: retry);
+        return val(disabled);
       case Property.focusable:
         final focusable = data.hasFlag(SemanticsFlag.isFocusable) ||
             data.hasFlag(SemanticsFlag.isFocused);
-        return val(focusable, retry: retry);
+        return val(focusable);
       case Property.focused:
-        return val(data.hasFlag(SemanticsFlag.isFocused), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isFocused));
       case Property.multiline:
-        return val(data.hasFlag(SemanticsFlag.isMultiline), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isMultiline));
       case Property.selected:
-        return val(data.hasFlag(SemanticsFlag.isSelected), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isSelected));
       case Property.obscured:
-        return val(data.hasFlag(SemanticsFlag.isObscured), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isObscured));
       case Property.readonly:
-        return val(data.hasFlag(SemanticsFlag.isReadOnly), retry: retry);
+        return val(data.hasFlag(SemanticsFlag.isReadOnly));
       // properties
       case Property.label:
-        return val(data.label, retry: retry);
+        return val(data.label);
       case Property.value:
-        return val(data.value, retry: retry);
+        return val(data.value);
       case Property.hint:
-        return val(data.hint, retry: retry);
+        return val(data.hint);
       case Property.width:
-        return val(rect.width, retry: retry);
+        return val(rect.width);
       case Property.height:
-        return val(rect.height, retry: retry);
+        return val(rect.height);
       case Property.size:
-        return val('${rect.width}x${rect.height}', retry: retry);
+        return val('${rect.width}x${rect.height}');
       case Property.area:
-        return val(rect.width * rect.height, retry: retry);
+        return val(rect.width * rect.height);
       // ignore: no_default_cases
       default:
         return empty(retry: retry);

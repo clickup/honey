@@ -37,22 +37,18 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExpr> {
   @override
   ValueExpr visitLiteralString(LiteralStringContext ctx) {
     final strRaw = ctx.STRING_LITERAL()!.text!;
-    final parts = strRaw.split('"');
-    return str(
-      parts.sublist(1, parts.length - 1).join('"'),
-      regexFlags: parts.last.isNotEmpty ? parts.last : null,
-    );
+    return val(strRaw.substring(1, strRaw.length - 1));
   }
 
   @override
   ValueExpr visitLiteralNumber(LiteralNumberContext ctx) {
     final string = ctx.NUMBER_LITERAL()!.text!;
-    return str(string);
+    return val(string);
   }
 
   @override
   ValueExpr visitLiteralBool(LiteralBoolContext ctx) {
     final string = ctx.BOOL_LITERAL()!.text!;
-    return str(string);
+    return val(string);
   }
 }

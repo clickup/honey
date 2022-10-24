@@ -115,9 +115,7 @@ image:
     | 'picture'
     | 'pictures'
     | 'photo'
-    | 'photos'
-    | 'icon'
-    | 'icons';
+    | 'photos';
 
 checkbox: 'check' ('box' | 'boxes') | 'checkbox' | 'checkboxes';
 

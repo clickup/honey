@@ -23,9 +23,9 @@ class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
       ...ident.attrFilters,
     ];
     return func(F.widgets, {
-      pTarget: list(ident.names),
+      if (ident.names.isNotEmpty) pTarget: list(ident.names),
       //pReference: list(references),
-      pFilter: list(allFilters),
+      if (allFilters.isNotEmpty) pFilter: list(allFilters),
     });
   }
 }
@@ -57,7 +57,7 @@ class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
     ];
 
     final attrs = [
-      ...widgetTypes,
+      ...widgetTypes.map((e) => e.name),
       ...ctx.attr.map((e) => e.text!),
     ];
     final attrFilters = attrs.map((e) {
