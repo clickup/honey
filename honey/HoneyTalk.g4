@@ -121,6 +121,7 @@ functionParam: (ID ':'?)? term;
 
 literal:
 	cardinal			# literalCardinal
+	| ordinal			# literalOrdinal
 	| STRING_LITERAL	# literalString
 	| REGEX_LITERAL		# literalRegex
 	| NUMBER_LITERAL	# literalNumber
