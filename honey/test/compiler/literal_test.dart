@@ -14,16 +14,6 @@ void main() {
       expectExpr(r'"st\nring"', val('st\nring'));*/
     });
 
-    test('Regex', () {
-      expectExpr('"testRegex"i', str('testRegex', regexFlags: 'i'));
-      expectExpr('"testRegex"m', str('testRegex', regexFlags: 'm'));
-      expectExpr('"testRegex"g', str('testRegex', regexFlags: 'g'));
-      expectExpr('"testRegex"ig', str('testRegex', regexFlags: 'ig'));
-      expectExpr('"testRegex"mg', str('testRegex', regexFlags: 'mg'));
-      expectExpr('"testRegex"im', str('testRegex', regexFlags: 'im'));
-      expectExpr('"testRegex"img', str('testRegex', regexFlags: 'img'));
-    });
-
     test('Number', () {
       expectExpr('123', val(123));
       expectExpr('123.456', val(123.456));

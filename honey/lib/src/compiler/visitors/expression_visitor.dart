@@ -13,30 +13,30 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   }
 
   @override
-  Expr visitExpressionExpression(ExpressionExpressionContext ctx) {
-    return ctx.expression()!.accept(this)!;
+  Expr visitExprExpr(ExprExprContext ctx) {
+    return ctx.expr()!.accept(this)!;
   }
 
   @override
-  Expr visitExpressionTerm(ExpressionTermContext ctx) {
-    return super.visitExpressionTerm(ctx)!;
+  Expr visitExprTerm(ExprTermContext ctx) {
+    return super.visitExprTerm(ctx)!;
   }
 
   @override
-  Expr visitExpressionNot(ExpressionNotContext ctx) {
-    final expression = ctx.expression()!.accept(this)!;
-    return func(F.not, {pValue: expression});
+  Expr visitExprNot(ExprNotContext ctx) {
+    final expr = ctx.expr()!.accept(this)!;
+    return func(F.not, {pValue: expr});
   }
 
   @override
-  Expr visitExpressionNegate(ExpressionNegateContext ctx) {
-    final expression = ctx.expression()!.accept(this)!;
-    return func(F.multiply, {pLeft: expression, pRight: val(-1)});
+  Expr visitExprNegate(ExprNegateContext ctx) {
+    final expr = ctx.expr()!.accept(this)!;
+    return func(F.multiply, {pLeft: expr, pRight: val(-1)});
   }
 
   @override
-  Expr visitExpressionExists(ExpressionExistsContext ctx) {
-    final target = ctx.expression()!.accept(this)!;
+  Expr visitExprExists(ExprExistsContext ctx) {
+    final target = ctx.expr()!.accept(this)!;
     final widgets = func(F.widgets, {pTarget: target});
     final count = func(F.length, {pValue: widgets});
     if (ctx.isAreNot() == null) {
@@ -47,16 +47,16 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   }
 
   @override
-  Expr visitExpressionPow(ExpressionPowContext ctx) {
-    final left = ctx.expression(0)!.accept(this)!;
-    final right = ctx.expression(1)!.accept(this)!;
+  Expr visitExprPow(ExprPowContext ctx) {
+    final left = ctx.expr(0)!.accept(this)!;
+    final right = ctx.expr(1)!.accept(this)!;
     return func(F.pow, {pLeft: left, pRight: right});
   }
 
   @override
-  Expr visitExpressionBinaryOp(ExpressionBinaryOpContext ctx) {
-    final left = ctx.expression(0)!.accept(this)!;
-    final right = ctx.expression(1)!.accept(this)!;
+  Expr visitExprBinaryOp(ExprBinaryOpContext ctx) {
+    final left = ctx.expr(0)!.accept(this)!;
+    final right = ctx.expr(1)!.accept(this)!;
     switch (ctx.op?.text) {
       case '+':
         return func(F.plus, {pLeft: left, pRight: right});
@@ -67,14 +67,14 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
       case '/':
         return func(F.divide, {pLeft: left, pRight: right});
       default:
-        throw UnsupportedError('Unknown expression op');
+        throw UnsupportedError('Unknown expr op');
     }
   }
 
   @override
-  Expr visitExpressionComparison(ExpressionComparisonContext ctx) {
-    final left = ctx.expression(0)!.accept(this)!;
-    final right = ctx.expression(1)!.accept(this)!;
+  Expr visitExprComparison(ExprComparisonContext ctx) {
+    final left = ctx.expr(0)!.accept(this)!;
+    final right = ctx.expr(1)!.accept(this)!;
     if (ctx.eq() != null) {
       return func(F.equal, {pLeft: left, pRight: right});
     } else if (ctx.neq() != null) {
@@ -96,41 +96,41 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
         pRight: func(F.equal, {pLeft: left, pRight: right}),
       });
     } else {
-      throw UnsupportedError('Unknown expression comparison');
+      throw UnsupportedError('Unknown expr comparison');
     }
   }
 
   @override
-  Expr visitExpressionStartsWith(ExpressionStartsWithContext ctx) {
-    final value = ctx.expression(0)!.accept(this)!;
-    final prefix = ctx.expression(1)!.accept(this)!;
+  Expr visitExprStartsWith(ExprStartsWithContext ctx) {
+    final value = ctx.expr(0)!.accept(this)!;
+    final prefix = ctx.expr(1)!.accept(this)!;
     return func(F.startsWith, {pValue: value, pInput: prefix});
   }
 
   @override
-  Expr visitExpressionEndsWith(ExpressionEndsWithContext ctx) {
-    final value = ctx.expression(0)!.accept(this)!;
-    final postfix = ctx.expression(1)!.accept(this)!;
+  Expr visitExprEndsWith(ExprEndsWithContext ctx) {
+    final value = ctx.expr(0)!.accept(this)!;
+    final postfix = ctx.expr(1)!.accept(this)!;
     return func(F.endsWith, {pValue: value, pInput: postfix});
   }
 
   @override
-  Expr visitExpressionContains(ExpressionContainsContext ctx) {
-    final value = ctx.expression(0)!.accept(this)!;
-    final substr = ctx.expression(1)!.accept(this)!;
+  Expr visitExprContains(ExprContainsContext ctx) {
+    final value = ctx.expr(0)!.accept(this)!;
+    final substr = ctx.expr(1)!.accept(this)!;
     return func(F.contains, {pValue: value, pInput: substr});
   }
 
   @override
-  Expr? visitExpressionMatches(ExpressionMatchesContext ctx) {
-    final value = ctx.expression(0)!.accept(this)!;
-    final regex = ctx.expression(1)!.accept(this)!;
+  Expr? visitExprMatches(ExprMatchesContext ctx) {
+    final value = ctx.expr(0)!.accept(this)!;
+    final regex = ctx.expr(1)!.accept(this)!;
     return func(F.matches, {pValue: value, pInput: regex});
   }
 
   @override
-  Expr visitExpressionIsAttr(ExpressionIsAttrContext ctx) {
-    final target = ctx.expression()!.accept(this)!;
+  Expr visitExprIsAttr(ExprIsAttrContext ctx) {
+    final target = ctx.expr()!.accept(this)!;
     final property = ctx.property()!.name;
     final result = func(F.equal, {
       pLeft: func(F.property, {
@@ -147,16 +147,16 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   }
 
   @override
-  Expr visitExpressionAnd(ExpressionAndContext ctx) {
-    final left = ctx.expression(0)!.accept(this)!;
-    final right = ctx.expression(1)!.accept(this)!;
+  Expr visitExprAnd(ExprAndContext ctx) {
+    final left = ctx.expr(0)!.accept(this)!;
+    final right = ctx.expr(1)!.accept(this)!;
     return func(F.and, {pLeft: left, pRight: right});
   }
 
   @override
-  Expr visitExpressionOr(ExpressionOrContext ctx) {
-    final left = ctx.expression(0)!.accept(this)!;
-    final right = ctx.expression(1)!.accept(this)!;
+  Expr visitExprOr(ExprOrContext ctx) {
+    final left = ctx.expr(0)!.accept(this)!;
+    final right = ctx.expr(1)!.accept(this)!;
     return func(F.or, {pLeft: left, pRight: right});
   }
 

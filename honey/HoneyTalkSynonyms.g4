@@ -183,6 +183,33 @@ run:
     | 'execute'
     | 'eval';
 
+caseSensitive: 'case' 'sensitive' | 'case-sensitive';
+
+caseInsensitive:
+    'case' 'insensitive'
+    | 'case-insensitive'
+    | 'ignore' 'case';
+
+exactly: 'exactly';
+
+left: 'left';
+
+right: 'right';
+
+top: 'top' | 'upper' | 'up';
+
+bottom: 'bottom' | 'lower' | 'down';
+
+topLeft: (('top' | 'upper') '-'? 'left') | 'left' 'top';
+
+topRight: (('top' | 'upper') '-'? 'right') | 'right' 'top';
+
+bottomLeft: (('bottom' | 'lower') '-'? 'left')
+    | 'left' 'bottom';
+
+bottomRight: (('bottom' | 'lower') '-'? 'right')
+    | 'right' 'bottom';
+
 length: 'length' | 'number' | 'count' | 'size';
 
 character: 'character' | 'characters' | 'char' | 'chars';
