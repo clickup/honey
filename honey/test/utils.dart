@@ -21,8 +21,6 @@ void expectError(
   required int errorColumn,
 }) {
   final result = compileHoneyTalk(test);
-  print('result: ${result.statements}');
-  print('error: ${result.errorLine} ${result.errorColumn}');
   expect(result.hasError, true);
   expect(result.errorLine, errorLine);
   expect(result.errorColumn, errorColumn);
