@@ -48,21 +48,21 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   }
 
   List<ConditionStatementItem>? _conditionStatements(StatementIfContext ctx) {
-    if (ctx.ifStat() == null) {
+    if (ctx.ifStatement() == null) {
       return null;
     }
 
     final items = <ConditionStatementItem>[];
-    final ifActionStatements = ctx.ifStat()!.actionStatements();
-    final ifConditionContext = ctx.ifStat()!.expr();
-    items.add(_prepareItem(ifActionStatements, ifConditionContext!));
+    final ifActionStatements = ctx.ifStatement()!.actionStatements();
+    final ifConditionContext = ctx.ifStatement()!.expr();
+    items.add(_prepareItem(ifActionStatements, ifConditionContext));
 
-    if (ctx.ifStat()?.elseIfStats() == null) {
+    if (ctx.ifStatement()?.elseIfStatements() == null) {
       return items;
     }
 
-    for (final element
-        in ctx.ifStat()?.elseIfStats() ?? <ElseIfStatContext>[]) {
+    for (final element in ctx.ifStatement()?.elseIfStatements() ??
+        <ElseIfStatementContext>[]) {
       final item = _prepareItem(
         element.actionStatements(),
         element.expr(),
@@ -77,7 +77,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
     List<ActionStatementContext> actionStatements,
     ExprContext? exprContext,
   ) {
-    final condition = exprContext?.accept(exprVisitor);
+    final condition = exprContext?.accept(expressionVisitor);
     final statements = <Statement>[];
     for (final element in actionStatements) {
       final e = element.accept(actionVisitor);

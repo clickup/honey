@@ -53,12 +53,12 @@ class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
         .toList();*/
     final filter = ctx.widgetWhere()?.expr()?.accept(expressionVisitor);
     final allFilters = [
-      if (filter != null) filter,
       ...attrFilters,
+      if (filter != null) filter,
     ];
     return func(F.widgets, {
-      if (names.isNotEmpty) pTarget: list(names),
-      pModifier: val(modifier.name),
+      if (names.isNotEmpty) pName: list(names),
+      if (names.isNotEmpty) pModifier: val(modifier.name),
       //pReference: list(references),
       if (allFilters.isNotEmpty) pFilter: list(allFilters),
     });

@@ -4,32 +4,32 @@ import HoneyTalkSynonyms;
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
 statement:
-    ifStat                                # statementIf
-    | maybe? actionStatement ('if' expr)? # statementAction
-    | maybe? expr                         # statementExpr;
+    ifStatement              # statementIf
+    | maybe? actionStatement # statementAction
+    | maybe? expr            # statementExpr;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
 actionStatement:
-    verify 'that'? expr                                         # actionVerify
-    | see expr                                                  # actionSee
-    | clickType 'on'? target = expr (withOffset offset = expr)? # actionClick
-    | clickType ('on'? target = expr)? withOffset offset = expr # actionClick
-    | enter value = expr                                        # actionEnter
-    | set variable = ID ('to' | 'as') expr                      # actionSetVariable
-    | store expr ('in' | 'into') variable = ID                  # actionSetVariable
-    | wait 'for'? expr                                          # actionWait
-    | print expr                                                # actionPrint
-    | swipeType 'on'? target = expr (withOffset offset = expr)? (
-        'by'
-    )? pixels = expr                                                      # actionSwipe
-    | swipeType ('on'? target = expr)? offset = expr ('by') pixels = expr # actionSwipe;
+    verify 'that'? expr                                                                # actionVerify
+    | see expr                                                                         # actionSee
+    | clickType 'on'? target = expr (withOffset offset = expr)?                        # actionClick
+    | clickType ('on'? target = expr)? withOffset offset = expr                        # actionClick
+    | enter value = expr                                                               # actionEnter
+    | set variable = ID ('to' | 'as') expr                                             # actionSetVariable
+    | store expr ('in' | 'into') variable = ID                                         # actionSetVariable
+    | wait 'for'? expr                                                                 # actionWait
+    | print expr                                                                       # actionPrint
+    | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe;
 
 withOffset: 'at' | 'with'? 'offset';
 
-ifStat:
-    IF expr THEN NEWLINE* (actionStatement NEWLINE)* (elseIfStat)*? END_IF;
-elseIfStat:
+ifStatement:
+    IF expr THEN NEWLINE* (actionStatement NEWLINE)* (
+        elseIfStatement
+    )*? END_IF;
+
+elseIfStatement:
     ELSE (IF expr THEN)? NEWLINE* (actionStatement NEWLINE)*;
 
 clickType:
@@ -144,11 +144,11 @@ widgetReference:
     | widgetReferencePosition term;
 
 widgetReferencePosition:
-    inOnAt singleDirection 'edge'? 'of' parent?                     # widgetReferenceEdge
-    | inOnAt doubleDirection 'corner'? 'of' parent?                 # widgetReferenceCorner
-    | inOnAt singleDirection fraction 'of' parent?                  # widgetReferenceFraction
-    | inOnAt singleDirection literal ('%' | 'percent') 'of' parent? # widgetReferencePercentage
-    | ('within' | 'inside' | 'in') parent?                          # widgetReferenceInside
+    inOnAt singleDirection 'edge'? 'of' container?                     # widgetReferenceEdge
+    | inOnAt doubleDirection 'corner'? 'of' container?                 # widgetReferenceCorner
+    | inOnAt singleDirection fraction 'of' container?                  # widgetReferenceFraction
+    | inOnAt singleDirection literal ('%' | 'percent') 'of' container? # widgetReferencePercentage
+    | ('within' | 'inside' | 'in') container?                          # widgetReferenceInside
     | (
         below = 'below'
         | above = 'above'
@@ -157,7 +157,7 @@ widgetReferencePosition:
 
 fraction: 'half' | 'side' | 'third' | 'quarter' | 'eighth';
 
-parent: 'parent';
+container: 'container' | 'parent';
 
 inOnAt: 'in' | 'on' | 'at';
 

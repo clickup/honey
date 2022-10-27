@@ -134,18 +134,18 @@ neq:
     | (isAreNot | 'not') 'equal' 'to'?;
 
 gte:
-    '>='
+    isAre? '>='
     | isAre? 'gte'
     | isAre? 'greater' 'than'? 'or' 'equal' 'to'?;
 
-gt: '>' | isAre? 'gt' | isAre? 'greater' 'than'?;
+gt: isAre? '>' | isAre? 'gt' | isAre? 'greater' 'than'?;
 
 lte:
-    '<='
+    isAre? '<='
     | isAre? 'lte'
     | isAre? 'less' 'than'? 'or' 'equal' 'to'?;
 
-lt: '<' | isAre? 'lt' | isAre? 'less' 'than'?;
+lt: isAre? '<' | isAre? 'lt' | isAre? 'less' 'than'?;
 
 exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
 
