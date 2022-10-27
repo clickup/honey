@@ -5,7 +5,7 @@ import 'package:honey/src/consts/param_names.dart';
 import '../utils.dart';
 
 void main() {
-  group('Condition', () {
+  group('Comparison', () {
     test('exists', () {
       final result = func(F.greater, {
         pLeft: func(F.length, {

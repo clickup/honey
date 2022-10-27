@@ -300,5 +300,4 @@ class WidgetReferencePositionVisitor
       }
     }
   }
-}
-*/
+}*/

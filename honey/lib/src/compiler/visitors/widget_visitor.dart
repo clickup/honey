@@ -1,64 +1,45 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/consts/name_modifier.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/consts/property.dart';
-import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/function_expr.dart';
 import 'package:honey/src/expression/list_expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
 
 class WidgetVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
-  final _identVisitor = _WidgetIdentVisitor();
-
   @override
   FunctionExpr visitWidgetTerm(WidgetTermContext ctx) {
-    final ident = ctx.widgetIdent()!.accept(_identVisitor)!;
-    /*final references = ctx
-        .widgetReferences()
-        .map((e) => e.accept(referenceVisitor)!.toExp())
-        .toList();*/
-    final filter = ctx.widgetWhere()?.expression()?.accept(expressionVisitor);
-    final allFilters = [
-      if (filter != null) filter,
-      ...ident.attrFilters,
-    ];
-    return func(F.widgets, {
-      pTarget: list(ident.names),
-      //pReference: list(references),
-      pFilter: list(allFilters),
-    });
-  }
-}
-
-class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
-  final nameModifierVisitor = _WidgetNameModifierVisitor();
-
-  @override
-  _WidgetIdentResult? visitWidgetIdent(WidgetIdentContext ctx) {
-    final nameModifier = ctx.widgetNameModifier()?.accept(nameModifierVisitor);
-    final names = ctx.name.map((e) {
-      final name = e.accept(literalVisitor)!;
-      if (nameModifier != null) {
-        return nameModifier(name);
-      } else {
-        return name;
-      }
-    });
+    var modifier = NameModifier.caseInsensitive;
+    if (ctx.widgetIdent()?.caseSensitive() != null) {
+      modifier = NameModifier.caseSensitive;
+    } else if (ctx.widgetIdent()?.exactly() != null) {
+      modifier = NameModifier.exactly;
+    }
+    final names = ctx
+            .widgetIdent()
+            ?.name
+            .map((e) => e.accept(literalVisitor)!)
+            .toList() ??
+        [];
 
     final widgetTypes = [
-      if (ctx.widgetType()?.button() != null) Property.button,
-      if (ctx.widgetType()?.link() != null) Property.link,
-      if (ctx.widgetType()?.textfield() != null) Property.textfield,
-      if (ctx.widgetType()?.slider() != null) Property.slider,
-      if (ctx.widgetType()?.image() != null) Property.image,
-      if (ctx.widgetType()?.checkbox() != null) Property.checkbox,
-      if (ctx.widgetType()?.sswitch() != null) Property.sswitch,
-      if (ctx.widgetType()?.header() != null) Property.header,
+      if (ctx.widgetIdent()?.widgetType()?.button() != null) Property.button,
+      if (ctx.widgetIdent()?.widgetType()?.link() != null) Property.link,
+      if (ctx.widgetIdent()?.widgetType()?.textfield() != null)
+        Property.textfield,
+      if (ctx.widgetIdent()?.widgetType()?.slider() != null) Property.slider,
+      if (ctx.widgetIdent()?.widgetType()?.image() != null) Property.image,
+      if (ctx.widgetIdent()?.widgetType()?.checkbox() != null)
+        Property.checkbox,
+      if (ctx.widgetIdent()?.widgetType()?.sswitch() != null) Property.sswitch,
+      if (ctx.widgetIdent()?.widgetType()?.header() != null) Property.header,
     ];
 
     final attrs = [
-      ...widgetTypes,
-      ...ctx.attr.map((e) => e.text!),
+      ...widgetTypes.map((e) => e.name),
+      if (ctx.widgetIdent() != null)
+        ...ctx.widgetIdent()!.attr.map((e) => e.text!),
     ];
     final attrFilters = attrs.map((e) {
       return func(F.equal, {
@@ -66,55 +47,20 @@ class _WidgetIdentVisitor extends HoneyTalkBaseVisitor<_WidgetIdentResult> {
         pRight: val(true),
       });
     });
-
-    return _WidgetIdentResult(names.toList(), attrFilters.toList());
-  }
-}
-
-class _WidgetIdentResult {
-  _WidgetIdentResult(this.names, this.attrFilters);
-  final List<ValueExpr> names;
-  final List<Expr> attrFilters;
-}
-
-class _WidgetNameModifierVisitor
-    extends HoneyTalkBaseVisitor<ValueExpr Function(ValueExpr)> {
-  @override
-  ValueExpr Function(ValueExpr) visitWidgetNameCaseSensitive(
-    WidgetNameCaseSensitiveContext ctx,
-  ) {
-    return (e) {
-      if (e.isRegExp) {
-        return e;
-      } else {
-        return str(RegExp.escape(e.value), regexFlags: '');
-      }
-    };
-  }
-
-  @override
-  ValueExpr Function(ValueExpr) visitWidgetNameCaseInsensitive(
-    WidgetNameCaseInsensitiveContext ctx,
-  ) {
-    return (e) {
-      if (e.isRegExp) {
-        return e;
-      } else {
-        return str(RegExp.escape(e.value), regexFlags: 'i');
-      }
-    };
-  }
-
-  @override
-  ValueExpr Function(ValueExpr) visitWidgetNameExactly(
-    WidgetNameExactlyContext ctx,
-  ) {
-    return (e) {
-      if (e.isRegExp) {
-        return e;
-      } else {
-        return str('^${RegExp.escape(e.value)}\$', regexFlags: '');
-      }
-    };
+    /*final references = ctx
+        .widgetReferences()
+        .map((e) => e.accept(referenceVisitor)!.toExp())
+        .toList();*/
+    final filter = ctx.widgetWhere()?.expr()?.accept(expressionVisitor);
+    final allFilters = [
+      ...attrFilters,
+      if (filter != null) filter,
+    ];
+    return func(F.widgets, {
+      if (names.isNotEmpty) pName: list(names),
+      if (names.isNotEmpty) pModifier: val(modifier.name),
+      //pReference: list(references),
+      if (allFilters.isNotEmpty) pFilter: list(allFilters),
+    });
   }
 }

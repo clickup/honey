@@ -2,8 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/honey_widgets_binding.dart';
-import 'package:honey/src/expression/widget_expr.dart';
 
 extension SemanticsNodeX on SemanticsNode {
   bool get shouldBeConsidered =>
@@ -21,7 +19,6 @@ extension SemanticsNodeX on SemanticsNode {
       data: data ?? getSemanticsData(),
       rect: globalRect,
       properties: properties ?? {},
-      retry: false,
     );
   }
 
