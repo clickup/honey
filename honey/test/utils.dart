@@ -15,6 +15,12 @@ void expectExpr(String test, Expr expression, {bool optional = false}) {
   expect(statement.expression, expression);
 }
 
+void expectEmpty(String test) {
+  final result = compileHoneyTalk(test);
+  expect(result.hasError, false);
+  expect(result.statements!.length, 0);
+}
+
 void expectError(
   String test, {
   required int errorLine,
@@ -49,4 +55,8 @@ void expectCondition(String test, ConditionStatement item) {
       expect(statement, expectedStatement);
     }
   }
+}
+
+void expectEval(Expr actual, Expr expected) {
+  expect(actual, expected);
 }

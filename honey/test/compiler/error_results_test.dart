@@ -52,8 +52,7 @@ void main() {
       expectError(
         'tap "MyWidget"\n'
         'swipe left "MyWidget" by 300\n'
-        'verfy "MyWidget" is visible\n'
-        '"MyWidget" is visible',
+        'verfy "MyWidget" is visible\n',
         errorLine: 3,
         errorColumn: 17,
       );
