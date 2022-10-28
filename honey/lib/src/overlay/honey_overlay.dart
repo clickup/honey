@@ -7,7 +7,6 @@ import 'package:honey/src/overlay/semantics_popup.dart';
 import 'package:honey/src/utils/semantics_extension.dart';
 
 class HoneyOverlay extends StatefulWidget {
-
   const HoneyOverlay({
     super.key,
     required this.child,
@@ -15,7 +14,7 @@ class HoneyOverlay extends StatefulWidget {
   final Widget child;
 
   @override
-  _HoneyOverlayState createState() => _HoneyOverlayState();
+  State<HoneyOverlay> createState() => _HoneyOverlayState();
 }
 
 class _HoneyOverlayState extends State<HoneyOverlay>
@@ -63,61 +62,63 @@ class _HoneyOverlayState extends State<HoneyOverlay>
   @override
   Widget build(BuildContext context) {
     final root = rootNode;
-    return Stack(
+    return Directionality(
       textDirection: TextDirection.ltr,
-      children: [
-        Positioned.fill(
-          child: widget.child,
-        ),
-        Positioned.fill(
-          child: ExcludeSemantics(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: selectedNode != null
-                  ? () {
-                      _controller.reverse();
-                      setState(() {
-                        selectedNode = null;
-                      });
-                    }
-                  : null,
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Stack(
-                  children: [
-                    if (selectedNode == null && root != null)
-                      SemanticsNodePainter(
-                        node: root,
-                        onSelect: (node) {
-                          setState(() {
-                            selectedNode = node;
-                          });
-                          _controller.forward(from: 0);
-                        },
-                      ),
-                    if (selectedNode != null) ...[
-                      Positioned.fromRect(
-                        rect: selectedNode!.globalRect,
-                        child: SemanticsDataPainter(
-                          data: selectedNode!.getSemanticsData(),
-                          color: Colors.yellow[600]!,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: widget.child,
+          ),
+          Positioned.fill(
+            child: ExcludeSemantics(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: selectedNode != null
+                    ? () {
+                        _controller.reverse();
+                        setState(() {
+                          selectedNode = null;
+                        });
+                      }
+                    : null,
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Stack(
+                    children: [
+                      if (selectedNode == null && root != null)
+                        SemanticsNodePainter(
+                          node: root,
+                          onSelect: (node) {
+                            setState(() {
+                              selectedNode = node;
+                            });
+                            _controller.forward(from: 0);
+                          },
                         ),
-                      ),
-                      SemanticsPopup(
-                        animation: CurvedAnimation(
-                          parent: _controller,
-                          curve: Curves.fastOutSlowIn,
+                      if (selectedNode != null) ...[
+                        Positioned.fromRect(
+                          rect: selectedNode!.globalRect,
+                          child: SemanticsDataPainter(
+                            data: selectedNode!.getSemanticsData(),
+                            color: Colors.yellow[600]!,
+                          ),
                         ),
-                        node: selectedNode!,
-                      ),
+                        SemanticsPopup(
+                          animation: CurvedAnimation(
+                            parent: _controller,
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                          node: selectedNode!,
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

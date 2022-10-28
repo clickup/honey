@@ -10,19 +10,13 @@ environment:
 
 dependencies:
   antlr4: ^4.11.1
-  args: ^2.2.0
   characters: ^1.1.0
   collection: ^1.15.0
   flutter:
     sdk: flutter
-  flutter_tools:
-    sdk: flutter
-  glob: ^2.0.1
   intl: ^0.17.0
   json_annotation: ^4.6.0 
   package_info_plus: ^1.3.0
-  path: ^1.8.0
-  path_provider: ^2.0.6
   synchronized: ^3.0.0
 
 dev_dependencies:

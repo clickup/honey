@@ -5,7 +5,6 @@ import 'package:honey/honey.dart';
 import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
-import 'package:honey/src/protocol/honey_message.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
@@ -20,7 +19,7 @@ class TestRunner {
   var _canceled = false;
   late var _ctx = RuntimeHoneyContext(_fakeInput);
 
-  Stream<TestStep> executeAll() async* {
+  Stream<void> executeAll() async* {
     final queue = ListQueue.of(expressions.reversed);
     const stepIndex = 0;
     while (queue.isNotEmpty && !_canceled) {
