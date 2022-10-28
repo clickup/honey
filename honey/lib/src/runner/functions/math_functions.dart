@@ -59,7 +59,7 @@ abstract class MathFunctions {
         );
       } else {
         return val(
-          left.asNum + right.asNum,
+          result,
           retry: left.retry || right.retry,
         );
       }

@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:honey/honey.dart';
 import 'package:honey/src/compiler/compile.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
+import 'package:honey/src/runner/context/runtime_honey_context.dart';
+import 'package:honey/src/utils/fake_text_input.dart';
 
 void expectExpr(String test, Expr expression, {bool optional = false}) {
   final result = compileHoneyTalk(test);
@@ -57,4 +60,8 @@ void expectCondition(String test, ConditionStatement item) {
   }
 }
 
-void expectEval(Expr actual, EvaluatedExpr expected) {}
+Future<void> expectEval(Expr actual, EvaluatedExpr expected) async {
+  final ctx = RuntimeHoneyContext(FakeTextInput());
+  final result = await ctx.eval(actual);
+  expect(result, expected);
+}
