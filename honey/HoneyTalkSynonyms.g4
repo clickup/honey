@@ -115,9 +115,7 @@ image:
     | 'picture'
     | 'pictures'
     | 'photo'
-    | 'photos'
-    | 'icon'
-    | 'icons';
+    | 'photos';
 
 checkbox: 'check' ('box' | 'boxes') | 'checkbox' | 'checkboxes';
 
@@ -125,12 +123,31 @@ sswitch: 'switch' | 'switches';
 
 header: 'header' | 'headers';
 
-exists: // Expressions
-    'exist'
-    | 'exists'
-    | 'existing'
-    | 'visible'
-    | 'there';
+// Expressions
+
+eq: '==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals';
+
+neq:
+    '!='
+    | '<>'
+    | isAre? 'neq'
+    | (isAreNot | 'not') 'equal' 'to'?;
+
+gte:
+    isAre? '>='
+    | isAre? 'gte'
+    | isAre? 'greater' 'than'? 'or' 'equal' 'to'?;
+
+gt: isAre? '>' | isAre? 'gt' | isAre? 'greater' 'than'?;
+
+lte:
+    isAre? '<='
+    | isAre? 'lte'
+    | isAre? 'less' 'than'? 'or' 'equal' 'to'?;
+
+lt: isAre? '<' | isAre? 'lt' | isAre? 'less' 'than'?;
+
+exists: 'exist' | 'exists' | 'existing' | 'visible' | 'there';
 
 starts:
     'start'
@@ -165,6 +182,35 @@ run:
     | 'exec'
     | 'execute'
     | 'eval';
+
+caseSensitive: 'case' 'sensitive' | 'case-sensitive';
+
+caseInsensitive:
+    'case' 'insensitive'
+    | 'case-insensitive'
+    | 'ignore' 'case';
+
+exactly: 'exactly';
+
+left: 'left';
+
+right: 'right';
+
+top: 'top' | 'upper' | 'up';
+
+bottom: 'bottom' | 'lower' | 'down';
+
+topLeft: (('top' | 'upper') '-'? 'left') | 'left' 'top';
+
+topRight: (('top' | 'upper') '-'? 'right') | 'right' 'top';
+
+bottomLeft: (('bottom' | 'lower') '-'? 'left')
+    | 'left' 'bottom';
+
+bottomRight: (('bottom' | 'lower') '-'? 'right')
+    | 'right' 'bottom';
+
+length: 'length' | 'number' | 'count' | 'size';
 
 character: 'character' | 'characters' | 'char' | 'chars';
 

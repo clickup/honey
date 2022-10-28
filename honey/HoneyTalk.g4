@@ -4,39 +4,33 @@ import HoneyTalkSynonyms;
 script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
 
 statement:
-	ifStatement									# statementIf
-	| maybe? actionStatement ('if' expression)?	# statementAction
-	| maybe? expression							# statementExpression;
+	ifStatement					# statementIf
+	| maybe? actionStatement	# statementAction
+	| maybe? expr				# statementExpr;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
 actionStatement:
-	verify 'that'? expression	# actionVerify
-	| see expression			# actionSee
-	| clickType 'on'? target = expression (
-		withOffset offset = expression
-	)?																		# actionClick
-	| clickType ('on'? target = expression)? withOffset offset = expression	# actionClick
-	| enter value = expression												# actionEnter
-	| set variable = ID ('to' | 'as') expression							# actionSetVariable
-	| store expression ('in' | 'into') variable = ID						# actionSetVariable
-	| wait 'for'? expression												# actionWait
-	| print expression														# actionPrint
-	| swipeType 'on'? target = expression (
-		withOffset offset = expression
-	)? ('by')? pixels = expression # actionSwipe
-	| swipeType ('on'? target = expression)? () offset = expression (
-		'by'
-	) pixels = expression # actionSwipe;
+	verify 'that'? expr																	# actionVerify
+	| see expr																			# actionSee
+	| clickType 'on'? target = expr (withOffset offset = expr)?							# actionClick
+	| clickType ('on'? target = expr)? withOffset offset = expr							# actionClick
+	| enter value = expr																# actionEnter
+	| set variable = ID ('to' | 'as') expr												# actionSetVariable
+	| store expr ('in' | 'into') variable = ID											# actionSetVariable
+	| wait 'for'? expr																	# actionWait
+	| print expr																		# actionPrint
+	| swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr	# actionSwipe;
 
 withOffset: 'at' | 'with'? 'offset';
 
 ifStatement:
-	IF expression THEN NEWLINE* (actionStatement NEWLINE)* (
+	IF expr THEN NEWLINE* (actionStatement NEWLINE)* (
 		elseIfStatement
 	)*? END_IF;
+
 elseIfStatement:
-	ELSE (IF expression THEN)? NEWLINE* (actionStatement NEWLINE)*;
+	ELSE (IF expr THEN)? NEWLINE* (actionStatement NEWLINE)*;
 
 clickType:
 	('left' | 'single')? click	# clickTypeSingle
@@ -46,46 +40,24 @@ clickType:
 
 swipeType: swipe singleDirection?;
 
-expression:
-	'(' expression ')'								# expressionExpression
-	| term											# expressionTerm
-	| 'not' expression								# expressionNot
-	| '-' expression								# expressionNegate
-	| 'there' (isAreNot | isAre) expression			# expressionExists
-	| expression (isAreNot | isAre)? exists			# expressionExists
-	| expression '^' expression						# expressionPow
-	| expression op = ('/' | '*') expression		# expressionBinaryOp
-	| expression op = ('+' | '-') expression		# expressionBinaryOp
-	| expression op = ('&&' | '&') expression		# expressionBinaryOp
-	| expression op = comparisonOp expression		# expressionComparison
-	| expression isAre? starts 'with'? expression	# expressionStartsWith
-	| expression isAre? ends 'with'? expression		# expressionEndsWith
-	| expression isAre? contains 'with'? expression	# expressionContains
-	| expression isAre? matches expression			# expressionMatches
-	| expression (isAre | isAreNot) property		# expressionIsAttr
-	| expression 'and' expression					# expressionAnd
-	| expression 'or' expression					# expressionOr;
-
-comparisonOp:
-	('==' | '=' | isAre? 'eq' | isAre? 'equal' 'to'? | 'equals') # comparisonOpEq
-	| (
-		'!='
-		| '<>'
-		| isAre? 'neq'
-		| (isAreNot | 'not') 'equal' 'to'?
-	) # comparisonOpNeq
-	| (
-		'>='
-		| isAre? 'gte'
-		| isAre? 'greater' 'than'? 'or' 'equal' 'to'?
-	)													# comparisonOpGte
-	| ('>' | isAre? 'gt' | isAre? 'greater' 'than'?)	# comparisonOpGt
-	| (
-		'<='
-		| isAre? 'lte'
-		| isAre? 'less' 'than'? 'or' 'equal' 'to'?
-	)												# comparisonOpLte
-	| ('<' | isAre? 'lt' | isAre? 'less' 'than'?)	# comparisonOpLt;
+expr:
+	'(' expr ')'									# exprExpr
+	| term											# exprTerm
+	| ('not' | '!') expr							# exprNot
+	| '-' expr										# exprNegate
+	| 'there' (isAreNot | isAre) expr				# exprExists
+	| expr (isAreNot | isAre)? exists				# exprExists
+	| expr '^' expr									# exprPow
+	| expr op = ('/' | '*') expr					# exprBinaryOp
+	| expr op = ('+' | '-') expr					# exprBinaryOp
+	| expr (eq | neq | gte | gt | lte | lt) expr	# exprComparison
+	| expr isAre? starts 'with'? expr				# exprStartsWith
+	| expr isAre? ends 'with'? expr					# exprEndsWith
+	| expr isAre? contains 'with'? expr				# exprContains
+	| expr isAre? matches expr						# exprMatches
+	| expr (isAre | isAreNot) property				# exprIsAttr
+	| expr ('&&' | '&' | 'and') expr				# exprAnd
+	| expr ('||' | '|' | 'or') expr					# exprOr;
 
 term:
 	'(' term ')'		# termTerm
@@ -97,12 +69,7 @@ term:
 	| property of term	# termProperty
 	| ID				# termSymbol;
 
-property:
-	('length' | 'number' | 'count' | 'size')	# builtinPropLength
-	| character									# builtinPropChars
-	| word										# builtinPropWords
-	| line										# builtinPropLines
-	| ID										# otherProperty;
+property: length | character | word | line | ID;
 
 function:
 	'format' date = term ('from' sourceFormat = term)? (
@@ -123,7 +90,6 @@ literal:
 	cardinal			# literalCardinal
 	| ordinal			# literalOrdinal
 	| STRING_LITERAL	# literalString
-	| REGEX_LITERAL		# literalRegex
 	| NUMBER_LITERAL	# literalNumber
 	| BOOL_LITERAL		# literalBool;
 
@@ -154,55 +120,13 @@ ordinal:
 	| 'last';
 
 widgetIdent:
-	(attr += ID)* widgetNameModifier name += literal (
+	(attr += ID)* (caseSensitive | caseInsensitive | exactly) name += literal (
 		'or' name += literal
 	)* widgetType?
 	| (attr += ID)* name += literal ('or' name += literal)* widgetType
-	| (attr += ID)* widgetNameModifier? widgetType (
+	| (attr += ID)* (caseSensitive | caseInsensitive | exactly)? widgetType (
 		name += literal ('or' name += literal)*
 	)?;
-
-widgetNameModifier:
-	'exactly'				# widgetNameExactly
-	| 'case' 'sensitive'	# widgetNameCaseSensitive
-	| 'case' 'insensitive'	# widgetNameCaseInsensitive;
-
-widgetReference:
-	widgetReferencePosition '(' term ')'
-	| widgetReferencePosition 'screen'
-	| widgetReferencePosition term;
-
-widgetReferencePosition:
-	('in' | 'on' | 'at') singleDirection 'edge'? 'of' isParent = 'parent'?		# widgetReferenceEdge
-	| ('in' | 'on' | 'at') doubleDirection 'corner'? 'of' isParent = 'parent'?	#
-		widgetReferenceCorner
-	| ('in' | 'on' | 'at') singleDirection ('half' | 'side') 'of' isParent = 'parent'? #
-		widgetReferenceHalf
-	| ('in' | 'on' | 'at') ordinal singleDirection (
-		f = 'third'
-		| f = 'quarter'
-		| f = 'eighth'
-	) 'of' isParent = 'parent'? # widgetReferenceFraction
-	| ('in' | 'on' | 'at') singleDirection literal (
-		'%'
-		| 'percent'
-	) 'of' isParent = 'parent'?							# widgetReferencePercentage
-	| ('within' | 'inside' | 'in') isParent = 'parent'?	# widgetReferenceInside
-	| (
-		below = 'below'
-		| above = 'above'
-		| 'to' (singleDirection | doubleDirection)
-	) 'of'? # widgetReferenceTo;
-
-widgetWhere:
-	('where' | 'with' | 'whose') '(' expression ')'
-	| ('where' | 'with' | 'whose') expression;
-
-widgetTerm:
-	widgetIdent widgetReference 'and'? widgetReference 'and'? widgetReference 'and'? widgetWhere?
-	| widgetIdent widgetReference 'and'? widgetReference 'and'? widgetWhere?
-	| widgetIdent widgetReference 'and'? widgetWhere?
-	| widgetIdent widgetWhere?;
 
 widgetType:
 	widget
@@ -215,17 +139,42 @@ widgetType:
 	| sswitch
 	| header;
 
-singleDirection:
-	'left'							# singleDirectionLeft
-	| 'right'						# singleDirectionRight
-	| ('top' | 'upper' | 'up')		# singleDirectionTop
-	| ('bottom' | 'lower' | 'down')	# singleDirectionBottom;
+widgetReference:
+	widgetReferencePosition '(' term ')'
+	| widgetReferencePosition 'screen'
+	| widgetReferencePosition term;
 
-doubleDirection:
-	((('top' | 'upper') '-'? 'left') | 'left' 'top')			# doubleDirectionTopLeft
-	| ((('top' | 'upper') '-'? 'right') | 'right' 'top')		# doubleDirectionTopRight
-	| ((('bottom' | 'lower') '-'? 'left') | 'left' 'bottom')	# doubleDirectionBottomLeft
-	| ((('bottom' | 'lower') '-'? 'right') | 'right' 'bottom')	# doubleDirectionBottomRight;
+widgetReferencePosition:
+	inOnAt singleDirection 'edge'? 'of' container?						# widgetReferenceEdge
+	| inOnAt doubleDirection 'corner'? 'of' container?					# widgetReferenceCorner
+	| inOnAt singleDirection fraction 'of' container?					# widgetReferenceFraction
+	| inOnAt singleDirection literal ('%' | 'percent') 'of' container?	# widgetReferencePercentage
+	| ('within' | 'inside' | 'in') container?							# widgetReferenceInside
+	| (
+		below = 'below'
+		| above = 'above'
+		| 'to' (singleDirection | doubleDirection) 'side'?
+	) 'of'? # widgetReferenceTo;
+
+fraction: 'half' | 'side' | 'third' | 'quarter' | 'eighth';
+
+container: 'container' | 'parent';
+
+inOnAt: 'in' | 'on' | 'at';
+
+singleDirection: left | right | top | bottom;
+
+doubleDirection: topLeft | topRight | bottomLeft | bottomRight;
+
+widgetTerm:
+	widgetIdent widgetReference 'and'? widgetReference 'and'? widgetReference 'and'? widgetWhere?
+	| widgetIdent widgetReference 'and'? widgetReference 'and'? widgetWhere?
+	| widgetIdent widgetReference 'and'? widgetWhere?
+	| widgetIdent widgetWhere?;
+
+widgetWhere:
+	('where' | 'with' | 'whose') '(' expr ')'
+	| ('where' | 'with' | 'whose') expr;
 
 NUMBER_LITERAL:
 	DIGIT+
@@ -241,9 +190,6 @@ THEN: 'then';
 BOOL_LITERAL: 'true' | 'false';
 
 STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
-
-REGEX_LITERAL:
-	'/' ('\\/' | ~[/\n])* '/' ('a' .. 'z' | 'A' .. 'Z')*;
 
 IGNORE: (
 		'the'

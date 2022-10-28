@@ -6,7 +6,7 @@ import 'package:honey/src/compiler/visitors/script_visitor.dart';
 import 'package:honey/src/expression/statement.dart';
 
 final strRegex = RegExp(
-  r'[^"/]+|"(?:"|[^\"])*?"|/(?:/|[^\/])*?/',
+  r'[^"]+|"(?:"|[^\"])*?"',
   multiLine: true,
 );
 
@@ -81,6 +81,7 @@ class HoneyErrorListener extends ErrorListener {
     String msg,
     RecognitionException<IntStream>? e,
   ) {
+    print(msg);
     final token = offendingSymbol is Token ? offendingSymbol.text : null;
     final result = CompilationResult(
       errorLine: line ?? 0,

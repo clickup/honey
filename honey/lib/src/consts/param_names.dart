@@ -3,6 +3,7 @@ const pTarget = 'target';
 const pOffset = 'offset';
 const pReference = 'reference';
 const pFilter = 'filter';
+const pModifier = 'modifier';
 
 const pName = 'name';
 const pValue = 'value';

@@ -16,8 +16,8 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   Statement visitStatementAction(StatementActionContext ctx) {
     final actionCtx = ctx.actionStatement()!;
     final action = actionCtx.accept(actionVisitor)!;
-    //final conditionCtx = ctx.expression();
-    //final condition = conditionCtx?.accept(expressionVisitor);
+    //final conditionCtx = ctx.expr();
+    //final condition = conditionCtx?.accept(exprVisitor);
     return ExpressionStatement(
       expression: action,
       optional: ctx.maybe() != null,
@@ -27,11 +27,11 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   }
 
   @override
-  Statement? visitStatementExpression(StatementExpressionContext ctx) {
-    final expressionCtx = ctx.expression()!;
-    final expression = expressionCtx.accept(expressionVisitor)!;
+  Statement? visitStatementExpr(StatementExprContext ctx) {
+    final exprCtx = ctx.expr()!;
+    final expr = exprCtx.accept(expressionVisitor)!;
     return ExpressionStatement(
-      expression: expression,
+      expression: expr,
       optional: ctx.maybe() != null,
       source: ctx.source,
       line: ctx.line,
@@ -54,8 +54,8 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
 
     final items = <ConditionStatementItem>[];
     final ifActionStatements = ctx.ifStatement()!.actionStatements();
-    final ifConditionContext = ctx.ifStatement()!.expression();
-    items.add(_prepareItem(ifActionStatements, ifConditionContext!));
+    final ifConditionContext = ctx.ifStatement()!.expr();
+    items.add(_prepareItem(ifActionStatements, ifConditionContext));
 
     if (ctx.ifStatement()?.elseIfStatements() == null) {
       return items.toList();
@@ -65,7 +65,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
         <ElseIfStatementContext>[]) {
       final item = _prepareItem(
         element.actionStatements(),
-        element.expression(),
+        element.expr(),
       );
       items.add(item);
     }
@@ -75,9 +75,9 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
 
   ConditionStatementItem _prepareItem(
     List<ActionStatementContext> actionStatements,
-    ExpressionContext? expressionContext,
+    ExprContext? exprContext,
   ) {
-    final condition = expressionContext?.accept(expressionVisitor);
+    final condition = exprContext?.accept(expressionVisitor);
     final statements = <Statement>[];
     for (final element in actionStatements) {
       final e = element.accept(actionVisitor);
