@@ -57,6 +57,4 @@ void expectCondition(String test, ConditionStatement item) {
   }
 }
 
-void expectEval(Expr actual, Expr expected) {
-  expect(actual, expected);
-}
+void expectEval(Expr actual, EvaluatedExpr expected) {}
