@@ -10,14 +10,14 @@ void main() {
       final input = func(F.concat, {
         pValue: list([val(1), val(2)])
       });
-      expectEval(input, val(12));
+      await expectEval(input, val(12));
     });
 
     test('concat string', () async {
       final input = func(F.concat, {
         pValue: list([val('foo'), val('bar')])
       });
-      expectEval(input, val('foobar'));
+      await expectEval(input, val('foobar'));
     });
 
     test('property length', () async {
@@ -25,7 +25,7 @@ void main() {
         pName: val('length'),
         pValue: val('MyValue'),
       });
-      expectEval(input, val(7));
+      await expectEval(input, val(7));
     });
 
     test('empty property length', () async {
@@ -33,7 +33,7 @@ void main() {
         pName: val('length'),
         pValue: empty(),
       });
-      expectEval(input, val(0));
+      await expectEval(input, val(0));
     });
 
     test('property length with retry', () async {
@@ -41,7 +41,7 @@ void main() {
         pName: val(''),
         pValue: empty(retry: true),
       });
-      expectEval(input, empty(retry: true));
+      await expectEval(input, empty(retry: true));
     });
 
     test('property words count', () async {
@@ -49,7 +49,7 @@ void main() {
         pName: val('words'),
         pValue: val('My Value'),
       });
-      expectEval(input, val(2));
+      await expectEval(input, val(2));
     });
 
     test('property lines count', () async {
@@ -57,7 +57,7 @@ void main() {
         pName: val('lines'),
         pValue: val('My\nValue'),
       });
-      expectEval(input, val(2));
+      await expectEval(input, val(2));
     });
 
     test('variable', () async {
@@ -65,7 +65,7 @@ void main() {
         pName: val('foo'),
         pValue: val('bar'),
       });
-      expectEval(input, val('bar'));
+      await expectEval(input, val('bar'));
     });
   });
 }
