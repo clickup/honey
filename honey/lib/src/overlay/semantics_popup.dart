@@ -48,7 +48,7 @@ class SemanticsPopup extends StatelessWidget {
         .map((e) {
           final result = widget.property(e.name);
           if (result.isBool && result.asBool) {
-            return e;
+            return e.name;
           }
         })
         .where((e) => e != null)

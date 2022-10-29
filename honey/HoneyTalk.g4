@@ -1,12 +1,21 @@
 grammar HoneyTalk;
 import HoneyTalkSynonyms;
 
-script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
+script: (statement NEWLINE)* statement? NEWLINE? EOF;
 
 statement:
-    ifStatement              # statementIf
-    | maybe? actionStatement # statementAction
-    | maybe? expr            # statementExpr;
+    ifStatement                   # statementIf
+    | maybe? actionStatement '.'? # statementAction
+    | maybe? expr '.'?            # statementExpr;
+
+ifStatement:
+    IF expr 'then' 'do'? actionStatement '.'?
+    | actionStatement IF expr '.'?
+    | IF expr 'then'? 'do'? NEWLINE (statement NEWLINE)* elseStatement* ENDIF;
+
+elseStatement:
+    ELSE NEWLINE (statement NEWLINE)*
+    | ELSEIF expr 'then'? 'do'? NEWLINE (statement NEWLINE)*;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
@@ -23,14 +32,6 @@ actionStatement:
     | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe;
 
 withOffset: 'at' | 'with'? 'offset';
-
-ifStatement:
-    IF expr THEN NEWLINE* (actionStatement NEWLINE)* (
-        elseIfStatement
-    )*? END_IF;
-
-elseIfStatement:
-    ELSE (IF expr THEN)? NEWLINE* (actionStatement NEWLINE)*;
 
 clickType:
     ('left' | 'single')? click # clickTypeSingle
@@ -181,10 +182,13 @@ NUMBER_LITERAL:
     | DIGIT+ '.'
     | DIGIT+ '.' DIGIT+;
 
+ELSEIF: ELSE IF | 'elseif' | 'elif';
+
+ENDIF: 'end' IF | 'endif';
+
 IF: 'if';
+
 ELSE: 'else';
-END_IF: 'endif';
-THEN: 'then';
 
 BOOL_LITERAL: 'true' | 'false';
 

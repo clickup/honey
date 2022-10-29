@@ -1,15 +1,12 @@
 import * as vs from "vscode";
-import {
-  HoneyCompilation,
-  HoneyStep,
-  HoneyStepResult,
-} from "./honey_connection";
+import { HoneyCompilation, HoneyStepResult } from "./honey_connection";
 import { TestDiscovery } from "./test_discovery";
-import { disposeAll } from "./utils";
+import { disposeAll, getOutputChannel } from "./utils";
 
 export class TestRunner implements vs.Disposable {
   private testDiscovery: TestDiscovery;
   private testController: vs.TestController;
+  private channel: vs.OutputChannel;
   private disposables: vs.Disposable[] = [];
 
   private currentSession?: vs.DebugSession;
@@ -18,6 +15,7 @@ export class TestRunner implements vs.Disposable {
   constructor(testDiscovery: TestDiscovery, testController: vs.TestController) {
     this.testDiscovery = testDiscovery;
     this.testController = testController;
+    this.channel = getOutputChannel("Honey");
 
     const startDisposable = vs.debug.onDidStartDebugSession(
       this.handleStartSession,
@@ -31,8 +29,12 @@ export class TestRunner implements vs.Disposable {
     const receiveDisposable = vs.debug.onDidReceiveDebugSessionCustomEvent(
       (e) => {
         if (e.event === "honey.compiled") {
+          this.channel.appendLine("Test compilation received");
+          this.channel.appendLine(JSON.stringify(e.body));
           this.handleTestCompiled(e.body.testUri, e.body.compilation);
         } else if (e.event === "honey.step") {
+          this.channel.appendLine("Test step received");
+          this.channel.appendLine(JSON.stringify(e.body));
           this.handleTestStep(e.body.testUri, e.body.step);
         }
       }
@@ -45,6 +47,8 @@ export class TestRunner implements vs.Disposable {
       terminateDisposable,
       receiveDisposable
     );
+
+    this.channel.appendLine("Test runner initialized");
   }
 
   dispose() {
@@ -74,6 +78,8 @@ export class TestRunner implements vs.Disposable {
 
     this.currentSession = session;
     this.currentRun = run;
+
+    this.channel.appendLine("Test run started");
   }
 
   private handleTerminateSession(session: vs.DebugSession) {
@@ -84,6 +90,7 @@ export class TestRunner implements vs.Disposable {
     this.currentRun?.end();
     this.currentSession = undefined;
     this.currentRun = undefined;
+    this.channel.appendLine("Test run ended");
   }
 
   private handleTestCompiled(testUri: string, compilation: HoneyCompilation) {
@@ -91,9 +98,17 @@ export class TestRunner implements vs.Disposable {
     if (!testItem) {
       return;
     }
-
-    if (compilation.errorLine) {
-      const message = new vs.TestMessage("Could not compile test");
+    if (compilation.error) {
+      const markdown = new vs.MarkdownString();
+      markdown.appendText("Could not compile test\n");
+      markdown.appendText(compilation.error + "\n");
+      if (compilation.errorLine) {
+        markdown.appendText(`Line ${compilation.errorLine} `);
+      }
+      if (compilation.errorColumn) {
+        markdown.appendText(`Column ${compilation.errorColumn}`);
+      }
+      const message = new vs.TestMessage(markdown);
       message.location = new vs.Location(
         testItem.uri!,
         new vs.Position(compilation.errorLine!, compilation.errorColumn!)
@@ -101,15 +116,16 @@ export class TestRunner implements vs.Disposable {
       this.currentRun?.errored(testItem, message);
     } else if (compilation.steps) {
       testItem.children.replace([]);
-      for (var [si, s] of compilation.steps.entries()) {
+      for (var i = 0; i < compilation.steps.length; i++) {
+        const step = compilation.steps[i];
         const item = this.testController.createTestItem(
-          si.toString(),
-          s.step,
+          step.line.toString(),
+          step.step,
           vs.Uri.file(testUri)
         );
-        item.range = new vs.Range(s.line, 0, s.line, s.step.length);
+        item.range = new vs.Range(step.line, 0, step.line, step.step.length);
         testItem.children.add(item);
-        if (si === 0) {
+        if (i === 0) {
           item.busy = true;
         }
         this.currentRun?.enqueued(item);
@@ -122,6 +138,8 @@ export class TestRunner implements vs.Disposable {
         this.currentRun?.passed(testItem);
       }
     }
+
+    this.channel.appendLine("Test compilation handled");
   }
 
   private handleTestStep(testUri: string, step: HoneyStepResult) {
@@ -130,33 +148,32 @@ export class TestRunner implements vs.Disposable {
       return;
     }
 
-    const testStepItem = testItem.children.get(step.index.toString());
+    const testStepItem = testItem.children.get(step.line.toString());
     if (!testStepItem) {
       return;
     }
-
-    if (step.error) {
-      this.currentRun?.failed(testStepItem, new vs.TestMessage(step.error));
-      for (var i = step.index + 1; i < testItem.children.size; i++) {
-        const skippedItem = testItem.children.get(i.toString());
-        skippedItem!.busy = false;
-        this.currentRun?.skipped(skippedItem!);
-      }
-    } else {
-      this.currentRun?.passed(testStepItem);
-    }
-
     testStepItem.busy = false;
 
-    if (step.index === testItem.children.size - 1) {
+    if (step.error) {
+      testItem.children.forEach((child) => {
+        if (child.range?.start.line ?? 0 > step.line) {
+          this.currentRun?.skipped(child);
+        }
+      });
       testItem.busy = false;
-      this.currentRun?.passed(testItem);
-    } else if (step.error) {
-      testItem.busy = false;
+      this.currentRun?.failed(testStepItem, new vs.TestMessage(step.error));
     } else {
-      const nextStepItem = testItem.children.get((step.index + 1).toString());
-      nextStepItem!.busy = true;
+      this.currentRun?.passed(testStepItem);
+      if (step.nextLine) {
+        const nextStepItem = testItem.children.get(step.nextLine.toString());
+        nextStepItem!.busy = true;
+      } else {
+        testItem.busy = false;
+        this.currentRun?.passed(testItem);
+      }
     }
+
+    this.channel.appendLine("Test step handled");
   }
 
   private createRunProfile() {
@@ -191,5 +208,7 @@ export class TestRunner implements vs.Disposable {
       },
       true
     );
+
+    this.channel.appendLine("Test run profile created");
   }
 }

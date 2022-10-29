@@ -13,12 +13,13 @@ import 'package:honey/src/runner/functions.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
 
 class RuntimeHoneyContext with HoneyContext {
-  RuntimeHoneyContext(this.fakeTextInput);
+  RuntimeHoneyContext(this.fakeTextInput, this.customFunctions);
 
   static late Rect screenRect;
 
   @override
   final FakeTextInput fakeTextInput;
+  final Map<String, HoneyFunction> customFunctions;
   final variables = <String, EvaluatedExpr>{};
   final defaultVariables = getDefaultVariables();
 
@@ -105,6 +106,7 @@ class RuntimeHoneyContext with HoneyContext {
   }
 
   RuntimeHoneyContext clone() {
-    return RuntimeHoneyContext(fakeTextInput)..variables.addAll(variables);
+    return RuntimeHoneyContext(fakeTextInput, customFunctions)
+      ..variables.addAll(variables);
   }
 }

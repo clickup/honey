@@ -8,37 +8,36 @@ import 'package:honey/src/expression/statement.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
+import 'package:honey/src/runner/test_step.dart';
 import 'package:honey/src/utils/fake_text_input.dart';
 
 class TestRunner {
-  TestRunner(this.runId, this.expressions);
+  TestRunner(this.statements, this.customFunctions);
 
-  final int runId;
-  final List<Statement> expressions;
+  final List<Statement> statements;
+  final Map<String, HoneyFunction> customFunctions;
   final _fakeInput = FakeTextInput();
   var _canceled = false;
-  late var _ctx = RuntimeHoneyContext(_fakeInput);
+  late var _ctx = RuntimeHoneyContext(_fakeInput, customFunctions);
 
-  Stream<void> executeAll() async* {
-    final queue = ListQueue.of(expressions.reversed);
+  Stream<TestStep> executeAll() async* {
+    final queue = ListQueue.of(statements.reversed);
     const stepIndex = 0;
     while (queue.isNotEmpty && !_canceled) {
-      final expression = queue.removeLast();
+      final statement = queue.removeLast();
 
       //final dynamic result = await runRepeatedly(expression);
+      await Future.delayed(Duration(milliseconds: 500));
 
-      /*final step = TestStep(
-        runId: runId,
-        time: DateTime.now().difference(startTime).inMilliseconds,
-        index: stepIndex++,
-        step: statement.sourceInfo.source,
-        message: result is HoneyError ? result.message : _ctx.message,
-        error: result is HoneyError && !statement.optional,
-        variables: Map.of(_ctx.variables),
+      final step = TestStep(
+        line: statement.line,
+        step: statement.source,
+        nextLine: queue.isNotEmpty ? queue.last.line : null,
+        error: null,
       );
       if (!_canceled) {
         yield step;
-      }*/
+      }
 
       /*if (result is HoneyError) {
         return;

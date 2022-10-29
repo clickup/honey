@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -30,6 +32,7 @@ class HoneyWidgetsBinding extends BindingBase
         WidgetsBinding {
   HoneyWidgetsBinding._(this._customFunctions) {
     pipelineOwner.ensureSemantics();
+    _initServiceExtensions();
   }
 
   static HoneyWidgetsBinding get instance =>
@@ -40,7 +43,6 @@ class HoneyWidgetsBinding extends BindingBase
 
   final Map<String, HoneyFunction> _customFunctions;
   final _semanticTagProperties = <String, Map<String, String>>{};
-  var testing = false;
   TestRunner? _testRunner;
   Widget? _rootWidget;
 
@@ -58,12 +60,48 @@ class HoneyWidgetsBinding extends BindingBase
     }
   }
 
+  void _initServiceExtensions() {
+    registerExtension(
+      'ext.honey.test',
+      (_, params) async {
+        final compilation = compileHoneyTalk(params['test']!);
+        late Map<String, dynamic> result;
+        if (_testRunner != null) {
+          result = {
+            'error': 'Test already running',
+          };
+        } else if (compilation.errorLine != null ||
+            compilation.errorColumn != null) {
+          result = {
+            'error': 'Could not compile Honey script',
+            'errorLine': compilation.errorLine,
+            'errorColumn': compilation.errorColumn,
+          };
+        } else {
+          unawaited(_runTest(compilation.statements!));
+          result = {
+            'steps': [
+              for (final step in compilation.statements!)
+                {
+                  'line': step.line,
+                  'step': step.source,
+                }
+            ]
+          };
+        }
+
+        return ServiceExtensionResponse.result(jsonEncode(result));
+      },
+    );
+    postEvent('ext.honey.greeting', {});
+  }
+
   @override
   void scheduleAttachRootWidget(Widget rootWidget) {
     _rootWidget = rootWidget;
 
     Widget widget = KeyedSubtree(key: _key, child: rootWidget);
-    if (!testing) {
+    if (_testRunner == null) {
       widget = HoneyOverlay(child: widget);
     }
 
@@ -102,33 +140,21 @@ class HoneyWidgetsBinding extends BindingBase
     return HoneyBinaryMessenger(super.createBinaryMessenger());
   }
 
-  Stream<TestStep> runTest(int runId, List<Statement> statements) async* {
+  Future<void> _runTest(List<Statement> statements) async {
     if (_testRunner != null) return;
 
     try {
-      _setStatus(HoneyStatus.test);
-      await restartApp();
-      await Future<void>.delayed(const Duration(seconds: 3));
-      //_testRunner = TestRunner(statements, customFunctions);
-      //yield* _testRunner!.executeAll();
+      _testRunner = TestRunner(statements, _customFunctions);
+      if (_rootWidget == null) {
+        runApp(_rootWidget!);
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+      }
+      await for (final step in _testRunner!.executeAll()) {
+        postEvent('ext.honey.step', step.toJson());
+      }
     } finally {
       await cancelTests();
     }
-  }
-
-  Stream<HoneyMessage> compileAndRunTest(int runId, String test) async* {
-    final compilation = compileHoneyTalk(test);
-    if (compilation.hasError) {
-      yield CompileError(
-        runId: 0,
-        line: compilation.errorLine ?? 0,
-        column: compilation.errorColumn ?? 0,
-      );
-      return;
-    }
-
-    yield* HoneyWidgetsBinding.instance.runTest(0, compilation.statements!);
-    yield const TestFinished(runId: 0);
   }
 
   Future<void> cancelTests() async {

@@ -16,8 +16,6 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   Statement visitStatementAction(StatementActionContext ctx) {
     final actionCtx = ctx.actionStatement()!;
     final action = actionCtx.accept(actionVisitor)!;
-    //final conditionCtx = ctx.expr();
-    //final condition = conditionCtx?.accept(exprVisitor);
     return ExpressionStatement(
       expression: action,
       optional: ctx.maybe() != null,

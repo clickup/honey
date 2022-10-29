@@ -121,6 +121,7 @@
         "webpack-cli": "^4.9.1",
         "ws": "^8.10.0",
         "bufferutil": "^4.0.7",
-        "utf-8-validate": "^5.0.10"
+        "utf-8-validate": "^5.0.10",
+        "queueable": "^4.1.4"
     }
 }

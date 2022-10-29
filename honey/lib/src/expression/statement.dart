@@ -40,49 +40,35 @@ class ExpressionStatement extends Statement {
 @immutable
 class ConditionStatement extends Statement {
   const ConditionStatement({
-    this.conditionStatements,
+    required this.condition,
+    required this.statements,
+    required this.elseStatements,
     required super.source,
     required super.line,
-  });
-  final List<ConditionStatementItem>? conditionStatements;
-
-  @override
-  bool operator ==(Object other) =>
-      other is ConditionStatement &&
-      const ListEquality<ConditionStatementItem>()
-          .equals(other.conditionStatements, conditionStatements);
-
-  @override
-  int get hashCode => Object.hashAll(conditionStatements ?? []);
-
-  @override
-  String toString() =>
-      'ConditionStatement{condtionaStatements: $conditionStatements}';
-}
-
-@immutable
-class ConditionStatementItem {
-  const ConditionStatementItem({
-    this.condition,
-    required this.statements,
   });
 
   final Expr? condition;
   final List<Statement> statements;
+  final List<Statement> elseStatements;
 
   @override
   bool operator ==(Object other) =>
-      other is ConditionStatementItem &&
+      other is ConditionStatement &&
       other.condition == condition &&
-      const ListEquality<Statement>().equals(other.statements, statements);
+      const ListEquality<Statement>().equals(other.statements, statements) &&
+      const ListEquality<Statement>()
+          .equals(other.elseStatements, elseStatements);
 
   @override
   int get hashCode => Object.hash(
         condition,
         Object.hashAll(statements),
+        Object.hashAll(elseStatements),
+        source,
+        line,
       );
 
   @override
-  String toString() =>
-      'ConditionStatementItem{condition: $condition, statements: $statements}';
+  String toString() => 'ConditionStatement{condition: $condition, statements:'
+      '$statements, elseStatements: $elseStatements}';
 }

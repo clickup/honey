@@ -1,28 +1,35 @@
 import * as vs from "vscode";
-import { disposeAll } from "./utils";
+import { disposeAll, getOutputChannel, PromiseCompleter } from "./utils";
 import { VmServiceConnection } from "./vmservice";
+import { Channel } from "queueable";
 
 export type HoneyCompilation = {
+  error?: string;
   errorLine?: number;
   errorColumn?: number;
-  steps?: HoneyStep[];
-};
-
-export type HoneyStep = {
-  line: number;
-  step: string;
+  steps?: [
+    {
+      line: number;
+      step: string;
+    }
+  ];
 };
 
 export type HoneyStepResult = {
-  index: number;
+  line: number;
+  nextLine?: number;
   step: string;
   error?: string;
 };
 
 export class HoneyConnection implements vs.Disposable {
   private disposables: vs.Disposable[] = [];
+  private channel: vs.OutputChannel;
+
   private vmServiceUrl?: string;
   private vmService?: VmServiceConnection;
+  private restartCompleter?: PromiseCompleter<void>;
+  private stepChannel?: Channel<HoneyStepResult>;
 
   constructor() {
     const disposable = vs.debug.onDidReceiveDebugSessionCustomEvent((e) => {
@@ -35,11 +42,17 @@ export class HoneyConnection implements vs.Disposable {
       }
     });
     this.disposables.push(disposable);
+    this.channel = getOutputChannel("Honey");
+    this.channel.appendLine("Honey connection initialized");
   }
 
   private async connect(url: string) {
     const vmService = new VmServiceConnection(url + "ws", (service, data) => {
-      if (service === "step") {
+      if (service === "greeting") {
+        this.channel.appendLine("Greeting received");
+        this.restartCompleter?.resolve();
+      } else if (service === "step") {
+        this.stepChannel?.push(data);
       }
     });
 
@@ -47,9 +60,12 @@ export class HoneyConnection implements vs.Disposable {
       if (this.vmService === vmService) {
         this.vmServiceUrl = undefined;
         this.vmService = undefined;
+        this.channel.appendLine("Disconnected from VM service");
       }
     });
     this.vmService = vmService;
+    this.vmServiceUrl = url;
+    this.channel.appendLine("Connecting to VM service");
   }
 
   isConnected() {
@@ -58,16 +74,32 @@ export class HoneyConnection implements vs.Disposable {
 
   async runTest(
     test: string
-  ): Promise<[HoneyCompilation, AsyncGenerator<HoneyStepResult>?]> {
-    const compilation = this.vmService!.callService("test", { test });
-    const timeout = new Promise((_resolve, reject) => {
+  ): Promise<[HoneyCompilation, Channel<HoneyStepResult>?]> {
+    this.restartCompleter = new PromiseCompleter();
+    await (vs.commands.executeCommand("flutter.hotRestart") as Promise<void>);
+    await this.restartCompleter.promise;
+
+    this.stepChannel = new Channel();
+    const compilationPromise = this.vmService!.callService("test", { test });
+    const timeout = new Promise<HoneyCompilation>((_resolve, reject) => {
       setTimeout(() => reject("Timeout"), 3000);
     });
-    return Promise.race([compilation, timeout]);
+    const compilation: HoneyCompilation = await Promise.race([
+      compilationPromise,
+      timeout,
+    ]);
+
+    if (compilation.errorLine) {
+      return [compilation, undefined];
+    }
+
+    return [compilation, this.stepChannel];
   }
 
   async cancelTest(): Promise<void> {
-    await this.vmService!.callService("cancelTest");
+    this.channel.appendLine("Cancelling test");
+    await this.vmService?.callService("cancelTest");
+    this.channel.appendLine("Test cancelled");
   }
 
   dispose() {

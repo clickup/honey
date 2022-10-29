@@ -98,6 +98,9 @@ class HoneyDebugSession extends DebugSession {
       if (steps) {
         for await (const step of steps) {
           this.sendEvent(new Event("honey.step", { testUri, step }));
+          if (!step.nextLine) {
+            break;
+          }
         }
       }
     }

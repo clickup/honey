@@ -81,12 +81,9 @@ class HoneyErrorListener extends ErrorListener {
     String msg,
     RecognitionException<IntStream>? e,
   ) {
-    print(msg);
-    final token = offendingSymbol is Token ? offendingSymbol.text : null;
     final result = CompilationResult(
       errorLine: line ?? 0,
       errorColumn: charPositionInLine,
-      errorToken: token,
     );
     errorListener(result);
   }
@@ -97,13 +94,11 @@ class CompilationResult {
     this.statements,
     this.errorLine,
     this.errorColumn,
-    this.errorToken,
   });
 
   final List<Statement>? statements;
   final int? errorLine;
   final int? errorColumn;
-  final String? errorToken;
 
   bool get hasError => errorLine != null;
 }

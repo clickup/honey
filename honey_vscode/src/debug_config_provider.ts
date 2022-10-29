@@ -1,10 +1,13 @@
 import * as vs from "vscode";
+import { HoneyConnection } from "./honey_connection";
 import { TestRunner } from "./test_runner";
 
 export class DebugConfigProvider implements vs.DebugConfigurationProvider {
+  private honeyConnection: HoneyConnection;
   private testRunner: TestRunner;
 
-  constructor(testRunner: TestRunner) {
+  constructor(honeyConnection: HoneyConnection, testRunner: TestRunner) {
+    this.honeyConnection = honeyConnection;
     this.testRunner = testRunner;
   }
 
@@ -18,13 +21,15 @@ export class DebugConfigProvider implements vs.DebugConfigurationProvider {
       return config;
     }
 
-    const sessionActive = this.testRunner.isSessionRunning();
-    if (sessionActive) {
-      vs.window.showErrorMessage("The device is not ready.");
+    if (this.testRunner.isSessionRunning()) {
+      vs.window.showErrorMessage("Test is already running");
+      return undefined;
+    } else if (!this.honeyConnection.isConnected()) {
+      vs.window.showErrorMessage("No Honey app is running");
       return undefined;
     }
 
-    if (config?.tests?.length === 0 || activeDoc?.languageId != "honeytalk") {
+    if (config?.tests?.length === 0 && activeDoc?.languageId != "honeytalk") {
       vs.window.showErrorMessage("No HoneyTalk file selected.");
       return undefined;
     }

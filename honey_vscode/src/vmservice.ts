@@ -71,10 +71,7 @@ export class VmServiceConnection {
     if (this.isolateId) {
       params["isolateId"] = this.isolateId;
     }
-    return this.callMethod("callServiceExtension", {
-      method: "ext.honey." + method,
-      params: paramsMap,
-    });
+    return this.callMethod("ext.honey." + method, paramsMap);
   }
 
   private handleData(data: string) {
