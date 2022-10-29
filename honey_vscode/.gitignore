@@ -9,5 +9,6 @@ tsconfig.lsif.json
 *.lsif
 *.db
 *.vsix
+package-lock.json
 
 syntaxes/*.json
