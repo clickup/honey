@@ -1,20 +1,14 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:honey/src/compiler/compile.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:honey/src/debug_controller.dart';
 import 'package:honey/src/expression/expr.dart';
-import 'package:honey/src/expression/statement.dart';
 import 'package:honey/src/overlay/honey_overlay.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
-import 'package:honey/src/runner/test_runner.dart';
-import 'package:honey/src/utils/honey_binary_messenger.dart';
 
 typedef HoneyFunction = Future<EvaluatedExpr> Function(
   HoneyContext ctx,
@@ -29,10 +23,11 @@ class HoneyWidgetsBinding extends BindingBase
         PaintingBinding,
         SemanticsBinding,
         RendererBinding,
-        WidgetsBinding {
-  HoneyWidgetsBinding._(this._customFunctions) {
+        WidgetsBinding,
+        TestDefaultBinaryMessengerBinding {
+  HoneyWidgetsBinding._(Map<String, HoneyFunction> customFunctions) {
     pipelineOwner.ensureSemantics();
-    _initServiceExtensions();
+    DebugController(customFunctions);
   }
 
   static HoneyWidgetsBinding get instance =>
@@ -40,16 +35,19 @@ class HoneyWidgetsBinding extends BindingBase
   static HoneyWidgetsBinding? _instance;
 
   final _key = GlobalKey();
-
-  final Map<String, HoneyFunction> _customFunctions;
   final _semanticTagProperties = <String, Map<String, String>>{};
-  TestRunner? _testRunner;
+
+  var _testing = false;
   Widget? _rootWidget;
+  late TestTextInput _testTextInput;
+
+  TestTextInput get testTextInput => _testTextInput;
 
   @override
   void initInstances() {
     super.initInstances();
     _instance = this;
+    _testTextInput = TestTextInput();
   }
 
   static Future<void> ensureInitialized({
@@ -60,48 +58,12 @@ class HoneyWidgetsBinding extends BindingBase
     }
   }
 
-  void _initServiceExtensions() {
-    registerExtension(
-      'ext.honey.test',
-      (_, params) async {
-        final compilation = compileHoneyTalk(params['test']!);
-        late Map<String, dynamic> result;
-        if (_testRunner != null) {
-          result = {
-            'error': 'Test already running',
-          };
-        } else if (compilation.errorLine != null ||
-            compilation.errorColumn != null) {
-          result = {
-            'error': 'Could not compile Honey script',
-            'errorLine': compilation.errorLine,
-            'errorColumn': compilation.errorColumn,
-          };
-        } else {
-          unawaited(_runTest(compilation.statements!));
-          result = {
-            'steps': [
-              for (final step in compilation.statements!)
-                {
-                  'line': step.line,
-                  'step': step.source,
-                }
-            ]
-          };
-        }
-
-        return ServiceExtensionResponse.result(jsonEncode(result));
-      },
-    );
-    postEvent('ext.honey.greeting', {});
-  }
-
   @override
   void scheduleAttachRootWidget(Widget rootWidget) {
     _rootWidget = rootWidget;
 
     Widget widget = KeyedSubtree(key: _key, child: rootWidget);
-    if (_testRunner == null) {
+    if (!_testing) {
       widget = HoneyOverlay(child: widget);
     }
 
@@ -131,37 +93,18 @@ class HoneyWidgetsBinding extends BindingBase
     return _semanticTagProperties[tag];
   }
 
-  @override
-  HoneyBinaryMessenger get defaultBinaryMessenger =>
-      super.defaultBinaryMessenger as HoneyBinaryMessenger;
-
-  @override
-  HoneyBinaryMessenger createBinaryMessenger() {
-    return HoneyBinaryMessenger(super.createBinaryMessenger());
-  }
-
-  Future<void> _runTest(List<Statement> statements) async {
-    if (_testRunner != null) return;
-
-    try {
-      _testRunner = TestRunner(statements, _customFunctions);
-      if (_rootWidget == null) {
-        runApp(_rootWidget!);
-        await Future<void>.delayed(const Duration(milliseconds: 100));
-      }
-      await for (final step in _testRunner!.executeAll()) {
-        postEvent('ext.honey.step', step.toJson());
-      }
-    } finally {
-      await cancelTests();
+  void reset({required bool testing}) {
+    _testing = testing;
+    resetGestureBinding();
+    _testTextInput.reset();
+    if (testing) {
+      _testTextInput.register();
+    } else {
+      _testTextInput.unregister();
     }
-  }
 
-  Future<void> cancelTests() async {
-    await _testRunner?.cancel();
-    _testRunner!.dispose();
-    _testRunner = null;
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    runApp(_rootWidget!);
+    if (_rootWidget != null) {
+      runApp(_rootWidget!);
+    }
   }
 }

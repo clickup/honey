@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:honey/src/consts/property.dart';
-import 'package:honey/src/utils/semantics_extension.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 class _SemanticsPopupPositionDelegate extends SingleChildLayoutDelegate {
   _SemanticsPopupPositionDelegate({

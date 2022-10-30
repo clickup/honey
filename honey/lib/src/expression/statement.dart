@@ -47,7 +47,7 @@ class ConditionStatement extends Statement {
     required super.line,
   });
 
-  final Expr? condition;
+  final Expr condition;
   final List<Statement> statements;
   final List<Statement> elseStatements;
 

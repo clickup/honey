@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:honey/src/overlay/semantics_data_painter.dart';
-import 'package:honey/src/utils/semantics_extension.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 typedef WidgetColorChooser = Color Function(SemanticsNode, SemanticsData);
 typedef SelectCallback = void Function(SemanticsNode);

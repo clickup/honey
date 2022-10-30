@@ -11,11 +11,14 @@ statement:
 ifStatement:
     IF expr 'then' 'do'? actionStatement '.'?
     | actionStatement IF expr '.'?
-    | IF expr 'then'? 'do'? NEWLINE (statement NEWLINE)* elseStatement* ENDIF;
+    | IF expr 'then'? 'do'? NEWLINE (statement NEWLINE)* (
+        elseIfStatement NEWLINE
+    )* elseStatement? ENDIF;
 
-elseStatement:
-    ELSE NEWLINE (statement NEWLINE)*
-    | ELSEIF expr 'then'? 'do'? NEWLINE (statement NEWLINE)*;
+elseIfStatement:
+    ELSEIF expr 'then'? 'do'? NEWLINE (statement NEWLINE)*;
+
+elseStatement: ELSE NEWLINE (statement NEWLINE)*;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
@@ -25,8 +28,8 @@ actionStatement:
     | clickType 'on'? target = expr (withOffset offset = expr)?                        # actionClick
     | clickType ('on'? target = expr)? withOffset offset = expr                        # actionClick
     | enter value = expr                                                               # actionEnter
-    | set variable = ID ('to' | 'as') expr                                             # actionSetVariable
-    | store expr ('in' | 'into') variable = ID                                         # actionSetVariable
+    | set (ID | VARIABLE) ('to' | 'as') expr                                           # actionSetVariable
+    | store expr ('in' | 'into') (ID | VARIABLE)                                       # actionSetVariable
     | wait 'for'? expr                                                                 # actionWait
     | print expr                                                                       # actionPrint
     | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe;
@@ -68,7 +71,7 @@ term:
     | ordinal term     # termOrdinal
     | widgetTerm       # termWidget
     | property of term # termProperty
-    | ID               # termSymbol;
+    | (ID | VARIABLE)  # termSymbol;
 
 property: length | character | word | line | ID;
 
@@ -203,6 +206,8 @@ IGNORE: (
         | 'yet'
         | 'soon'
     ) -> channel(HIDDEN);
+
+VARIABLE: '$' ID;
 
 ID: ( ALPHA (ALPHA | DIGIT)*);
 

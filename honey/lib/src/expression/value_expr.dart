@@ -51,6 +51,7 @@ class ValueExpr with EvaluatedExpr implements Comparable<Expr> {
 
   bool get isNum => num.tryParse(value) != null;
 
+  @override
   num get asNum {
     if (isBool) {
       return value == 'true' ? 1 : 0;

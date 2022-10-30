@@ -54,10 +54,10 @@ abstract class ActionFunctions {
     Map<String, Expr> params,
   ) async {
     final value = await ctx.eval(params[pValue]);
-
+    final textInput = HoneyWidgetsBinding.instance.testTextInput;
     if (value is ValueExpr) {
-      if (ctx.fakeTextInput.hasClient) {
-        ctx.fakeTextInput.enterText(value.value);
+      if (textInput.hasAnyClients) {
+        textInput.enterText(value.value);
         return empty();
       } else {
         throw HoneyError('no text field focused', false);

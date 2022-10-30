@@ -7,7 +7,6 @@ import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
-import 'package:honey/src/utils/fake_text_input.dart';
 
 abstract class HoneyContext {
   static Rect get screenRect => RuntimeHoneyContext.screenRect;
@@ -22,8 +21,6 @@ abstract class HoneyContext {
   }
 
   SemanticsNode get semanticsTree;
-
-  FakeTextInput get fakeTextInput;
 
   EvaluatedExpr getVariable(String name);
 
@@ -97,4 +94,6 @@ abstract class HoneyContext {
   }
 
   Future<EvaluatedExpr> eval(Expr? expression);
+
+  HoneyContext clone();
 }

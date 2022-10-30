@@ -1,5 +1,5 @@
 import 'package:flutter/semantics.dart';
-import 'package:honey/src/utils/semantics_extension.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 List<SemanticsNode> findNodesAtOffset(SemanticsNode root, Offset offset) {
   final matches = <SemanticsNode>[];

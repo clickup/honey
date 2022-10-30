@@ -1,7 +1,7 @@
 import 'package:flutter/semantics.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
-import 'package:honey/src/utils/semantics_extension.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 List<WidgetExpr> findWidgetCandidates(
   HoneyContext context, {

@@ -56,7 +56,7 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
 
   @override
   FunctionExpr visitActionSetVariable(ActionSetVariableContext ctx) {
-    final variable = ctx.variable!.text!;
+    final variable = ctx.ID()?.text ?? ctx.VARIABLE()!.text!.substring(1);
     final value = ctx.expr()!.accept(expressionVisitor)!;
     return func(F.variable, {pName: val(variable), pValue: value});
   }

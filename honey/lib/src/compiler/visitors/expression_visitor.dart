@@ -188,7 +188,7 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
 
   @override
   Expr visitTermSymbol(TermSymbolContext ctx) {
-    final name = ctx.ID()!.text!;
+    final name = ctx.ID()?.text ?? ctx.VARIABLE()!.text!.substring(1);
     return func(F.variable, {pName: val(name)});
   }
 

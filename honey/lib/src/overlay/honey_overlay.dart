@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:honey/src/overlay/semantics_data_painter.dart';
 import 'package:honey/src/overlay/semantics_node_painter.dart';
 import 'package:honey/src/overlay/semantics_popup.dart';
-import 'package:honey/src/utils/semantics_extension.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 class HoneyOverlay extends StatefulWidget {
   const HoneyOverlay({

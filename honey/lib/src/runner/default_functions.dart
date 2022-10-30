@@ -5,9 +5,8 @@ import 'package:honey/src/runner/functions/core_functions.dart';
 import 'package:honey/src/runner/functions/date_functions.dart';
 import 'package:honey/src/runner/functions/logic_functions.dart';
 import 'package:honey/src/runner/functions/math_functions.dart';
-import 'package:honey/src/runner/functions/widget_functions.dart';
 
-const functions = <F, HoneyFunction>{
+const defaultFunctions = <F, HoneyFunction>{
   F.click: ActionFunctions.click,
   F.verify: ActionFunctions.verify,
   F.enter: ActionFunctions.enter,
