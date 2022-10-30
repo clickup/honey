@@ -88,6 +88,7 @@ functionParam: (ID ':'?)? term;
 
 literal:
     cardinal         # literalCardinal
+    | ordinal        # literalOrdinal
     | STRING_LITERAL # literalString
     | NUMBER_LITERAL # literalNumber
     | BOOL_LITERAL   # literalBool;

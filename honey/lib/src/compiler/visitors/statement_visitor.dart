@@ -58,7 +58,7 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
     items.add(_prepareItem(ifActionStatements, ifConditionContext));
 
     if (ctx.ifStatement()?.elseIfStatements() == null) {
-      return items;
+      return items.toList();
     }
 
     for (final element in ctx.ifStatement()?.elseIfStatements() ??
@@ -92,7 +92,6 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
         );
       }
     }
-
     return ConditionStatementItem(
       condition: condition,
       statements: statements.toList(),

@@ -179,11 +179,8 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   @override
   Expr visitTermOrdinal(TermOrdinalContext ctx) {
     final target = ctx.term()!.accept(this)!;
-    var index = ctx.ordinal()!.ruleIndex + 1;
-    if (index == 11) {
-      index = -1;
-    }
-    return func(F.property, {pValue: target, pName: val(index)});
+    final ordinalValue = literalVisitor.visitOrdinal(ctx.ordinal()!);
+    return func(F.property, {pTarget: target, pValue: ordinalValue ?? val(0)});
   }
 
   @override

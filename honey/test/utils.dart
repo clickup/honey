@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:honey/honey.dart';
 import 'package:honey/src/compiler/compile.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
+import 'package:honey/src/runner/context/runtime_honey_context.dart';
+import 'package:honey/src/utils/fake_text_input.dart';
 
 void expectExpr(String test, Expr expression, {bool optional = false}) {
   final result = compileHoneyTalk(test);
@@ -15,16 +18,54 @@ void expectExpr(String test, Expr expression, {bool optional = false}) {
   expect(statement.expression, expression);
 }
 
+void expectEmpty(String test) {
+  final result = compileHoneyTalk(test);
+  expect(result.hasError, false);
+  expect(result.statements!.length, 0);
+}
+
+void expectError(
+  String test, {
+  required int errorLine,
+  required int errorColumn,
+}) {
+  final result = compileHoneyTalk(test);
+  expect(result.hasError, true);
+  expect(result.errorLine, errorLine);
+  expect(result.errorColumn, errorColumn);
+}
+
 void expectCondition(String test, ConditionStatement item) {
   final result = compileHoneyTalk(test);
   expect(result.hasError, false);
-  final statements = result.statements;
-  expect(statements, isNotNull);
-  expect(statements!.length, item.conditionStatements?.length ?? 0);
-  for (final statement in statements) {
-    statement as ConditionStatement;
-    expect(statement.source, test);
-    expect(statement.line, 0);
-    expect(statement.conditionStatements, item.conditionStatements);
+  final statement = result.statements?.first;
+  expect(statement, isInstanceOf<ConditionStatement>());
+  expect(statement, isNotNull);
+  final conditionStatement = statement! as ConditionStatement;
+  expect(
+    conditionStatement.conditionStatements?.length,
+    item.conditionStatements?.length,
+  );
+
+  for (var i = 0; i < conditionStatement.conditionStatements!.length; i++) {
+    final condition = conditionStatement.conditionStatements![i];
+    final expectedCondition = item.conditionStatements![i];
+    expect(condition.condition, expectedCondition.condition);
+    expect(condition.statements.length, expectedCondition.statements.length);
+    for (var j = 0; j < condition.statements.length; j++) {
+      final statement = condition.statements[j];
+      final expectedStatement = expectedCondition.statements[j];
+      expect(statement, expectedStatement);
+    }
   }
+}
+
+Future<void> expectEval(
+  Expr actual,
+  EvaluatedExpr expected, {
+  HoneyContext? context,
+}) async {
+  final ctx = context ?? RuntimeHoneyContext(FakeTextInput());
+  final result = await ctx.eval(actual);
+  expect(result, expected);
 }

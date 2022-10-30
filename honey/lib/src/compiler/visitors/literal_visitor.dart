@@ -35,6 +35,43 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExpr> {
   }
 
   @override
+  ValueExpr? visitOrdinal(OrdinalContext ctx) {
+    switch (ctx.text) {
+      case 'first':
+        return val(1);
+      case 'second':
+        return val(2);
+      case 'third':
+        return val(3);
+      case 'fourth':
+        return val(4);
+      case 'fifth':
+        return val(5);
+      case 'sixth':
+        return val(6);
+      case 'seventh':
+        return val(7);
+      case 'eighth':
+        return val(8);
+      case 'ninth':
+        return val(9);
+      case 'tenth':
+        return val(10);
+      case 'last':
+        return val(-1);
+      default:
+        throw StateError(
+          'Unrecognized ordinal literal: ${ctx}',
+        );
+    }
+  }
+
+  @override
+  ValueExpr? visitLiteralOrdinal(LiteralOrdinalContext ctx) {
+    return visitOrdinal(ctx.ordinal()!);
+  }
+
+  @override
   ValueExpr visitLiteralString(LiteralStringContext ctx) {
     final strRaw = ctx.STRING_LITERAL()!.text!;
     return val(strRaw.substring(1, strRaw.length - 1));
