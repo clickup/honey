@@ -60,8 +60,12 @@ void expectCondition(String test, ConditionStatement item) {
   }
 }
 
-Future<void> expectEval(Expr actual, EvaluatedExpr expected) async {
-  final ctx = RuntimeHoneyContext(FakeTextInput());
+Future<void> expectEval(
+  Expr actual,
+  EvaluatedExpr expected, {
+  HoneyContext? context,
+}) async {
+  final ctx = context ?? RuntimeHoneyContext(FakeTextInput());
   final result = await ctx.eval(actual);
   expect(result, expected);
 }
