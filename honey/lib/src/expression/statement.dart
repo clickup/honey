@@ -34,7 +34,7 @@ class ExpressionStatement extends Statement {
 
   @override
   String toString() => 'ExpressionStatement{expression: $expression, optional: '
-      '$optional, source: $source, line: $line}';
+      '$optional, line: $line}';
 }
 
 @immutable
@@ -57,7 +57,9 @@ class ConditionStatement extends Statement {
       other.condition == condition &&
       const ListEquality<Statement>().equals(other.statements, statements) &&
       const ListEquality<Statement>()
-          .equals(other.elseStatements, elseStatements);
+          .equals(other.elseStatements, elseStatements) &&
+      other.source == source &&
+      other.line == line;
 
   @override
   int get hashCode => Object.hash(
@@ -70,5 +72,5 @@ class ConditionStatement extends Statement {
 
   @override
   String toString() => 'ConditionStatement{condition: $condition, statements:'
-      '$statements, elseStatements: $elseStatements}';
+      '$statements, elseStatements: $elseStatements, source: $source, line: $line}';
 }

@@ -50,9 +50,9 @@ class HoneyWidgetsBinding extends BindingBase
     _testTextInput = TestTextInput();
   }
 
-  static Future<void> ensureInitialized({
+  static void ensureInitialized({
     Map<String, HoneyFunction> customFunctions = const {},
-  }) async {
+  }) {
     if (_instance == null) {
       HoneyWidgetsBinding._(customFunctions);
     }

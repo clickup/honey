@@ -103,7 +103,9 @@ class RuntimeHoneyContext with HoneyContext {
   }
 
   @override
-  RuntimeHoneyContext clone() {
-    return RuntimeHoneyContext(customFunctions)..variables.addAll(variables);
+  RuntimeHoneyContext clone({WidgetExpr? referenceWidget}) {
+    return RuntimeHoneyContext(customFunctions)
+      ..variables.addAll(variables)
+      ..referenceWidget = referenceWidget ?? this.referenceWidget;
   }
 }

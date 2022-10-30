@@ -9,16 +9,17 @@ statement:
     | maybe? expr '.'?            # statementExpr;
 
 ifStatement:
-    IF expr 'then' 'do'? actionStatement '.'?
-    | actionStatement IF expr '.'?
-    | IF expr 'then'? 'do'? NEWLINE (statement NEWLINE)* (
-        elseIfStatement NEWLINE
-    )* elseStatement? ENDIF;
+    'if' expr 'then'? 'do'? NEWLINE (statement NEWLINE)* elseIfStatement* elseStatement? (
+        'end' 'if'
+        | 'endif'
+    );
 
 elseIfStatement:
-    ELSEIF expr 'then'? 'do'? NEWLINE (statement NEWLINE)*;
+    ('else' 'if' | 'elseif' | 'elif') expr 'then'? 'do'? NEWLINE (
+        statement NEWLINE
+    )*;
 
-elseStatement: ELSE NEWLINE (statement NEWLINE)*;
+elseStatement: 'else' NEWLINE (statement NEWLINE)*;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
@@ -184,14 +185,6 @@ NUMBER_LITERAL:
     | '.' DIGIT+
     | DIGIT+ '.'
     | DIGIT+ '.' DIGIT+;
-
-ELSEIF: ELSE IF | 'elseif' | 'elif';
-
-ENDIF: 'end' IF | 'endif';
-
-IF: 'if';
-
-ELSE: 'else';
 
 BOOL_LITERAL: 'true' | 'false';
 

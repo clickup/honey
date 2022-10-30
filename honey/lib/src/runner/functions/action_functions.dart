@@ -78,7 +78,7 @@ abstract class ActionFunctions {
     return empty();
   }
 
-  static Future<EvaluatedExpr> print(
+  static Future<EvaluatedExpr> output(
     HoneyContext ctx,
     Map<String, Expr> params,
   ) async {

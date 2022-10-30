@@ -43,26 +43,27 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
     final statements = ctx.ifStatement()!.statements().map((ctx) {
       return ctx.accept(this)!;
     }).toList();
-    final actionStatement = ctx.ifStatement()!.actionStatement()?.accept(this);
     final elseBranches = ctx.ifStatement()!.elseIfStatements().map((ctx) {
       final expr = ctx.expr()!.accept(expressionVisitor)!;
       final statements =
           ctx.statements().map((ctx) => ctx.accept(this)!).toList();
-      return _ElseBranch(expr, statements, ctx.source, ctx.line);
+      final source = ctx.source.trim().split('\n').first;
+      return _ElseBranch(expr, statements, source, ctx.line);
     }).toList();
     final elseStatement = ctx.ifStatement()!.elseStatement();
     if (elseStatement != null) {
       final statements =
           elseStatement.statements().map((ctx) => ctx.accept(this)!).toList();
       elseBranches.add(
-        _ElseBranch(null, statements, elseStatement.source, elseStatement.line),
+        _ElseBranch(null, statements, 'else', elseStatement.line),
       );
     }
+    final source = ctx.source.trim().split('\n').first.trim();
     return ConditionStatement(
       condition: expr,
-      statements: actionStatement != null ? [actionStatement] : statements,
+      statements: statements,
       elseStatements: _simplifyBranches(elseBranches),
-      source: ctx.source,
+      source: source,
       line: ctx.line,
     );
   }

@@ -7,7 +7,7 @@ import '../utils.dart';
 void main() {
   group('Print Action', () {
     test('Synonyms', () {
-      final result = func(F.print, {pValue: val('some TEXT')});
+      final result = func(F.output, {pValue: val('some TEXT')});
 
       expectExpr('print "some TEXT"', result);
       expectExpr('printing "some TEXT"', result);
@@ -16,7 +16,7 @@ void main() {
     });
 
     test('Maybe', () {
-      final result = func(F.print, {pValue: val('test123')});
+      final result = func(F.output, {pValue: val('test123')});
 
       expectExpr('maybe print "test123"', result, optional: true);
       expectExpr('try printing "test123"', result, optional: true);

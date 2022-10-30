@@ -10,7 +10,7 @@ import 'package:honey/src/runner/test_runner.dart';
 class DebugController {
   DebugController(this.customFunctions) {
     _registerTestExtension();
-    _registerCancelExtension();
+    _registerCancelTestExtension();
     postEvent('ext.honey.greeting', {});
   }
 
@@ -52,9 +52,9 @@ class DebugController {
     );
   }
 
-  void _registerCancelExtension() {
+  void _registerCancelTestExtension() {
     registerExtension(
-      'ext.honey.cancel',
+      'ext.honey.cancelTest',
       (_, params) async {
         await _testRunner?.cancel();
         return ServiceExtensionResponse.result('{}');
@@ -65,10 +65,10 @@ class DebugController {
   Future<void> _runTest(List<Statement> statements) async {
     if (_testRunner != null) return;
 
-    try {
-      HoneyWidgetsBinding.instance.reset(testing: true);
-      _testRunner = TestRunner(customFunctions);
+    HoneyWidgetsBinding.instance.reset(testing: true);
+    _testRunner = TestRunner(customFunctions);
 
+    try {
       await for (final step in _testRunner!.executeStatements(statements)) {
         postEvent('ext.honey.step', step.toJson());
       }

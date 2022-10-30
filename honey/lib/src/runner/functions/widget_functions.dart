@@ -1,72 +1,113 @@
+import 'package:flutter/semantics.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/expression/expr.dart';
-import 'package:honey/src/expression/widget_expr.dart';
-import 'package:honey/src/runner/context/runtime_honey_context.dart';
-import 'package:honey/src/runner/widget_finder.dart';
+import 'package:honey/src/consts/name_modifier.dart';
+import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/semantics/semantics_extension.dart';
 
 abstract class WidgetFunctions {
-  /*static Future<Expression> findWidgets(
+  static Future<EvaluatedExpr> widgets(
     HoneyContext ctx,
-    FunctionParams params,
+    Map<String, Expr> params,
   ) async {
-    final filter = params.get(0);
-    final namesExp = await params.getAndEval(ctx, 1);
-    final referencesExp = await params.getAndEval(ctx, 2);
+    var namesExp = await ctx.eval(params[pName]);
+    final modifierExp = await ctx.eval(params[pModifier]);
+    final filters = params[pFilter];
 
-    final names = <RegExp>[];
-    if (namesExp is ListExp) {
-      for (final exp in namesExp.list) {
-        if (exp is ValueExp) {
-          names.add(exp.asRegExp);
+    if (params.containsKey(pTarget)) {
+      final target = await ctx.eval(params[pTarget]);
+      if (target is WidgetExpr) {
+        return eList([target]);
+      } else if (target is EvaluatedListExpr) {
+        return target;
+      } else {
+        namesExp = eList([target]);
+      }
+    }
+
+    final names = <String>[];
+    if (namesExp is EvaluatedListExpr) {
+      for (var i = 0; i < namesExp.length; i++) {
+        final nameExp = namesExp[i];
+        if (nameExp is ValueExpr && !nameExp.isEmpty) {
+          names.add(nameExp.value);
         }
       }
     }
 
-    final candidates = findWidgetCandidates(ctx, names: names);
-    final runtimeCtx = ctx as RuntimeHoneyContext;
-    final filtered = <WidgetExp>[];
-    for (final w in candidates) {
-      runtimeCtx.referenceWidget = w;
-      final filterResult = await runtimeCtx.eval(filter);
-      runtimeCtx.referenceWidget = null;
-      if (filterResult is ValueExp && filterResult.asBool) {
-        filtered.add(w);
-      }
-    }
+    final modifierName = modifierExp is ValueExpr ? modifierExp.value : '';
+    final modifier = NameModifier.fromName(modifierName);
+    final candidates = findWidgetCandidates(
+      ctx,
+      names: names,
+      modifier: modifier ?? NameModifier.caseInsensitive,
+    );
 
-    /*final refs = <WidgetReference>[];
-    if (referencesExp is ListExp) {
-      for (var exp in referencesExp.list) {
-        final ref = await WidgetReference.fromExpression(ctx, exp);
-        if (ref != null) {
-          refs.add(ref);
+    final filtered = <WidgetExpr>[];
+    if (filters is ListExpr) {
+      candidateLoop:
+      for (final w in candidates) {
+        final refCtx = ctx.clone(referenceWidget: w);
+        for (var i = 0; i < filters.length; i++) {
+          final filter = filters[i];
+          final result = await refCtx.eval(filter);
+          if (result is ValueExpr && result.asBool) {
+            filtered.add(w);
+            continue candidateLoop;
+          }
         }
       }
-    }*/
-    return ListExp(filtered, retry: true);
+    } else {
+      filtered.addAll(candidates);
+    }
+
+    return eList(filtered, retry: true);
+  }
+}
+
+List<WidgetExpr> findWidgetCandidates(
+  HoneyContext context, {
+  List<String> names = const [],
+  NameModifier modifier = NameModifier.caseInsensitive,
+}) {
+  List<WidgetExpr> findCandidates(SemanticsNode root) {
+    final candidates = <WidgetExpr>[];
+    root.visitChildren((n) {
+      if (!n.mergeAllDescendantsIntoThisNode) {
+        candidates.addAll(findCandidates(n));
+      }
+      if (!n.shouldBeConsidered) {
+        return true;
+      }
+
+      final data = n.getSemanticsData();
+      if (names.isNotEmpty) {
+        final anyNameMatches = names.any((name) {
+          return _nameMatches(data.label, name, modifier) ||
+              _nameMatches(data.value, name, modifier) ||
+              _nameMatches(data.hint, name, modifier);
+        });
+        if (!anyNameMatches) {
+          return true;
+        }
+      }
+
+      candidates.add(n.toExp());
+      return true;
+    });
+    return candidates;
   }
 
-  static Future<Expression> widgets(
-    HoneyContext ctx,
-    FunctionParams params,
-  ) async {
-    final widget = await params.getAndEval(ctx, 0);
-    if (widget is WidgetExp) {
-      return ListExp([widget], retry: widget.retry);
-    } else if (widget is ListExp) {
-      if (widget.isNotEmpty) {
-        return ListExp(
-          widget.list.whereType<WidgetExp>().toList(),
-          retry: widget.retry,
-        );
-      } else {
-        return widget;
-      }
-    } else if (widget is ValueExp) {
-      final candidates = findWidgetCandidates(ctx, names: [widget.asRegExp]);
-      return ListExp(candidates, retry: true);
-    } else {
-      return const ListExp.empty(retry: false);
-    }
-  }*/
+  final candidates = findCandidates(context.semanticsTree);
+  return candidates;
+}
+
+bool _nameMatches(String value, String name, NameModifier modifier) {
+  switch (modifier) {
+    case NameModifier.caseSensitive:
+      return value.contains(name);
+    case NameModifier.caseInsensitive:
+      return value.toLowerCase().contains(name.toLowerCase());
+    case NameModifier.exactly:
+      return value == name;
+  }
 }

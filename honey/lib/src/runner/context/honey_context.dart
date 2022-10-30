@@ -95,5 +95,5 @@ abstract class HoneyContext {
 
   Future<EvaluatedExpr> eval(Expr? expression);
 
-  HoneyContext clone();
+  HoneyContext clone({WidgetExpr? referenceWidget});
 }

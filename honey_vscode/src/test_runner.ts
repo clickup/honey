@@ -156,7 +156,7 @@ export class TestRunner implements vs.Disposable {
 
     if (step.error) {
       testItem.children.forEach((child) => {
-        if (child.range?.start.line ?? 0 > step.line) {
+        if (parseInt(child.id) > step.line) {
           this.currentRun?.skipped(child);
         }
       });

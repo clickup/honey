@@ -38,10 +38,10 @@ class TestRunner {
         }
       }
 
-      final finished = queue.isEmpty && result is HoneyError;
+      final finished = queue.isEmpty || result is HoneyError;
       yield TestStep(
         line: statement.line,
-        step: statement.source,
+        step: statement is ExpressionStatement ? statement.source : null,
         nextLine: finished ? null : queue.last.line,
         error: result is HoneyError ? result.message : null,
       );

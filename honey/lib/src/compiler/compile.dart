@@ -85,6 +85,7 @@ class HoneyErrorListener extends ErrorListener {
       errorLine: line ?? 0,
       errorColumn: charPositionInLine,
     );
+    print(msg);
     errorListener(result);
   }
 }

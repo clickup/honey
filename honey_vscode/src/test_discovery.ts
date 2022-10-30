@@ -9,6 +9,7 @@ export class TestDiscovery implements vs.Disposable {
 
   constructor(controller: vs.TestController) {
     this.controller = controller;
+    controller.refreshHandler = () => this.discoverAll();
   }
 
   public startWatching() {
@@ -36,9 +37,7 @@ export class TestDiscovery implements vs.Disposable {
   }
 
   public async discoverAll() {
-    this.controller.items.forEach((item) => {
-      this.removeItem(item.uri!);
-    });
+    this.controller.items.replace([]);
     if (vs.workspace.workspaceFolders) {
       const promises = vs.workspace.workspaceFolders?.map(async (folder) => {
         const childFiles = await vs.workspace.fs.readDirectory(folder.uri);

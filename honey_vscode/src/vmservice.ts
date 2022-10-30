@@ -69,7 +69,7 @@ export class VmServiceConnection {
   public callService(method: string, params?: any): Promise<any> {
     const paramsMap = params || {};
     if (this.isolateId) {
-      params["isolateId"] = this.isolateId;
+      paramsMap["isolateId"] = this.isolateId;
     }
     return this.callMethod("ext.honey." + method, paramsMap);
   }
