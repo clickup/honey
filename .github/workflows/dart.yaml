@@ -30,6 +30,7 @@ jobs:
       - name: Lint
         run: |
           flutter pub get
+          sh tool/generate_parser.sh
           flutter analyze
         working-directory: honey
 
@@ -43,5 +44,6 @@ jobs:
       - name: Run Flutter Unit tests
         run: |
           flutter pub get
+          sh tool/generate_parser.sh
           flutter test
         working-directory: honey
