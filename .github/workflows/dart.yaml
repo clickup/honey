@@ -1,0 +1,53 @@
+name: Dart CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+      - name: Check formatting
+        run: flutter format --dry-run . --set-exit-if-changed
+        working-directory: honey
+
+  lint:
+    name: Check lints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+      - name: Setup ANTLR
+        run: pip install antlr4-tools
+      - name: Lint
+        run: |
+          flutter pub get
+          sh tool/generate_parser.sh
+          flutter analyze
+        working-directory: honey
+
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+      - name: Setup ANTLR
+        run: pip install antlr4-tools
+      - name: Run Flutter Unit tests
+        run: |
+          flutter pub get
+          sh tool/generate_parser.sh
+          flutter test
+        working-directory: honey

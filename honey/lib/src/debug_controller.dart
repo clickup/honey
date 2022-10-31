@@ -73,6 +73,7 @@ class DebugController {
         postEvent('ext.honey.step', step.toJson());
       }
     } finally {
+      postEvent('ext.honey.finished', {});
       _testRunner = null;
       HoneyWidgetsBinding.instance.reset(testing: false);
     }
