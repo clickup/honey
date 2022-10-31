@@ -3,9 +3,9 @@ import 'package:honey/honey.dart';
 import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/runner/context/runtime_honey_context.dart';
 
 import '../../utils.dart';
-import '../mocks/mock_honey_context.dart';
 
 void main() {
   group('action functions', () {
@@ -15,7 +15,6 @@ void main() {
         pTarget: val('My Widget'),
         pOffset: empty(),
       });
-      final mockContext = MockHoneyContext();
       await expectEval(
         input,
         EvaluatedListExpr([
@@ -23,9 +22,8 @@ void main() {
           val('My Widget'),
           empty(),
         ]),
-        context: mockContext,
+        context: _FakeHoneyContext(),
       );
-      expect(mockContext.callsCount('click'), 1);
     });
 
     test('swipe', () async {
@@ -35,7 +33,6 @@ void main() {
         pOffset: empty(),
         pValue: val(300)
       });
-      final mockContext = MockHoneyContext();
       await expectEval(
         input,
         EvaluatedListExpr([
@@ -44,9 +41,8 @@ void main() {
           empty(),
           val(300),
         ]),
-        context: mockContext,
+        context: _FakeHoneyContext(),
       );
-      expect(mockContext.callsCount('swipe'), 1);
     });
 
     /*test('enter', () async {
@@ -69,20 +65,36 @@ void main() {
 
     test('wait', () async {
       final input = func(F.wait, {pValue: val(100)});
-      final mockContext = MockHoneyContext();
-      await expectEval(input, val(100), context: mockContext);
-      expect(mockContext.callsCount('delay'), 1);
+      await expectEval(input, val(100));
     });
 
     test('print', () async {
       final input = func(F.output, {pValue: val('Hello World')});
-      final mockContext = MockHoneyContext();
       await expectEval(
         input,
         val('Hello World'),
-        context: mockContext,
       );
-      expect(mockContext.message, 'Hello World');
     });
   });
+}
+
+/// A fake [HoneyContext] that does not execute any action.
+/// It is used to test the action functions. We don't need real click or swipe
+class _FakeHoneyContext extends RuntimeHoneyContext {
+  _FakeHoneyContext() : super({});
+
+  @override
+  Future<void> swipe({
+    WidgetExpr? widget,
+    Offset? offset,
+    Direction direction = Direction.left,
+    double distance = 0.0,
+  }) async {}
+
+  @override
+  Future<void> click({
+    WidgetExpr? widget,
+    Offset? offset,
+    ClickType type = ClickType.single,
+  }) async {}
 }
