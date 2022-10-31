@@ -87,6 +87,7 @@ abstract class HoneyContext {
         delta: delta,
       ),
     );
+    // ignore: parameter_assignments
     offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
     dispatchPointerEvent(
       PointerMoveEvent(

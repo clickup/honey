@@ -163,7 +163,12 @@ export class TestRunner implements vs.Disposable {
       testItem.busy = false;
       this.currentRun?.failed(testStepItem, new vs.TestMessage(step.error));
     } else {
-      this.currentRun?.passed(testStepItem);
+      if (step.skipped) {
+        this.currentRun?.skipped(testStepItem);
+      } else {
+        this.currentRun?.passed(testStepItem);
+      }
+
       if (step.nextLine) {
         const nextStepItem = testItem.children.get(step.nextLine.toString());
         nextStepItem!.busy = true;

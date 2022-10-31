@@ -19,6 +19,7 @@ export type HoneyStepResult = {
   line: number;
   nextLine?: number;
   step: string;
+  skipped: boolean;
   error?: string;
 };
 
@@ -29,7 +30,7 @@ export class HoneyConnection implements vs.Disposable {
   private vmServiceUrl?: string;
   private vmService?: VmServiceConnection;
   private restartCompleter?: PromiseCompleter<void>;
-  private stepChannel?: Channel<HoneyStepResult>;
+  private stepChannel?: Channel<HoneyStepResult | undefined>;
 
   constructor() {
     const disposable = vs.debug.onDidReceiveDebugSessionCustomEvent((e) => {
@@ -52,7 +53,11 @@ export class HoneyConnection implements vs.Disposable {
         this.channel.appendLine("Greeting received");
         this.restartCompleter?.resolve();
       } else if (service === "step") {
+        this.channel.appendLine("Step received");
         this.stepChannel?.push(data);
+      } else if (service == "finished") {
+        this.channel.appendLine("Finished received");
+        this.stepChannel?.push(undefined);
       }
     });
 
@@ -74,7 +79,7 @@ export class HoneyConnection implements vs.Disposable {
 
   async runTest(
     test: string
-  ): Promise<[HoneyCompilation, Channel<HoneyStepResult>?]> {
+  ): Promise<[HoneyCompilation, Channel<HoneyStepResult | undefined>?]> {
     this.restartCompleter = new PromiseCompleter();
     await (vs.commands.executeCommand("flutter.hotRestart") as Promise<void>);
     await this.restartCompleter.promise;

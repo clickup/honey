@@ -27,7 +27,9 @@ class TestRunner {
       final statement = queue.removeLast();
 
       dynamic result;
+      var optional = false;
       if (statement is ExpressionStatement) {
+        optional = statement.optional;
         result = await _runRepeatedly(statement.expression);
       } else if (statement is ConditionStatement) {
         result = await _runRepeatedly(statement.condition, untilTrue: true);
@@ -38,15 +40,20 @@ class TestRunner {
         }
       }
 
-      final finished = queue.isEmpty || result is HoneyError;
+      if (_canceled) {
+        return;
+      }
+
+      final finished = queue.isEmpty || (result is HoneyError && !optional);
       yield TestStep(
         line: statement.line,
-        step: statement is ExpressionStatement ? statement.source : null,
+        step: statement.source,
         nextLine: finished ? null : queue.last.line,
-        error: result is HoneyError ? result.message : null,
+        skipped: result is HoneyError && optional,
+        error: result is HoneyError && !optional ? result.message : null,
       );
 
-      if (result is HoneyError) {
+      if (result is HoneyError && !optional) {
         return;
       }
     }
