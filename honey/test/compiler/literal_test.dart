@@ -8,10 +8,6 @@ void main() {
   group('Literal', () {
     test('String', () {
       expectExpr('"testString"', val('testString'));
-
-      // TODO fix
-      /*expectExpr(r'"st\"ring"', val('st"ring'));
-      expectExpr(r'"st\nring"', val('st\nring'));*/
     });
 
     test('Number', () {

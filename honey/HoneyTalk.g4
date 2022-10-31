@@ -1,12 +1,25 @@
 grammar HoneyTalk;
 import HoneyTalkSynonyms;
 
-script: (statement '.'? NEWLINE)* (statement '.'?)? NEWLINE* EOF;
+script: (statement NEWLINE)* statement? NEWLINE? EOF;
 
 statement:
-    ifStatement              # statementIf
-    | maybe? actionStatement # statementAction
-    | maybe? expr            # statementExpr;
+    ifStatement                   # statementIf
+    | maybe? actionStatement '.'? # statementAction
+    | maybe? expr '.'?            # statementExpr;
+
+ifStatement:
+    'if' expr 'then'? 'do'? NEWLINE (statement NEWLINE)* elseIfStatement* elseStatement? (
+        'end' 'if'
+        | 'endif'
+    );
+
+elseIfStatement:
+    ('else' 'if' | 'elseif' | 'elif') expr 'then'? 'do'? NEWLINE (
+        statement NEWLINE
+    )*;
+
+elseStatement: 'else' NEWLINE (statement NEWLINE)*;
 
 maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
 
@@ -16,21 +29,13 @@ actionStatement:
     | clickType 'on'? target = expr (withOffset offset = expr)?                        # actionClick
     | clickType ('on'? target = expr)? withOffset offset = expr                        # actionClick
     | enter value = expr                                                               # actionEnter
-    | set variable = ID ('to' | 'as') expr                                             # actionSetVariable
-    | store expr ('in' | 'into') variable = ID                                         # actionSetVariable
+    | set (ID | VARIABLE) ('to' | 'as') expr                                           # actionSetVariable
+    | store expr ('in' | 'into') (ID | VARIABLE)                                       # actionSetVariable
     | wait 'for'? expr                                                                 # actionWait
     | print expr                                                                       # actionPrint
     | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe;
 
 withOffset: 'at' | 'with'? 'offset';
-
-ifStatement:
-    IF expr THEN NEWLINE* (actionStatement NEWLINE)* (
-        elseIfStatement
-    )*? END_IF;
-
-elseIfStatement:
-    ELSE (IF expr THEN)? NEWLINE* (actionStatement NEWLINE)*;
 
 clickType:
     ('left' | 'single')? click # clickTypeSingle
@@ -67,7 +72,7 @@ term:
     | ordinal term     # termOrdinal
     | widgetTerm       # termWidget
     | property of term # termProperty
-    | ID               # termSymbol;
+    | (ID | VARIABLE)  # termSymbol;
 
 property: length | character | word | line | ID;
 
@@ -182,11 +187,6 @@ NUMBER_LITERAL:
     | DIGIT+ '.'
     | DIGIT+ '.' DIGIT+;
 
-IF: 'if';
-ELSE: 'else';
-END_IF: 'endif';
-THEN: 'then';
-
 BOOL_LITERAL: 'true' | 'false';
 
 STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
@@ -200,6 +200,8 @@ IGNORE: (
         | 'yet'
         | 'soon'
     ) -> channel(HIDDEN);
+
+VARIABLE: '$' ID;
 
 ID: ( ALPHA (ALPHA | DIGIT)*);
 

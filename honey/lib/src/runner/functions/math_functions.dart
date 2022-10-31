@@ -58,10 +58,7 @@ abstract class MathFunctions {
           retry: left.retry || right.retry,
         );
       } else {
-        return val(
-          result,
-          retry: left.retry || right.retry,
-        );
+        return val(result, retry: left.retry || right.retry);
       }
     } else {
       return empty(retry: left.retry || right.retry);

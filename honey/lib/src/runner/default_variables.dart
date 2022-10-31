@@ -1,7 +1,6 @@
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
-
-const defaultStepTimeout = Duration(seconds: 20);
+import 'package:honey/src/expression/variable.dart';
 
 const _ms = 1;
 const _s = _ms * 1000;
@@ -12,16 +11,16 @@ const _week = _day * 7;
 const _month = _day * 30;
 const _year = _day * 365;
 
-Map<String, EvaluatedExpr> getDefaultVariables() {
-  return {
-    'timeout': val(defaultStepTimeout.inMilliseconds),
-    'milliseconds': val(_ms),
-    'seconds': val(_s),
-    'minutes': val(_min),
-    'hours': val(_h),
-    'days': val(_day),
-    'weeks': val(_week),
-    'months': val(_month),
-    'years': val(_year),
-  };
-}
+final defaultVariables = <String, EvaluatedExpr>{
+  Variable.timeout.name: val(20 * _s),
+  Variable.stepDelay.name: val(100 * _ms),
+  Variable.settleTimeout.name: val(20 * _s),
+  Variable.milliseconds.name: val(_ms),
+  Variable.seconds.name: val(_s),
+  Variable.minutes.name: val(_min),
+  Variable.hours.name: val(_h),
+  Variable.days.name: val(_day),
+  Variable.weeks.name: val(_week),
+  Variable.months.name: val(_month),
+  Variable.years.name: val(_year),
+};

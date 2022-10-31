@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:honey/src/expression/list_expr.dart';
+import 'package:honey/src/expression/value_expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 
 @immutable
@@ -26,4 +27,6 @@ abstract class EvaluatedExpr implements Expr {
       return null;
     }
   }
+
+  num get asNum => this is ValueExpr ? (this as ValueExpr).asNum : 0;
 }

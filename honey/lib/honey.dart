@@ -1,5 +1,8 @@
 library honey;
 
+export 'src/consts/function.dart';
+export 'src/consts/property.dart';
+
 export 'src/expression/expr.dart';
 export 'src/expression/function_expr.dart';
 export 'src/expression/list_expr.dart';

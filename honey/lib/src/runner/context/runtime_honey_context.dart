@@ -7,20 +7,17 @@ import 'package:honey/src/expression/value_expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
+import 'package:honey/src/runner/default_functions.dart';
 import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
-import 'package:honey/src/runner/functions.dart';
-import 'package:honey/src/utils/fake_text_input.dart';
 
 class RuntimeHoneyContext with HoneyContext {
-  RuntimeHoneyContext(this.fakeTextInput);
+  RuntimeHoneyContext(this.customFunctions);
 
   static late Rect screenRect;
 
-  @override
-  final FakeTextInput fakeTextInput;
+  final Map<String, HoneyFunction> customFunctions;
   final variables = <String, EvaluatedExpr>{};
-  final defaultVariables = getDefaultVariables();
 
   WidgetExpr? referenceWidget;
 
@@ -90,7 +87,8 @@ class RuntimeHoneyContext with HoneyContext {
   @override
   Future<EvaluatedExpr> eval(Expr? expression) async {
     if (expression is FunctionExpr) {
-      final function = functions[expression.function]!;
+      final function = customFunctions[expression.function] ??
+          defaultFunctions[expression.function]!;
       return function(this, expression.params);
     } else if (expression is ListExpr) {
       final list = <EvaluatedExpr>[
@@ -104,7 +102,10 @@ class RuntimeHoneyContext with HoneyContext {
     }
   }
 
-  RuntimeHoneyContext clone() {
-    return RuntimeHoneyContext(fakeTextInput)..variables.addAll(variables);
+  @override
+  RuntimeHoneyContext clone({WidgetExpr? referenceWidget}) {
+    return RuntimeHoneyContext(customFunctions)
+      ..variables.addAll(variables)
+      ..referenceWidget = referenceWidget ?? this.referenceWidget;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:antlr4/antlr4.dart';
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
 
 extension on ParserRuleContext {
@@ -16,8 +17,6 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
   Statement visitStatementAction(StatementActionContext ctx) {
     final actionCtx = ctx.actionStatement()!;
     final action = actionCtx.accept(actionVisitor)!;
-    //final conditionCtx = ctx.expr();
-    //final condition = conditionCtx?.accept(exprVisitor);
     return ExpressionStatement(
       expression: action,
       optional: ctx.maybe() != null,
@@ -40,61 +39,60 @@ class StatementVisitor extends HoneyTalkBaseVisitor<Statement> {
 
   @override
   Statement? visitStatementIf(StatementIfContext ctx) {
+    final expr = ctx.ifStatement()!.expr()!.accept(expressionVisitor)!;
+    final statements = ctx.ifStatement()!.statements().map((ctx) {
+      return ctx.accept(this)!;
+    }).toList();
+    final elseBranches = ctx.ifStatement()!.elseIfStatements().map((ctx) {
+      final expr = ctx.expr()!.accept(expressionVisitor)!;
+      final statements =
+          ctx.statements().map((ctx) => ctx.accept(this)!).toList();
+      final source = ctx.source.trim().split('\n').first;
+      return _ElseBranch(expr, statements, source, ctx.line);
+    }).toList();
+    final elseStatement = ctx.ifStatement()!.elseStatement();
+    if (elseStatement != null) {
+      final statements =
+          elseStatement.statements().map((ctx) => ctx.accept(this)!).toList();
+      elseBranches.add(
+        _ElseBranch(null, statements, 'else', elseStatement.line),
+      );
+    }
+    final source = ctx.source.trim().split('\n').first.trim();
     return ConditionStatement(
-      conditionStatements: _conditionStatements(ctx),
-      source: ctx.source,
+      condition: expr,
+      statements: statements,
+      elseStatements: _simplifyBranches(elseBranches),
+      source: source,
       line: ctx.line,
     );
   }
 
-  List<ConditionStatementItem>? _conditionStatements(StatementIfContext ctx) {
-    if (ctx.ifStatement() == null) {
-      return null;
+  List<Statement> _simplifyBranches(List<_ElseBranch> elseBranches) {
+    if (elseBranches.isEmpty) {
+      return [];
+    } else if (elseBranches.first.condition == null) {
+      return elseBranches.first.statements;
+    } else {
+      final branch = elseBranches.first;
+      return [
+        ConditionStatement(
+          condition: branch.condition!,
+          statements: branch.statements,
+          elseStatements: _simplifyBranches(elseBranches.skip(1).toList()),
+          source: branch.source,
+          line: branch.line,
+        )
+      ];
     }
-
-    final items = <ConditionStatementItem>[];
-    final ifActionStatements = ctx.ifStatement()!.actionStatements();
-    final ifConditionContext = ctx.ifStatement()!.expr();
-    items.add(_prepareItem(ifActionStatements, ifConditionContext));
-
-    if (ctx.ifStatement()?.elseIfStatements() == null) {
-      return items.toList();
-    }
-
-    for (final element in ctx.ifStatement()?.elseIfStatements() ??
-        <ElseIfStatementContext>[]) {
-      final item = _prepareItem(
-        element.actionStatements(),
-        element.expr(),
-      );
-      items.add(item);
-    }
-
-    return items.toList();
   }
+}
 
-  ConditionStatementItem _prepareItem(
-    List<ActionStatementContext> actionStatements,
-    ExprContext? exprContext,
-  ) {
-    final condition = exprContext?.accept(expressionVisitor);
-    final statements = <Statement>[];
-    for (final element in actionStatements) {
-      final e = element.accept(actionVisitor);
-      if (e != null) {
-        statements.add(
-          ExpressionStatement(
-            source: element.source,
-            optional: false,
-            expression: e,
-            line: element.line,
-          ),
-        );
-      }
-    }
-    return ConditionStatementItem(
-      condition: condition,
-      statements: statements.toList(),
-    );
-  }
+class _ElseBranch {
+  _ElseBranch(this.condition, this.statements, this.source, this.line);
+
+  final Expr? condition;
+  final List<Statement> statements;
+  final int line;
+  final String source;
 }

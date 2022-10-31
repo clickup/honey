@@ -1,5 +1,6 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/consts/function.dart';
 import 'package:honey/src/consts/name_modifier.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/consts/property.dart';

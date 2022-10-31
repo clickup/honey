@@ -1,5 +1,6 @@
 import 'package:honey/src/compiler/antlr.dart';
 import 'package:honey/src/compiler/visitors/visitors.dart';
+import 'package:honey/src/consts/function.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/expression/expr.dart';
@@ -38,7 +39,10 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   Expr visitExprExists(ExprExistsContext ctx) {
     final target = ctx.expr()!.accept(this)!;
     final widgets = func(F.widgets, {pTarget: target});
-    final count = func(F.length, {pValue: widgets});
+    final count = func(F.property, {
+      pName: val(Property.length.name),
+      pValue: widgets,
+    });
     if (ctx.isAreNot() == null) {
       return func(F.greater, {pLeft: count, pRight: val(0)});
     } else {
@@ -185,7 +189,7 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
 
   @override
   Expr visitTermSymbol(TermSymbolContext ctx) {
-    final name = ctx.ID()!.text!;
+    final name = ctx.ID()?.text ?? ctx.VARIABLE()!.text!.substring(1);
     return func(F.variable, {pName: val(name)});
   }
 

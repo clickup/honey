@@ -10,7 +10,7 @@ void main() {
     test('Synonyms', () {
       final result = func(F.swipe, {
         pType: val(Direction.left.name),
-        pTarget: val('myWidget'),
+        pTarget: func(F.widgets, {pTarget: val('myWidget')}),
         pValue: val('20'),
       });
 
@@ -27,7 +27,7 @@ void main() {
     test('Direction up', () {
       final result = func(F.swipe, {
         pType: val(Direction.top.name),
-        pTarget: val('myWidget'),
+        pTarget: func(F.widgets, {pTarget: val('myWidget')}),
         pValue: val('20'),
       });
 
@@ -37,7 +37,7 @@ void main() {
     test('Direction down', () {
       final result = func(F.swipe, {
         pType: val(Direction.bottom.name),
-        pTarget: val('myWidget'),
+        pTarget: func(F.widgets, {pTarget: val('myWidget')}),
         pValue: val('20'),
       });
 
@@ -47,7 +47,7 @@ void main() {
     test('Direction right', () {
       final result = func(F.swipe, {
         pType: val(Direction.right.name),
-        pTarget: val('myWidget'),
+        pTarget: func(F.widgets, {pTarget: val('myWidget')}),
         pValue: val('20'),
       });
 

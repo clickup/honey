@@ -61,7 +61,7 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExpr> {
         return val(-1);
       default:
         throw StateError(
-          'Unrecognized ordinal literal: ${ctx}',
+          'Unrecognized ordinal literal: $ctx',
         );
     }
   }

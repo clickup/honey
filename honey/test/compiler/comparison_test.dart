@@ -8,7 +8,8 @@ void main() {
   group('Comparison', () {
     test('exists', () {
       final result = func(F.greater, {
-        pLeft: func(F.length, {
+        pLeft: func(F.property, {
+          pName: val(Property.length.name),
           pValue: func(F.widgets, {pTarget: val('test')})
         }),
         pRight: val(0),
@@ -28,7 +29,8 @@ void main() {
 
     test('exists not', () {
       final result = func(F.equal, {
-        pLeft: func(F.length, {
+        pLeft: func(F.property, {
+          pName: val(Property.length.name),
           pValue: func(F.widgets, {pTarget: val('test')})
         }),
         pRight: val(0)

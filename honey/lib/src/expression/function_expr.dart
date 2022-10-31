@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
+import 'package:honey/src/consts/function.dart';
 import 'package:honey/src/expression/expr.dart';
 
 @immutable
@@ -26,47 +27,3 @@ class FunctionExpr implements Expr {
 
 FunctionExpr func(F function, Map<String, Expr> params) =>
     FunctionExpr(function, params);
-
-enum F {
-  // actions
-  click,
-  verify,
-  enter,
-  wait,
-  swipe,
-  print,
-  error,
-
-  // core
-  and,
-  or,
-  not,
-  controlIf,
-  controlWhile,
-  widgets,
-  property,
-  length,
-  variable,
-  function,
-
-  // date
-  now,
-  format,
-
-  // math
-  equal,
-  greater,
-  less,
-  plus,
-  minus,
-  multiply,
-  divide,
-  pow,
-
-  // string
-  startsWith,
-  endsWith,
-  contains,
-  matches,
-  concat;
-}

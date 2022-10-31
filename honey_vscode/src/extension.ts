@@ -1,48 +1,48 @@
-import * as vs from 'vscode';
-import { HoneyDeviceManager } from './device_manager';
-import { HoneyDaemon } from './honey_daemon';
-import { HoneyDebugAdapterFactory } from './debug_session'
-import { TestDiscovery } from './test_discovery';
-import { DebugConfigProvider } from './debug_config_provider';
-import { TestRunner } from './test_runner';
+import * as vs from "vscode";
+import { HoneyDebugAdapterFactory } from "./debug_session";
+import { TestDiscovery } from "./test_discovery";
+import { DebugConfigProvider } from "./debug_config_provider";
+import { TestRunner } from "./test_runner";
+import { HoneyConnection } from "./honey_connection";
+import { getOutputChannel } from "./utils";
 
 export async function activate(context: vs.ExtensionContext) {
-  const testController = vs.tests.createTestController('honeyTestController', 'Honey');
+  const testController = vs.tests.createTestController(
+    "honeyTestController",
+    "Honey"
+  );
   context.subscriptions.push(testController);
 
-  const testdiscovery = new TestDiscovery(testController)
-  context.subscriptions.push(testdiscovery);
+  const testDiscovery = new TestDiscovery(testController);
+  context.subscriptions.push(testDiscovery);
 
-  const daemon = new HoneyDaemon()
-  await daemon.start()
-  context.subscriptions.push(daemon);
+  const connection = new HoneyConnection();
+  context.subscriptions.push(connection);
 
-  const deviceManager = new HoneyDeviceManager(daemon);
-  const runner = new TestRunner(deviceManager, testdiscovery, testController);
-  context.subscriptions.push(daemon);
+  const runner = new TestRunner(testDiscovery, testController);
+  context.subscriptions.push(runner);
 
-  const debugProvider = new DebugConfigProvider(deviceManager, runner)
-  vs.debug.registerDebugConfigurationProvider("honey", debugProvider)
-  vs.debug.registerDebugAdapterDescriptorFactory('honey', new HoneyDebugAdapterFactory(daemon));
+  const debugProvider = new DebugConfigProvider(connection, runner);
+  vs.debug.registerDebugConfigurationProvider("honey", debugProvider);
+  vs.debug.registerDebugAdapterDescriptorFactory(
+    "honey",
+    new HoneyDebugAdapterFactory(connection)
+  );
 
-
-  const refreshTestsCommand = vs.commands.registerCommand('honey.refreshTests', () => {
-    testdiscovery.discoverAll()
-	});
+  const refreshTestsCommand = vs.commands.registerCommand(
+    "honey.refreshTests",
+    () => {
+      testDiscovery.discoverAll();
+    }
+  );
   context.subscriptions.push(refreshTestsCommand);
 
-  const selectDeviceCommand = vs.commands.registerCommand('honey.selectDevice', () => {
-		deviceManager.showDeviceSelection()
-	});
-  context.subscriptions.push(selectDeviceCommand);
+  /*vs.debug.onDidReceiveDebugSessionCustomEvent((e) => {
+    console.log(e);
+  });*/
 
-  const deviceOptionsCommand = vs.commands.registerCommand('honey.toggleOverlay', () => {
-    const deviceId = deviceManager.getSelectedDevice()?.id
-    if (deviceId) {
-      daemon.sendHoneyMessage(deviceId, {type: "toggle_overlay"})
-    }
-	});
-  context.subscriptions.push(deviceOptionsCommand);
+  testDiscovery.startWatching();
 
-  testdiscovery.startWatching()
+  const channel = getOutputChannel("Honey");
+  channel.appendLine("Honey extension activated");
 }

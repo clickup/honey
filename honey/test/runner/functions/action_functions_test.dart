@@ -49,7 +49,7 @@ void main() {
       expect(mockContext.callsCount('swipe'), 1);
     });
 
-    test('enter', () async {
+    /*test('enter', () async {
       final input = func(F.enter, {
         pValue: val('My Value'),
       });
@@ -60,7 +60,7 @@ void main() {
         context: mockContext,
       );
       expect(mockContext.callsCount('enterText'), 1);
-    });
+    });*/
 
     test('verify', () async {
       final input = func(F.verify, {pValue: val(true)});
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('print', () async {
-      final input = func(F.print, {pValue: val('Hello World')});
+      final input = func(F.output, {pValue: val('Hello World')});
       final mockContext = MockHoneyContext();
       await expectEval(
         input,

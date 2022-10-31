@@ -5,7 +5,6 @@ import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
-import 'package:honey/src/runner/errors/widget_not_found_error.dart';
 
 abstract class ActionFunctions {
   static Future<EvaluatedExpr> click(
@@ -54,10 +53,10 @@ abstract class ActionFunctions {
     Map<String, Expr> params,
   ) async {
     final value = await ctx.eval(params[pValue]);
-
+    final textInput = HoneyWidgetsBinding.instance.testTextInput;
     if (value is ValueExpr) {
-      if (ctx.fakeTextInput.hasClient) {
-        ctx.fakeTextInput.enterText(value.value);
+      if (textInput.hasAnyClients) {
+        textInput.enterText(value.value);
         return val(value.value);
       } else {
         throw HoneyError('no text field focused', false);
@@ -79,7 +78,7 @@ abstract class ActionFunctions {
     return empty();
   }
 
-  static Future<EvaluatedExpr> print(
+  static Future<EvaluatedExpr> output(
     HoneyContext ctx,
     Map<String, Expr> params,
   ) async {

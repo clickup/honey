@@ -11,10 +11,7 @@
         "vscode": "^1.62.0"
     },
     "activationEvents": [
-        "onLanguage:honeytalk",
-        "workspaceContains:*.ht",
-        "workspaceContains:*/*.ht",
-        "workspaceContains:*/*/*.ht"
+        "*"
     ],
     "categories": [
         "Testing",
@@ -26,6 +23,9 @@
         "url": "https://github.com/leisim/honey.git"
     },
     "main": "./dist/extension.js",
+    "extensionDependencies": [
+        "Dart-Code.flutter"
+    ],
     "contributes": {
         "languages": [
             {
@@ -58,11 +58,6 @@
                 "icon": "$(refresh)",
                 "title": "Refresh Tests",
                 "category": "Honey"
-            },
-            {
-                "command": "honey.toggleOverlay",
-                "title": "Toggle Overlay",
-                "category": "Honey"
             }
         ],
         "configuration": {
@@ -87,11 +82,6 @@
                 }
             ]
         },
-        "breakpoints": [
-            {
-                "language": "honeytalk"
-            }
-        ],
         "debuggers": [
             {
                 "type": "honey",
@@ -118,7 +108,8 @@
     "devDependencies": {
         "@types/js-yaml": "^4.0.5",
         "@types/node": "14.x",
-        "@types/vscode": "^1.62.0",
+        "@types/vscode": "^1.72.0",
+        "@types/ws": "^8.5.3",
         "@typescript-eslint/eslint-plugin": "^5.1.0",
         "@typescript-eslint/parser": "^5.1.0",
         "eslint": "^8.1.0",
@@ -127,9 +118,10 @@
         "typescript": "^4.4.4",
         "vscode-debugadapter": "^1.50.0",
         "webpack": "^5.52.1",
-        "webpack-cli": "^4.9.1"
-    },
-    "dependencies": {
-        "fix-path": "^4.0.0"
+        "webpack-cli": "^4.9.1",
+        "ws": "^8.10.0",
+        "bufferutil": "^4.0.7",
+        "utf-8-validate": "^5.0.10",
+        "queueable": "^4.1.4"
     }
 }
