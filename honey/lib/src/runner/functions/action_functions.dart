@@ -5,7 +5,6 @@ import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
-import 'package:honey/src/runner/errors/widget_not_found_error.dart';
 
 abstract class ActionFunctions {
   static Future<EvaluatedExpr> click(

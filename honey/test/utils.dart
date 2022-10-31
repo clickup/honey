@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
 import 'package:honey/src/compiler/compile.dart';
-import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
-import 'package:honey/src/utils/fake_text_input.dart';
 
 void expectExpr(String test, Expr expression, {bool optional = false}) {
   final result = compileHoneyTalk(test);
@@ -22,6 +20,7 @@ void expectStatement(String test, Statement statement) {
   final result = compileHoneyTalk(test);
   expect(result.hasError, false);
   expect(result.statements!.first, statement);
+}
 
 void expectEmpty(String test) {
   final result = compileHoneyTalk(test);
@@ -39,7 +38,6 @@ void expectError(
   expect(result.errorLine, errorLine);
   expect(result.errorColumn, errorColumn);
 }
-
 
 Future<void> expectEval(
   Expr actual,

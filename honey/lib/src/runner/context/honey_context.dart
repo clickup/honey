@@ -42,14 +42,18 @@ abstract class HoneyContext {
     ClickType type = ClickType.single,
   }) async {
     final rect = widget?.rect ?? screenRect;
-    if (offset != null) {
-      if (offset.dx <= 1 && offset.dy <= 1) {
-        offset = Offset(offset.dx * rect.width, offset.dy * rect.height);
+    var clickOffset = offset;
+    if (clickOffset != null) {
+      if (clickOffset.dx <= 1 && clickOffset.dy <= 1) {
+        clickOffset = Offset(
+          clickOffset.dx * rect.width,
+          clickOffset.dy * rect.height,
+        );
       }
-      offset = rect.shift(offset).center;
+      clickOffset = rect.shift(clickOffset).center;
     }
 
-    final downEvent = PointerDownEvent(position: offset ?? rect.center);
+    final downEvent = PointerDownEvent(position: clickOffset ?? rect.center);
     dispatchPointerEvent(downEvent);
     const upEvent = PointerUpEvent();
     dispatchPointerEvent(upEvent);

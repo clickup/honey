@@ -72,5 +72,5 @@ class ConditionStatement extends Statement {
 
   @override
   String toString() => 'ConditionStatement{condition: $condition, statements:'
-      '$statements, elseStatements: $elseStatements, source: $source, line: $line}';
+      '$statements, elseStatements: $elseStatements}';
 }

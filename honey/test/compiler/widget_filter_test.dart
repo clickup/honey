@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
 import 'package:honey/src/consts/name_modifier.dart';
 import 'package:honey/src/consts/param_names.dart';
-import 'package:honey/src/consts/property.dart';
 
 import '../utils.dart';
 

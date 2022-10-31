@@ -8,7 +8,8 @@ void main() {
   group('Ignored words', () {
     final result = func(F.verify, {
       pValue: func(F.greater, {
-        pLeft: func(F.length, {
+        pLeft: func(F.property, {
+          pName: val(Property.length.name),
           pValue: func(F.widgets, {pTarget: val('myWidget')})
         }),
         pRight: val(0),
