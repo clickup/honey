@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
@@ -40,14 +39,9 @@ void main() {
     });
 
     test('Expression with comment next to it', () {
-      final result = func(F.click, {
-        pType: val(ClickType.single.name),
-        pTarget: func(F.widgets, {
-          pTarget: val('MyWidget'),
-        }),
-      });
+      final result = func(F.output, {pValue: val('MyWidget')});
       expectExpr(
-        'tap "MyWidget" # test',
+        'print "MyWidget" # test',
         result,
       );
     });

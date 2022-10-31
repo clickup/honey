@@ -12,9 +12,9 @@ const _month = _day * 30;
 const _year = _day * 365;
 
 final defaultVariables = <String, EvaluatedExpr>{
-  Variable.timeout.name: val(20 * _s),
+  Variable.timeout.name: val(5 * _s),
   Variable.stepDelay.name: val(100 * _ms),
-  Variable.settleTimeout.name: val(20 * _s),
+  Variable.settleTimeout.name: val(5 * _s),
   Variable.milliseconds.name: val(_ms),
   Variable.seconds.name: val(_s),
   Variable.minutes.name: val(_min),

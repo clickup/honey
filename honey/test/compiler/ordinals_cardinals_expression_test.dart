@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
@@ -26,9 +25,7 @@ void main() {
         F.swipe,
         {
           pType: val('left'),
-          pTarget: func(F.widgets, {
-            pTarget: val('ListView'),
-          }),
+          pTarget: func(F.widgets, {pTarget: val('ListView')}),
           pValue: val(3),
         },
       );
@@ -49,7 +46,7 @@ void main() {
       expectExpr('last', val(-1));
     });
 
-    test('Ordinals in tap expression', () {
+    /*test('Ordinals in tap expression', () {
       final result = func(F.click, {
         pType: val(ClickType.single.name),
         pTarget: func(F.widgets, {
@@ -64,7 +61,7 @@ void main() {
       });
 
       expectExpr('tap second item in "ListView"', result);
-    });
+    });*/
 
     test('Ordinals in verify expression', () {
       final result = func(F.verify, {
