@@ -6,7 +6,7 @@ void main() {
   group('Error results:', () {
     test('One liner', () {
       expectError(
-        'swipe "MyWidget"',
+        'tappp "MyWidget"',
         errorLine: 1,
         errorColumn: 16,
       );
@@ -17,7 +17,7 @@ void main() {
         'if "MyWidget" is visible then\n'
         'tap "MyWidget"\n'
         'else\n'
-        'swipe "MyWidget"\n'
+        'tappp "MyWidget"\n'
         'endif',
         errorLine: 4,
         errorColumn: 16,
@@ -32,7 +32,7 @@ void main() {
         'swipe "MyWidget" by 300\n'
         'endif',
         errorLine: 2,
-        errorColumn: 0,
+        errorColumn: 17,
       );
     });
 

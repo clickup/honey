@@ -42,7 +42,9 @@ void main() {
     test('Expression with comment next to it', () {
       final result = func(F.click, {
         pType: val(ClickType.single.name),
-        pTarget: val('MyWidget'),
+        pTarget: func(F.widgets, {
+          pTarget: val('MyWidget'),
+        }),
       });
       expectExpr(
         'tap "MyWidget" # test',
