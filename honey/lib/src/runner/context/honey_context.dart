@@ -74,10 +74,13 @@ abstract class HoneyContext {
     }
 
     offset ??= rect.center;
+    //we're doing swipe twice so we need to devide distance
+    final halfDistance = distance / 2;
     final delta = Offset(
-      direction.xValue * (distance != 0.0 ? distance : rect.width),
-      direction.yValue * (distance != 0.0 ? distance : rect.height),
+      direction.xValue * (halfDistance != 0.0 ? halfDistance : rect.width),
+      direction.yValue * (halfDistance != 0.0 ? halfDistance : rect.height),
     );
+
     dispatchPointerEvent(PointerDownEvent(position: offset));
     dispatchPointerEvent(PointerMoveEvent(position: offset));
     offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);

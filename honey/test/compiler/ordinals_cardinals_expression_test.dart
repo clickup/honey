@@ -49,12 +49,14 @@ void main() {
     /*test('Ordinals in tap expression', () {
       final result = func(F.click, {
         pType: val(ClickType.single.name),
-        pTarget: func(F.property, {
+        pTarget: func(F.widgets, {
           pTarget: func(F.property, {
-            pValue: val('ListView'),
-            pName: val('item'),
+            pTarget: func(F.property, {
+              pValue: val('ListView'),
+              pName: val('item'),
+            }),
+            pValue: val(2),
           }),
-          pValue: val(2)
         }),
       });
 
