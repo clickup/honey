@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/param_names.dart';
 
 import '../utils.dart';
