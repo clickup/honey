@@ -34,4 +34,5 @@ const defaultFunctions = <F, HoneyFunction>{
   F.divide: MathFunctions.divide,
   F.pow: MathFunctions.pow,
   //F.matches:Str.cat,
+  F.concat: CoreFunctions.concat,
 };

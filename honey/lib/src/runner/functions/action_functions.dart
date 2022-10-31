@@ -24,16 +24,16 @@ abstract class ActionFunctions {
       offset = offsetExp.asOffset;
     }
 
-    if (targetWidget == null && offset == null) {
-      throw WidgetNotFoundError('some widget');
-    } else {
-      await ctx.click(
-        widget: targetWidget,
-        offset: offset,
-        type: clickType ?? ClickType.single,
-      );
-      return empty();
-    }
+    await ctx.click(
+      widget: targetWidget,
+      offset: offset,
+      type: clickType ?? ClickType.single,
+    );
+    return EvaluatedListExpr([
+      type,
+      target,
+      offsetExp,
+    ]);
   }
 
   static Future<EvaluatedExpr> verify(
@@ -43,7 +43,7 @@ abstract class ActionFunctions {
     final expression = await ctx.eval(params[pValue]);
 
     if (expression is ValueExpr && expression.asBool) {
-      return empty();
+      return val(expression.asBool);
     } else {
       throw HoneyError('verification failed', expression.retry);
     }
@@ -58,7 +58,7 @@ abstract class ActionFunctions {
     if (value is ValueExpr) {
       if (textInput.hasAnyClients) {
         textInput.enterText(value.value);
-        return empty();
+        return val(value.value);
       } else {
         throw HoneyError('no text field focused', false);
       }
@@ -74,6 +74,7 @@ abstract class ActionFunctions {
     final duration = await ctx.eval(params[pValue]);
     if (duration is ValueExpr) {
       await ctx.delay(Duration(milliseconds: duration.asNum.toInt()));
+      return val(duration.asNum.toInt());
     }
     return empty();
   }
@@ -84,7 +85,7 @@ abstract class ActionFunctions {
   ) async {
     final value = await ctx.eval(params[pValue]);
     ctx.message = value.toDisplayString();
-    return empty();
+    return val(ctx.message);
   }
 
   static Future<EvaluatedExpr> swipe(
@@ -114,6 +115,11 @@ abstract class ActionFunctions {
       direction: direction ?? Direction.left,
       distance: pixels,
     );
-    return empty();
+    return EvaluatedListExpr([
+      type,
+      target,
+      offsetExp,
+      pixelsExp,
+    ]);
   }
 }
