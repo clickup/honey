@@ -1,5 +1,6 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
+import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/function_expr.dart';
 import 'package:honey/src/expression/list_expr.dart';
@@ -88,7 +89,8 @@ class RuntimeHoneyContext with HoneyContext {
   @override
   Future<EvaluatedExpr> eval(Expr? expression) async {
     if (expression is FunctionExpr) {
-      final function = customFunctions[expression.function] ??
+      final nameExpr = expression.params[pName] as ValueExpr?;
+      final function = customFunctions[nameExpr?.value] ??
           defaultFunctions[expression.function]!;
       return function(this, expression.params);
     } else if (expression is ListExpr) {
