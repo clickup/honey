@@ -55,7 +55,7 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
 
   @override
   FunctionExpr visitActionEnter(ActionEnterContext ctx) {
-    final value = ctx.value!.accept(expressionVisitor)!;
+    final value = ctx.expr()!.accept(expressionVisitor)!;
     return func(F.enter, {pValue: value});
   }
 
@@ -76,6 +76,12 @@ class ActionVisitor extends HoneyTalkBaseVisitor<FunctionExpr> {
   FunctionExpr visitActionPrint(ActionPrintContext ctx) {
     final value = ctx.expr()!.accept(expressionVisitor)!;
     return func(F.output, {pValue: value});
+  }
+
+  @override
+  FunctionExpr visitActionError(ActionErrorContext ctx) {
+    final value = ctx.expr()!.accept(expressionVisitor)!;
+    return func(F.error, {pValue: value});
   }
 }
 

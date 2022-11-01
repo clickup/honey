@@ -1,16 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
-import 'package:honey/src/consts/param_names.dart';
+import 'package:honey/src/runner/default_functions.dart';
 
 import '../utils.dart';
 
 void main() {
   group('Function', () {
+    test('All default functions registered', () {
+      for (final func in F.values) {
+        expect(
+          defaultFunctions.containsKey(func.name),
+          true,
+          reason: func.name,
+        );
+      }
+    });
+
     test('call without params', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([]),
-      });
+      const result = FunctionExpr.custom('myfunction', {});
 
       expectExpr('myFunction()', result);
       expectExpr('do myFunction', result);
@@ -26,10 +33,7 @@ void main() {
     });
 
     test('call with single positional param', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([val(0), val('param1')]),
-      });
+      final result = FunctionExpr.custom('myfunction', {'0': val('param1')});
 
       expectExpr('myFunction("param1")', result);
       expectExpr('myFunction with "param1"', result);
@@ -37,16 +41,10 @@ void main() {
     });
 
     test('call with multiple positional params', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([
-          val(0),
-          val('param1'),
-          val(1),
-          val('param2'),
-          val(2),
-          val('param3')
-        ]),
+      final result = FunctionExpr.custom('myfunction', {
+        '0': val('param1'),
+        '1': val('param2'),
+        '2': val('param3'),
       });
 
       expectExpr('myFunction("param1", "param2", "param3")', result);
@@ -66,10 +64,7 @@ void main() {
     });
 
     test('call with single named param', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([val('myp1'), val('param1')]),
-      });
+      final result = FunctionExpr.custom('myfunction', {'myp1': val('param1')});
 
       expectExpr('myFunction(myP1: "param1")', result);
       expectExpr('myFunction(myP1 "param1")', result);
@@ -80,16 +75,10 @@ void main() {
     });
 
     test('call with multiple named params', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([
-          val('myp1'),
-          val('param1'),
-          val('myp2'),
-          val('param2'),
-          val('myp3'),
-          val('param3')
-        ]),
+      final result = FunctionExpr.custom('myfunction', {
+        'myp1': val('param1'),
+        'myp2': val('param2'),
+        'myp3': val('param3'),
       });
 
       expectExpr(
@@ -134,18 +123,11 @@ void main() {
     });
 
     test('call with mixed params', () {
-      final result = func(F.function, {
-        pName: val('myfunction'),
-        pValue: list([
-          val(0),
-          val('param1'),
-          val('myp2'),
-          val('param2'),
-          val(1),
-          val('param3'),
-          val('myp4'),
-          val('param4'),
-        ]),
+      final result = FunctionExpr.custom('myfunction', {
+        '0': val('param1'),
+        'myp2': val('param2'),
+        '1': val('param3'),
+        'myp4': val('param4'),
       });
 
       expectExpr(

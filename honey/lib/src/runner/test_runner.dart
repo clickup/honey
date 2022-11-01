@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:ui';
 
 import 'package:honey/honey.dart';
 import 'package:honey/src/expression/statement.dart';
@@ -10,8 +11,9 @@ import 'package:honey/src/runner/errors/unknown_error.dart';
 import 'package:honey/src/runner/test_step.dart';
 
 class TestRunner {
-  TestRunner(this.customFunctions);
+  TestRunner(this.screenSize, this.customFunctions);
 
+  final Size screenSize;
   final Map<String, HoneyFunction> customFunctions;
 
   late HoneyContext _ctx;
@@ -20,7 +22,7 @@ class TestRunner {
   HoneyContext get context => _ctx;
 
   Stream<TestStep> executeStatements(List<Statement> statements) async* {
-    _ctx = RuntimeHoneyContext(customFunctions);
+    _ctx = RuntimeHoneyContext(screenSize, customFunctions);
 
     final queue = ListQueue.of(statements.reversed);
     while (queue.isNotEmpty && !_canceled) {

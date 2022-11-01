@@ -5,9 +5,11 @@ import 'package:honey/src/expression/expr.dart';
 
 @immutable
 class FunctionExpr implements Expr {
-  const FunctionExpr(this.function, this.params);
+  FunctionExpr(F function, this.params) : function = function.name;
 
-  final F function;
+  const FunctionExpr.custom(this.function, this.params);
+
+  final String function;
 
   final Map<String, Expr> params;
 

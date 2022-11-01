@@ -12,12 +12,11 @@ enum F {
   and,
   or,
   not,
-  controlIf,
-  controlWhile,
-  widgets,
   property,
   variable,
-  function,
+
+  // widget
+  widgets,
 
   // date
   now,
@@ -38,5 +37,4 @@ enum F {
   endsWith,
   contains,
   matches,
-  concat;
 }

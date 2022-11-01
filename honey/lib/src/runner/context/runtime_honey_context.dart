@@ -12,9 +12,10 @@ import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 
 class RuntimeHoneyContext with HoneyContext {
-  RuntimeHoneyContext(this.customFunctions);
+  RuntimeHoneyContext(this.screenSize, this.customFunctions);
 
-  static late Rect screenRect;
+  @override
+  final Size screenSize;
 
   final Map<String, HoneyFunction> customFunctions;
   final variables = <String, EvaluatedExpr>{};
@@ -104,7 +105,7 @@ class RuntimeHoneyContext with HoneyContext {
 
   @override
   RuntimeHoneyContext clone({WidgetExpr? referenceWidget}) {
-    return RuntimeHoneyContext(customFunctions)
+    return RuntimeHoneyContext(screenSize, customFunctions)
       ..variables.addAll(variables)
       ..referenceWidget = referenceWidget ?? this.referenceWidget;
   }

@@ -90,6 +90,15 @@ swipe:
     | 'drag'
     | 'dragging';
 
+error:
+    'error'
+    | 'erroring'
+    | 'fail'
+    | 'failing'
+    | 'exception'
+    | 'throw'
+    | 'throwing';
+
 // Widgets
 
 widget: 'widget' | 'widgets';

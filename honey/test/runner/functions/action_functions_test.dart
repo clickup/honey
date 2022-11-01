@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
 import 'package:honey/src/consts/click_type.dart';
@@ -81,7 +83,7 @@ void main() {
 /// A fake [HoneyContext] that does not execute any action.
 /// It is used to test the action functions. We don't need real click or swipe
 class _FakeHoneyContext extends RuntimeHoneyContext {
-  _FakeHoneyContext() : super({});
+  _FakeHoneyContext() : super(Size.zero, {});
 
   @override
   Future<void> swipe({

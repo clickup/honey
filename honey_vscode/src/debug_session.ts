@@ -36,7 +36,7 @@ class HoneyDebugSession extends DebugSession {
   constructor(connection: HoneyConnection) {
     super();
     this.connection = connection;
-    this.channel = getOutputChannel("Honey Debug");
+    this.channel = getOutputChannel("Honey");
   }
 
   dispose() {
@@ -44,12 +44,16 @@ class HoneyDebugSession extends DebugSession {
   }
 
   sendEvent(event: DebugProtocol.Event) {
-    this.channel.appendLine(`Event: ${JSON.stringify(event.event, null, 4)}`);
+    this.channel.appendLine(
+      `Debug Event: ${JSON.stringify(event.event, null, 4)}`
+    );
     super.sendEvent(event);
   }
 
   protected dispatchRequest(request: DebugProtocol.Request): void {
-    this.channel.appendLine(`Request: ${JSON.stringify(request, null, 4)}`);
+    this.channel.appendLine(
+      `Debug Request: ${JSON.stringify(request, null, 4)}`
+    );
     super.dispatchRequest(request);
   }
 
@@ -83,7 +87,7 @@ class HoneyDebugSession extends DebugSession {
         const source = await util.promisify(fs.readFile)(testUri, "utf8");
         tests.push(source);
       } catch (e) {
-        this.channel.appendLine(`Error: ${e}`);
+        this.channel.appendLine(`Debug Error: ${e}`);
       }
     }
 
