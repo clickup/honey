@@ -86,6 +86,7 @@ void main() {
 
 /// A fake [HoneyContext] that does not execute any action.
 /// It is used to test the action functions. We don't need real click or swipe
+// ignore: unused_element
 class _FakeHoneyContext extends RuntimeHoneyContext {
   _FakeHoneyContext() : super(Size.zero, {});
 
