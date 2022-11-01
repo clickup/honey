@@ -66,7 +66,9 @@ class DebugController {
     if (_testRunner != null) return;
 
     HoneyWidgetsBinding.instance.reset(testing: true);
-    _testRunner = TestRunner(customFunctions);
+    final screenSize = HoneyWidgetsBinding.instance.window.physicalSize /
+        HoneyWidgetsBinding.instance.window.devicePixelRatio;
+    _testRunner = TestRunner(screenSize, customFunctions);
 
     try {
       await for (final step in _testRunner!.executeStatements(statements)) {

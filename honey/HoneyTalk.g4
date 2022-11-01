@@ -28,12 +28,13 @@ actionStatement:
     | see expr                                                                         # actionSee
     | clickType 'on'? target = expr (withOffset offset = expr)?                        # actionClick
     | clickType ('on'? target = expr)? withOffset offset = expr                        # actionClick
-    | enter value = expr                                                               # actionEnter
+    | enter expr                                                                       # actionEnter
     | set (ID | VARIABLE) ('to' | 'as') expr                                           # actionSetVariable
     | store expr ('in' | 'into') (ID | VARIABLE)                                       # actionSetVariable
     | wait 'for'? expr                                                                 # actionWait
     | print expr                                                                       # actionPrint
-    | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe;
+    | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe
+    | error expr                                                                       # actionError;
 
 withOffset: 'at' | 'with'? 'offset';
 

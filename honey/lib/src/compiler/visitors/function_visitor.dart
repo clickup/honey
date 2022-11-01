@@ -4,7 +4,6 @@ import 'package:honey/src/consts/function.dart';
 import 'package:honey/src/consts/param_names.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/function_expr.dart';
-import 'package:honey/src/expression/list_expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
 
 class FunctionVisitor extends HoneyTalkBaseVisitor<Expr> {
@@ -28,15 +27,13 @@ class FunctionVisitor extends HoneyTalkBaseVisitor<Expr> {
   @override
   Expr visitFunctionCustom(FunctionCustomContext ctx) {
     final name = ctx.ID()!.text!;
-    final params = <Expr>[];
+    final params = <String, Expr>{};
     var unnamedParams = 0;
     for (final param in ctx.functionParams()) {
       final paramName = param.ID()?.text ?? (unnamedParams++).toString();
       final paramValue = param.term()!.accept(expressionVisitor)!;
-      params
-        ..add(val(paramName))
-        ..add(paramValue);
+      params[paramName] = paramValue;
     }
-    return func(F.function, {pName: val(name), pValue: list(params)});
+    return FunctionExpr.custom(name, params);
   }
 }

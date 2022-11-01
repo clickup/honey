@@ -6,16 +6,10 @@ import '../../utils.dart';
 
 void main() {
   group('core functions', () {
-    test('concat num', () async {
-      final input = func(F.concat, {
-        pValue: list([val(1), val(2)])
-      });
-      await expectEval(input, val(12));
-    });
-
     test('concat string', () async {
-      final input = func(F.concat, {
-        pValue: list([val('foo'), val('bar')])
+      final input = func(F.plus, {
+        pLeft: val('foo'),
+        pRight: val('bar'),
       });
       await expectEval(input, val('foobar'));
     });

@@ -6,11 +6,8 @@ import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
-import 'package:honey/src/runner/context/runtime_honey_context.dart';
 
 abstract class HoneyContext {
-  static Rect get screenRect => RuntimeHoneyContext.screenRect;
-
   var _canceled = false;
   bool get canceled => _canceled;
 
@@ -19,6 +16,11 @@ abstract class HoneyContext {
   void cancel() {
     _canceled = true;
   }
+
+  Size get screenSize;
+
+  Rect get screenRect =>
+      Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
 
   SemanticsNode get semanticsTree;
 

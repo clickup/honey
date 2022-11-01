@@ -1,3 +1,13 @@
+## 0.1.1
+
+### Fixes
+
+- Fixed custom function calls
+- Fixed tap and swipe not waiting until widgets are available
+- Fixed missing `startsWith`, `endsWith`, `contains` and `matches` functions
+- Fixed missing `error` function
+- Fixed issue when tapping on screen with an offset
+
 ## 0.1.0
 
 - Rewrite of the entire library
