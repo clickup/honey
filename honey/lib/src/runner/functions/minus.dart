@@ -11,7 +11,7 @@ Future<EvaluatedExpr> minus(
   final right = await ctx.eval(params[pRight]);
   if (left is ValueExpr && right is ValueExpr) {
     return val(
-      left.asNum + right.asNum,
+      left.asNum - right.asNum,
       retry: left.retry || right.retry,
     );
   } else {

@@ -16,7 +16,7 @@ Future<EvaluatedExpr> swipe(
   final pixelsExp = await ctx.eval(params[pValue]);
 
   final targetWidget = target.widgetExpr;
-  if (params.containsKey(target) && targetWidget == null) {
+  if (params.containsKey(pTarget) && targetWidget == null) {
     throw WidgetNotFoundError('widget to swipe on');
   }
 
