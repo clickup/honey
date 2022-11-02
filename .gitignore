@@ -22,4 +22,5 @@ pubspec.lock
 honey/lib/src/compiler/antlr/
 
 # Generated files
+docs/assets/honeytalk.js
 honeytalk/HoneyTalkSynonyms.g4
