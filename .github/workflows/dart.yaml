@@ -29,10 +29,11 @@ jobs:
         uses: subosito/flutter-action@v2
       - name: Setup ANTLR
         run: pip install antlr4-tools
+      - name: Generate parser
+        run: sh honeytalk/generate_parser.sh
       - name: Lint
         run: |
           flutter pub get
-          sh tool/generate_parser.sh
           flutter analyze
         working-directory: honey
 
@@ -45,9 +46,10 @@ jobs:
         uses: subosito/flutter-action@v2
       - name: Setup ANTLR
         run: pip install antlr4-tools
+      - name: Generate parser
+        run: sh honeytalk/generate_parser.sh
       - name: Run Flutter Unit tests
         run: |
           flutter pub get
-          sh tool/generate_parser.sh
           flutter test
         working-directory: honey

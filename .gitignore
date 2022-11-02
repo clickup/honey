@@ -20,3 +20,6 @@ pubspec.lock
 *.tokens
 *.interp
 honey/lib/src/compiler/antlr/
+
+# Generated files
+honeytalk/HoneyTalkSynonyms.g4

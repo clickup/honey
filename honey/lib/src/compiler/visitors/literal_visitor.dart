@@ -85,7 +85,10 @@ class LiteralVisitor extends HoneyTalkBaseVisitor<ValueExpr> {
 
   @override
   ValueExpr visitLiteralBool(LiteralBoolContext ctx) {
-    final string = ctx.BOOL_LITERAL()!.text!;
-    return val(string);
+    if (ctx.TRUE_LITERAL() != null) {
+      return val(true);
+    } else {
+      return val(false);
+    }
   }
 }

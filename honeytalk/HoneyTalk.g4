@@ -9,19 +9,11 @@ statement:
     | maybe? expr '.'?            # statementExpr;
 
 ifStatement:
-    'if' expr 'then'? 'do'? NEWLINE (statement NEWLINE)* elseIfStatement* elseStatement? (
-        'end' 'if'
-        | 'endif'
-    );
+    iff expr then? NEWLINE (statement NEWLINE)* elseIfStatement* elseStatement? endIf;
 
-elseIfStatement:
-    ('else' 'if' | 'elseif' | 'elif') expr 'then'? 'do'? NEWLINE (
-        statement NEWLINE
-    )*;
+elseIfStatement: elseIf expr then? NEWLINE ( statement NEWLINE)*;
 
-elseStatement: 'else' NEWLINE (statement NEWLINE)*;
-
-maybe: 'maybe' | 'try' 'to'? | 'optional' | 'optionally';
+elseStatement: elsee NEWLINE (statement NEWLINE)*;
 
 actionStatement:
     verify 'that'? expr                                                                # actionVerify
@@ -32,7 +24,7 @@ actionStatement:
     | set (ID | VARIABLE) ('to' | 'as') expr                                           # actionSetVariable
     | store expr ('in' | 'into') (ID | VARIABLE)                                       # actionSetVariable
     | wait 'for'? expr                                                                 # actionWait
-    | print expr                                                                       # actionPrint
+    | output expr                                                                      # actionPrint
     | swipeType 'on'? (target = expr)? (withOffset offset = expr)? 'by'? pixels = expr # actionSwipe
     | error expr                                                                       # actionError;
 
@@ -47,28 +39,29 @@ clickType:
 swipeType: swipe singleDirection?;
 
 expr:
-    '(' expr ')'                                 # exprExpr
-    | term                                       # exprTerm
-    | ('not' | '!') expr                         # exprNot
-    | '-' expr                                   # exprNegate
-    | 'there' (isAreNot | isAre) expr            # exprExists
-    | expr (isAreNot | isAre)? exists            # exprExists
-    | expr '^' expr                              # exprPow
-    | expr op = ('/' | '*') expr                 # exprBinaryOp
-    | expr op = ('+' | '-') expr                 # exprBinaryOp
-    | expr (eq | neq | gte | gt | lte | lt) expr # exprComparison
-    | expr isAre? starts 'with'? expr            # exprStartsWith
-    | expr isAre? ends 'with'? expr              # exprEndsWith
-    | expr isAre? contains 'with'? expr          # exprContains
-    | expr isAre? matches expr                   # exprMatches
-    | expr (isAre | isAreNot) property           # exprIsAttr
-    | expr ('&&' | '&' | 'and') expr             # exprAnd
-    | expr ('||' | '|' | 'or') expr              # exprOr;
+    '(' expr ')'                                        # exprExpr
+    | term                                              # exprTerm
+    | not expr                                          # exprNot
+    | minus expr                                        # exprNegate
+    | 'there' (isAreNot | isAre) expr                   # exprExists
+    | expr (isAreNot | isAre)? exists                   # exprExists
+    | expr pow expr                                     # exprPow
+    | expr (divide | times) expr                        # exprBinaryOp
+    | expr (plus | minus) expr                          # exprBinaryOp
+    | expr isAreNot? (eq | gte | gt | lte | lt) expr    # exprComparison
+    | expr isAre? (eq | neq | gte | gt | lte | lt) expr # exprComparison
+    | expr (isAreNot | isAre)? starts 'with'? expr      # exprStartsWith
+    | expr (isAreNot | isAre)? ends 'with'? expr        # exprEndsWith
+    | expr (isAreNot | isAre)? contains 'with'? expr    # exprContains
+    | expr (isAreNot | isAre)? matches expr             # exprMatches
+    | expr (isAre | isAreNot) property                  # exprIsAttr
+    | expr and expr                                     # exprAnd
+    | expr or expr                                      # exprOr;
 
 term:
     '(' term ')'       # termTerm
     | literal          # termLiteral
-    | '-' term         # termNegate
+    | minus term       # termNegate
     | function         # termFunction
     | ordinal term     # termOrdinal
     | widgetTerm       # termWidget
@@ -93,11 +86,19 @@ function:
 functionParam: (ID ':'?)? term;
 
 literal:
-    cardinal         # literalCardinal
-    | ordinal        # literalOrdinal
-    | STRING_LITERAL # literalString
-    | NUMBER_LITERAL # literalNumber
-    | BOOL_LITERAL   # literalBool;
+    cardinal                         # literalCardinal
+    | ordinal                        # literalOrdinal
+    | STRING_LITERAL                 # literalString
+    | NUMBER_LITERAL                 # literalNumber
+    | (TRUE_LITERAL | FALSE_LITERAL) # literalBool;
+
+contains:
+    'contain'
+    | 'contains'
+    | 'containing'
+    | 'include'
+    | 'includes'
+    | 'including';
 
 cardinal:
     'zero'
@@ -188,7 +189,9 @@ NUMBER_LITERAL:
     | DIGIT+ '.'
     | DIGIT+ '.' DIGIT+;
 
-BOOL_LITERAL: 'true' | 'false';
+TRUE_LITERAL: 'true' | 'yes';
+
+FALSE_LITERAL: 'false' | 'no';
 
 STRING_LITERAL: '"' ( '\\"' | ~[\\"])* '"';
 
