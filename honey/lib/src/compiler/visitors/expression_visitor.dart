@@ -61,17 +61,14 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   Expr visitExprBinaryOp(ExprBinaryOpContext ctx) {
     final left = ctx.expr(0)!.accept(this)!;
     final right = ctx.expr(1)!.accept(this)!;
-    switch (ctx.op?.text) {
-      case '+':
-        return func(F.plus, {pLeft: left, pRight: right});
-      case '-':
-        return func(F.minus, {pLeft: left, pRight: right});
-      case '*':
-        return func(F.multiply, {pLeft: left, pRight: right});
-      case '/':
-        return func(F.divide, {pLeft: left, pRight: right});
-      default:
-        throw UnsupportedError('Unknown expr op');
+    if (ctx.plus() != null) {
+      return func(F.plus, {pLeft: left, pRight: right});
+    } else if (ctx.minus() != null) {
+      return func(F.minus, {pLeft: left, pRight: right});
+    } else if (ctx.times() != null) {
+      return func(F.multiply, {pLeft: left, pRight: right});
+    } else {
+      return func(F.divide, {pLeft: left, pRight: right});
     }
   }
 
@@ -79,28 +76,36 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   Expr visitExprComparison(ExprComparisonContext ctx) {
     final left = ctx.expr(0)!.accept(this)!;
     final right = ctx.expr(1)!.accept(this)!;
-    if (ctx.eq() != null) {
-      return func(F.equal, {pLeft: left, pRight: right});
-    } else if (ctx.neq() != null) {
-      return func(F.not, {
-        pValue: func(F.equal, {pLeft: left, pRight: right})
-      });
-    } else if (ctx.gt() != null) {
-      return func(F.greater, {pLeft: left, pRight: right});
-    } else if (ctx.gte() != null) {
-      return func(F.or, {
-        pLeft: func(F.greater, {pLeft: left, pRight: right}),
-        pRight: func(F.equal, {pLeft: left, pRight: right}),
-      });
-    } else if (ctx.lt() != null) {
-      return func(F.less, {pLeft: left, pRight: right});
-    } else if (ctx.lte() != null) {
-      return func(F.or, {
-        pLeft: func(F.less, {pLeft: left, pRight: right}),
-        pRight: func(F.equal, {pLeft: left, pRight: right}),
-      });
+
+    Expr getCmp() {
+      if (ctx.eq() != null) {
+        return func(F.equal, {pLeft: left, pRight: right});
+      } else if (ctx.neq() != null) {
+        return func(F.not, {
+          pValue: func(F.equal, {pLeft: left, pRight: right})
+        });
+      } else if (ctx.gt() != null) {
+        return func(F.greater, {pLeft: left, pRight: right});
+      } else if (ctx.gte() != null) {
+        return func(F.or, {
+          pLeft: func(F.greater, {pLeft: left, pRight: right}),
+          pRight: func(F.equal, {pLeft: left, pRight: right}),
+        });
+      } else if (ctx.lt() != null) {
+        return func(F.less, {pLeft: left, pRight: right});
+      } else {
+        return func(F.or, {
+          pLeft: func(F.less, {pLeft: left, pRight: right}),
+          pRight: func(F.equal, {pLeft: left, pRight: right}),
+        });
+      }
+    }
+
+    final expr = getCmp();
+    if (ctx.isAreNot() != null) {
+      return func(F.not, {pValue: expr});
     } else {
-      throw UnsupportedError('Unknown expr comparison');
+      return expr;
     }
   }
 
@@ -108,35 +113,55 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
   Expr visitExprStartsWith(ExprStartsWithContext ctx) {
     final value = ctx.expr(0)!.accept(this)!;
     final prefix = ctx.expr(1)!.accept(this)!;
-    return func(F.startsWith, {pValue: value, pInput: prefix});
+    final expr = func(F.startsWith, {pValue: value, pInput: prefix});
+    if (ctx.isAreNot() != null) {
+      return func(F.not, {pValue: expr});
+    } else {
+      return expr;
+    }
   }
 
   @override
   Expr visitExprEndsWith(ExprEndsWithContext ctx) {
     final value = ctx.expr(0)!.accept(this)!;
     final postfix = ctx.expr(1)!.accept(this)!;
-    return func(F.endsWith, {pValue: value, pInput: postfix});
+    final expr = func(F.endsWith, {pValue: value, pInput: postfix});
+    if (ctx.isAreNot() != null) {
+      return func(F.not, {pValue: expr});
+    } else {
+      return expr;
+    }
   }
 
   @override
   Expr visitExprContains(ExprContainsContext ctx) {
     final value = ctx.expr(0)!.accept(this)!;
     final substr = ctx.expr(1)!.accept(this)!;
-    return func(F.contains, {pValue: value, pInput: substr});
+    final expr = func(F.contains, {pValue: value, pInput: substr});
+    if (ctx.isAreNot() != null) {
+      return func(F.not, {pValue: expr});
+    } else {
+      return expr;
+    }
   }
 
   @override
-  Expr? visitExprMatches(ExprMatchesContext ctx) {
+  Expr visitExprMatches(ExprMatchesContext ctx) {
     final value = ctx.expr(0)!.accept(this)!;
     final regex = ctx.expr(1)!.accept(this)!;
-    return func(F.matches, {pValue: value, pInput: regex});
+    final expr = func(F.matches, {pValue: value, pInput: regex});
+    if (ctx.isAreNot() != null) {
+      return func(F.not, {pValue: expr});
+    } else {
+      return expr;
+    }
   }
 
   @override
   Expr visitExprIsAttr(ExprIsAttrContext ctx) {
     final target = ctx.expr()!.accept(this)!;
     final property = ctx.property()!.name;
-    final result = func(F.equal, {
+    final expr = func(F.equal, {
       pLeft: func(F.property, {
         pValue: func(F.widgets, {pTarget: target}),
         pName: val(property)
@@ -144,9 +169,9 @@ class ExpressionVisitor extends HoneyTalkBaseVisitor<Expr> {
       pRight: val(true)
     });
     if (ctx.isAreNot() != null) {
-      return func(F.not, {pValue: result});
+      return func(F.not, {pValue: expr});
     } else {
-      return result;
+      return expr;
     }
   }
 

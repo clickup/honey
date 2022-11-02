@@ -12,7 +12,6 @@ void main() {
         pType: val(ClickType.single.name),
         pTarget: func(F.widgets, {pTarget: val('myWidget')}),
       });
-
       expectExpr('click "myWidget"', result);
       expectExpr('clicking "myWidget"', result);
       expectExpr('tap "myWidget"', result);
