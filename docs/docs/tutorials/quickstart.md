@@ -54,7 +54,7 @@ at the beginning of the main() function.
 
 # 5. Create first test file
 
-Create file under `{app_root_folder}/honey` it can be called test.honey .
+Create file under `{app_root_folder}/honey` it can be called `test.honey` .
 Structure can be similar to this:
 
 ```
