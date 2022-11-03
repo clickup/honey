@@ -8,6 +8,7 @@ class SemanticsCheckbox extends StatelessWidget {
     required this.child,
     required this.value,
     this.label,
+    this.tooltip,
     this.onTap,
     this.properties,
     this.testOnly = false,
@@ -16,6 +17,7 @@ class SemanticsCheckbox extends StatelessWidget {
   final Widget child;
   final bool value;
   final String? label;
+  final String? tooltip;
   final VoidCallback? onTap;
   final Map<String, String>? properties;
   final bool testOnly;

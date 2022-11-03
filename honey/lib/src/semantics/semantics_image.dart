@@ -6,12 +6,14 @@ class SemanticsImage extends StatelessWidget {
     super.key,
     required this.child,
     this.label,
+    this.tooltip,
     this.properties,
     this.testOnly = false,
   });
 
   final Widget child;
   final String? label;
+  final String? tooltip;
   final Map<String, String>? properties;
   final bool testOnly;
 
@@ -19,6 +21,7 @@ class SemanticsImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SemanticsWidget(
       label: label,
+      tooltip: tooltip,
       header: true,
       image: true,
       properties: properties,

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:honey/src/expression/expr.dart';
@@ -12,42 +14,43 @@ import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 
 class RuntimeHoneyContext with HoneyContext {
-  RuntimeHoneyContext(this.screenSize, this.customFunctions);
+  RuntimeHoneyContext(
+    this.screenSize,
+    Map<String, HoneyFunction> customFunctions,
+  ) : customFunctions = _caseInsensitiveMap(customFunctions);
 
   @override
   final Size screenSize;
 
   final Map<String, HoneyFunction> customFunctions;
-  final variables = <String, EvaluatedExpr>{};
+  final variables = _caseInsensitiveMap<EvaluatedExpr>({});
 
   WidgetExpr? referenceWidget;
 
   @override
   EvaluatedExpr getVariable(String name) {
-    final lcName = name.toLowerCase();
-    final widgetVal = referenceWidget?.property(lcName);
+    final widgetVal = referenceWidget?.property(name);
     final value =
-        widgetVal ?? variables[lcName] ?? defaultVariables[lcName] ?? empty();
+        widgetVal ?? variables[name] ?? defaultVariables[name] ?? empty();
     return value;
   }
 
   @override
   void setVariable(String name, EvaluatedExpr expression) {
-    variables[name.toLowerCase()] = expression.withRetry(false);
+    variables[name] = expression.withRetry(false);
   }
 
   @override
   void deleteVariable(String name) {
-    variables.remove(name.toLowerCase());
+    variables.remove(name);
   }
 
   @override
   bool hasVariable(String name) {
-    final lcName = name.toLowerCase();
-    final widgetVal = referenceWidget?.property(lcName);
+    final widgetVal = referenceWidget?.property(name);
     return (widgetVal != null && !widgetVal.isEmpty) ||
-        variables.containsKey(lcName) ||
-        defaultVariables.containsKey(lcName);
+        variables.containsKey(name) ||
+        defaultVariables.containsKey(name);
   }
 
   @override
@@ -109,4 +112,11 @@ class RuntimeHoneyContext with HoneyContext {
       ..variables.addAll(variables)
       ..referenceWidget = referenceWidget ?? this.referenceWidget;
   }
+}
+
+Map<String, T> _caseInsensitiveMap<T>(Map<String, T> map) {
+  return LinkedHashMap(
+    equals: (a, b) => a.toLowerCase() == b.toLowerCase(),
+    hashCode: (key) => key.toLowerCase().hashCode,
+  )..addAll(map);
 }

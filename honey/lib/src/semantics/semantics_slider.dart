@@ -7,6 +7,7 @@ class SemanticsSlider extends StatelessWidget {
     required this.child,
     required this.value,
     this.label,
+    this.tooltip,
     this.adjustmentUnit = 0.1,
     this.onChanged,
     this.properties,
@@ -16,6 +17,7 @@ class SemanticsSlider extends StatelessWidget {
   final Widget child;
   final double value;
   final String? label;
+  final String? tooltip;
   final double adjustmentUnit;
   final ValueChanged<double>? onChanged;
   final Map<String, String>? properties;
@@ -27,6 +29,7 @@ class SemanticsSlider extends StatelessWidget {
     final decreased = (value - adjustmentUnit).clamp(0.0, 1.0);
     return SemanticsWidget(
       label: label,
+      tooltip: tooltip,
       enabled: onChanged != null,
       increasedValue: (increased * 100).round().toString(),
       decreasedValue: (decreased * 100).round().toString(),
