@@ -121,7 +121,6 @@ final tmlanguage = {
 };
 
 void main() {
-  print('(?i)\\b$runRegex?\\b$idRegex\\s+with\\s+');
   final encoder = JsonEncoder.withIndent('  ').convert(tmlanguage);
   File('honey_vscode/honeytalk.tm.json').writeAsStringSync(encoder);
 }

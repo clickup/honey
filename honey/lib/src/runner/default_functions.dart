@@ -26,6 +26,7 @@ import 'package:honey/src/runner/functions/variable.dart';
 import 'package:honey/src/runner/functions/verify.dart';
 import 'package:honey/src/runner/functions/wait.dart';
 import 'package:honey/src/runner/functions/widgets.dart';
+import 'package:honey/src/utils.dart';
 
 final defaultFunctions = <String, HoneyFunction>{
   F.and.name: and,
@@ -55,4 +56,4 @@ final defaultFunctions = <String, HoneyFunction>{
   F.verify.name: verify,
   F.wait.name: wait,
   F.widgets.name: widgets,
-};
+}.toCaseInsensitive();

@@ -1,6 +1,7 @@
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
 import 'package:honey/src/expression/variable.dart';
+import 'package:honey/src/utils.dart';
 
 const _ms = 1;
 const _s = _ms * 1000;
@@ -23,4 +24,4 @@ final defaultVariables = <String, EvaluatedExpr>{
   Variable.weeks.name: val(_week),
   Variable.months.name: val(_month),
   Variable.years.name: val(_year),
-};
+}.toCaseInsensitive();

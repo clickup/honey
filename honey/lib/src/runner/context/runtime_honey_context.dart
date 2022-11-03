@@ -12,18 +12,19 @@ import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/default_functions.dart';
 import 'package:honey/src/runner/default_variables.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
+import 'package:honey/src/utils.dart';
 
 class RuntimeHoneyContext with HoneyContext {
   RuntimeHoneyContext(
     this.screenSize,
     Map<String, HoneyFunction> customFunctions,
-  ) : customFunctions = _caseInsensitiveMap(customFunctions);
+  ) : customFunctions = customFunctions.toCaseInsensitive();
 
   @override
   final Size screenSize;
 
   final Map<String, HoneyFunction> customFunctions;
-  final variables = _caseInsensitiveMap<EvaluatedExpr>({});
+  final variables = <String, EvaluatedExpr>{}.toCaseInsensitive();
 
   WidgetExpr? referenceWidget;
 
@@ -112,11 +113,4 @@ class RuntimeHoneyContext with HoneyContext {
       ..variables.addAll(variables)
       ..referenceWidget = referenceWidget ?? this.referenceWidget;
   }
-}
-
-Map<String, T> _caseInsensitiveMap<T>(Map<String, T> map) {
-  return LinkedHashMap(
-    equals: (a, b) => a.toLowerCase() == b.toLowerCase(),
-    hashCode: (key) => key.toLowerCase().hashCode,
-  )..addAll(map);
 }

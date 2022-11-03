@@ -1,5 +1,13 @@
 ## 0.1.1
 
+### Enahncements
+
+- Improved the semantics widgets
+- Much better syntax highlighting
+- Started to add documentation
+- Nicer semantics overlay
+- Allow using tooltip to find widgets
+
 ### Fixes
 
 - Fixed custom function calls
@@ -7,6 +15,7 @@
 - Fixed missing `startsWith`, `endsWith`, `contains` and `matches` functions
 - Fixed missing `error` function
 - Fixed issue when tapping on screen with an offset
+- Fixed incorrect case-sensitivity for variables
 
 ## 0.1.0
 
