@@ -82,6 +82,7 @@ List<WidgetExpr> _findWidgetCandidates(
         final anyNameMatches = names.any((name) {
           return _nameMatches(data.label, name, modifier) ||
               _nameMatches(data.value, name, modifier) ||
+              _nameMatches(data.tooltip, name, modifier) ||
               _nameMatches(data.hint, name, modifier);
         });
         if (!anyNameMatches) {
