@@ -5,14 +5,16 @@ class SemanticsButton extends StatelessWidget {
   const SemanticsButton({
     super.key,
     required this.child,
-    required this.label,
+    this.label,
+    this.tooltip,
     this.onTap,
     this.properties,
     this.testOnly = false,
   });
 
   final Widget child;
-  final String label;
+  final String? label;
+  final String? tooltip;
   final VoidCallback? onTap;
   final Map<String, String>? properties;
   final bool testOnly;
@@ -21,6 +23,7 @@ class SemanticsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SemanticsWidget(
       label: label,
+      tooltip: tooltip,
       onTap: onTap,
       enabled: onTap != null,
       button: true,

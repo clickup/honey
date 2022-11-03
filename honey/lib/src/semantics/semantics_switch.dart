@@ -8,6 +8,7 @@ class SemanticsSwitch extends StatelessWidget {
     required this.child,
     required this.value,
     this.label,
+    this.tooltip,
     this.onChanged,
     this.properties,
     this.testOnly = false,
@@ -16,6 +17,7 @@ class SemanticsSwitch extends StatelessWidget {
   final Widget child;
   final bool value;
   final String? label;
+  final String? tooltip;
   final ValueChanged<bool>? onChanged;
   final Map<String, String>? properties;
   final bool testOnly;
@@ -24,6 +26,7 @@ class SemanticsSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return SemanticsWidget(
       label: label,
+      tooltip: tooltip,
       enabled: onChanged != null,
       toggled: value,
       properties: properties,
