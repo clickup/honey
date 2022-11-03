@@ -93,7 +93,6 @@ class _HoneyOverlayState extends State<HoneyOverlay>
                             setState(() {
                               selectedNode = node;
                             });
-                            print(selectedNode?.tooltip);
                             _controller.forward(from: 0);
                           },
                         ),
