@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:honey/src/overlay/semantics_color.dart';
 import 'package:honey/src/overlay/semantics_data_painter.dart';
 import 'package:honey/src/overlay/semantics_node_painter.dart';
 import 'package:honey/src/overlay/semantics_popup.dart';
@@ -100,7 +101,7 @@ class _HoneyOverlayState extends State<HoneyOverlay>
                           rect: selectedNode!.globalRect,
                           child: SemanticsDataPainter(
                             data: selectedNode!.getSemanticsData(),
-                            color: Colors.yellow[600]!,
+                            color: selectedNode!.honeyColor,
                           ),
                         ),
                         SemanticsPopup(

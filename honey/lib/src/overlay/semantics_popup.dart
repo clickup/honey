@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:honey/src/consts/property.dart';
+import 'package:honey/src/overlay/semantics_color.dart';
 import 'package:honey/src/semantics/semantics_extension.dart';
 
 class _SemanticsPopupPositionDelegate extends SingleChildLayoutDelegate {
@@ -20,7 +21,7 @@ class _SemanticsPopupPositionDelegate extends SingleChildLayoutDelegate {
       size: size,
       childSize: childSize,
       target: target,
-      verticalOffset: 10,
+      verticalOffset: 20,
       preferBelow: false,
     );
   }
@@ -54,6 +55,9 @@ class SemanticsPopup extends StatelessWidget {
         .where((e) => e != null)
         .cast<String>()
         .toList();
+    final bgolor = node.honeyColor;
+    final textColor =
+        bgolor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return Positioned.fill(
       child: IgnorePointer(
         child: CustomSingleChildLayout(
@@ -64,13 +68,13 @@ class SemanticsPopup extends StatelessWidget {
             opacity: animation,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.yellow[500],
+                color: bgolor,
                 borderRadius: BorderRadius.circular(12),
               ),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(8),
               child: DefaultTextStyle(
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(color: textColor),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -79,6 +83,8 @@ class SemanticsPopup extends StatelessWidget {
                       _Property('label', widget.data.label),
                     if (widget.data.hint.isNotEmpty)
                       _Property('hint', widget.data.hint),
+                    if (widget.data.tooltip.isNotEmpty)
+                      _Property('tooltip', widget.data.tooltip),
                     if (widget.data.value.isNotEmpty)
                       _Property('value', widget.data.value),
                     if (attrs.isNotEmpty) _Property('attrs', attrs.join(', ')),
@@ -120,7 +126,7 @@ class _Property extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: 50,
+            width: 55,
             child: Text(
               '$label:',
               style: const TextStyle(fontWeight: FontWeight.bold),
