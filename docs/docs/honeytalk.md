@@ -247,7 +247,7 @@ HoneyWidgetsBinding.ensureInitialized(
       customFunctions: customFunctions,
 );
 ```
-Now you can call it from your `*.ht` file!  
+Now you can call it from your `*.honey` file!  
 ```
 autoLogin()
 

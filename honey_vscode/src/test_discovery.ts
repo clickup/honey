@@ -86,7 +86,7 @@ export class TestDiscovery implements vs.Disposable {
       return;
     }
 
-    if (type === vs.FileType.File && uri.path.endsWith(".ht")) {
+    if (type === vs.FileType.File && uri.path.endsWith(".honey")) {
       const item = this.controller.createTestItem(name, name, uri);
       newItemForUri.set(uri, item);
       return item;

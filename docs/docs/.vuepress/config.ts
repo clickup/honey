@@ -75,7 +75,7 @@ export default defineUserConfig({
           "yaml",
           {
             id: "honeytalk",
-            scopeName: "source.ht",
+            scopeName: "source.honey",
             path: path.join(
               __dirname,
               "..",

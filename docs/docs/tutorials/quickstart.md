@@ -54,14 +54,14 @@ at the beginning of the main() function.
 
 # 5. Create first test file
 
-Create file under `{app_root_folder}/honey` it can be called test.ht .
+Create file under `{app_root_folder}/honey` it can be called test.honey .
 Structure can be similar to this:
 
 ```
 sample_app
 - android
 - honey
--- test.ht
+-- test.honey
 - ios
 - lib
 - test
@@ -69,7 +69,7 @@ pubspec.yaml
 pubspec.lock
 ```
 
-You may think why extension is `*.ht` ? It is because of HoneyTalk! Our own language that you'll use for testing!
+You may think why extension is `*.honey`? It is because of HoneyTalk! Our own language that you'll use for testing!
 
 # 6. You're all set!
 

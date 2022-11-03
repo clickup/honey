@@ -45,7 +45,7 @@ final tmlanguage = {
   'name': 'HoneyTalk',
   '\$schema':
       'https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json',
-  'scopeName': 'source.ht',
+  'scopeName': 'source.honey',
   'patterns': [
     {
       'match': '^(?i)\\s*(\\b$maybeRegex\\b)?\\s*(\\b$actionRegex\\b)',
