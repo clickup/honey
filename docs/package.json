@@ -1,0 +1,13 @@
+{
+    "name": "docs",
+    "version": "1.0.0",
+    "devDependencies": {
+        "@vuepress/plugin-prismjs": "^2.0.0-beta.53",
+        "@vuepress/plugin-shiki": "^2.0.0-beta.52",
+        "vuepress": "^2.0.0-beta.53"
+    },
+    "scripts": {
+        "dev": "vuepress dev docs",
+        "build": "vuepress build docs"
+    }
+}

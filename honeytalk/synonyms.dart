@@ -46,7 +46,9 @@ const click = {
   'hit',
   'hitting',
   'slam',
-  'slamming'
+  'slamming',
+  'smash',
+  'smashing',
 };
 
 const enter = {'enter', 'entering', 'type', 'typing', 'input', 'inputting'};
@@ -114,6 +116,26 @@ const sswitch = {'switch', 'switches'};
 
 const header = {'header', 'headers'};
 
+final attributes = {
+  'checkable',
+  'toggleable',
+  'clickable',
+  'longClickable',
+  'scrollable',
+  'checked',
+  'unchecked',
+  'toggled',
+  'enableable',
+  'enabled',
+  'disabled',
+  'focusable',
+  'focused',
+  'multiline',
+  'selected',
+  'obscured',
+  'readonly',
+};
+
 // Control
 
 const iff = {'if'};
@@ -125,6 +147,36 @@ const elseIf = {'else if', 'elseif', 'elif'};
 const elsee = {'else do', 'else', 'otherwise do', 'otherwise'};
 
 const endIf = {'end if', 'endif', 'end'};
+
+// Ordinal & Cardinal
+
+const cardinal = {
+  'zero',
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight',
+  'nine',
+  'ten',
+};
+
+const ordinal = {
+  'first',
+  'second',
+  'third',
+  'fourth',
+  'fifth',
+  'sixth',
+  'seventh',
+  'eighth',
+  'ninth',
+  'tenth',
+  'last',
+};
 
 // Comparisons
 

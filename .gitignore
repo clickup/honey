@@ -21,6 +21,21 @@ pubspec.lock
 *.interp
 honey/lib/src/compiler/antlr/
 
+# JS related
+.cache
+.temp
+npm-debug.log
+Thumbs.db
+node_modules/
+dist/
+*/out/
+*/.vs/
+tsconfig.lsif.json
+*.lsif
+*.db
+*.vsix
+package-lock.json
+
 # Generated files
-docs/assets/honeytalk.js
-honeytalk/HoneyTalkSynonyms.g4
+honeytalk.tm.json
+HoneyTalkSynonyms.g4

@@ -100,32 +100,6 @@ contains:
     | 'includes'
     | 'including';
 
-cardinal:
-    'zero'
-    | 'one'
-    | 'two'
-    | 'three'
-    | 'four'
-    | 'five'
-    | 'six'
-    | 'seven'
-    | 'eight'
-    | 'nine'
-    | 'ten';
-
-ordinal:
-    'first'
-    | 'second'
-    | 'third'
-    | 'fourth'
-    | 'fifth'
-    | 'sixth'
-    | 'seventh'
-    | 'eighth'
-    | 'ninth'
-    | 'tenth'
-    | 'last';
-
 widgetIdent:
     (attr += ID)* (caseSensitive | caseInsensitive | exactly) name += literal (
         'or' name += literal

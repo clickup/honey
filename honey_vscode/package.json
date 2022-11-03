@@ -44,7 +44,7 @@
             {
                 "language": "honeytalk",
                 "scopeName": "source.ht",
-                "path": "./syntaxes/honeytalk.json"
+                "path": "honeytalk.tm.json"
             }
         ],
         "commands": [

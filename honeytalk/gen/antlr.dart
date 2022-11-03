@@ -28,6 +28,8 @@ const rules = {
   'elseIf': elseIf,
   'elsee': elsee,
   'endIf': endIf,
+  'ordinal': ordinal,
+  'cardinal': cardinal,
   'eq': eq,
   'neq': neq,
   'gte': gte,
