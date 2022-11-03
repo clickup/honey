@@ -24,7 +24,7 @@ export default defineUserConfig({
         sidebar: [
           {
             text: "TUTORIALS",
-            children: [],
+            children: ["/tutorials/quickstart.md"],
           },
           {
             text: "CONCEPTS",
@@ -72,6 +72,7 @@ export default defineUserConfig({
         theme: "one-dark-pro",
         langs: [
           "dart",
+          "yaml",
           {
             id: "honeytalk",
             scopeName: "source.ht",
