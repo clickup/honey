@@ -1,7 +1,7 @@
 grammar HoneyTalk;
 import HoneyTalkSynonyms;
 
-script: (statement NEWLINE*)* statement? NEWLINE? EOF;
+script: (statement NEWLINE)* statement? NEWLINE? EOF;
 
 statement:
     ifStatement                   # statementIf

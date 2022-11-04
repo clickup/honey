@@ -10,13 +10,15 @@ final strRegex = RegExp(
   multiLine: true,
 );
 
+final emptyLineRegex = RegExp(r'^\s*$', multiLine: true);
+
 CompilationResult compileHoneyTalk(String script) {
   final scriptLc = script.replaceAllMapped(strRegex, (match) {
     final value = match.group(0)!;
     return value.startsWith('"') || value.startsWith('/')
         ? value
         : value.toLowerCase();
-  });
+  }).replaceAll(emptyLineRegex, '');
 
   final chars = InputStream.fromString(scriptLc);
   final lexer = HoneyTalkLexer(chars);
