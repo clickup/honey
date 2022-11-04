@@ -41,6 +41,11 @@ void expectError(
   expect(result.errorColumn, errorColumn);
 }
 
+void expectNoError(String test) {
+  final result = compileHoneyTalk(test);
+  expect(result.hasError, false);
+}
+
 Future<void> expectEval(
   Expr actual,
   EvaluatedExpr expected, {

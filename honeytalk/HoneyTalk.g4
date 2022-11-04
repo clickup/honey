@@ -191,7 +191,9 @@ COMMENT: (('#' | '//') ~('\r' | '\n')*) -> channel(HIDDEN);
 
 MULTILINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
-NEWLINE: ('\n' | '\r')+;
+NEWLINE: ('\r'? '\n' | '\r' | '\f') (
+        WHITESPACE? ( '\r'? '\n' | '\r' | '\f')
+    )* WHITESPACE?;
 
 WHITESPACE: (' ' | '\t')+ -> channel(HIDDEN);
 
