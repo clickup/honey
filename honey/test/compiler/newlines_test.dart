@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/honey.dart';
+
+import '../utils.dart';
 
 void main() {
   group('new lines parsing:', () {
@@ -8,8 +9,7 @@ void main() {
         login()
         tap "Action" button
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
     test('multiline test script with new lines', () {
       const test = '''
@@ -17,8 +17,7 @@ void main() {
 
         tap "Action" button
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
 
     test('multiline test script with multiple new lines', () {
@@ -29,8 +28,7 @@ void main() {
         tap "Action" button
         tap "Action" button
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
 
     test('multiline test script with multiple new lines at the end', () {
@@ -42,8 +40,7 @@ void main() {
 
         
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
 
     test('multiline test script with multiple newlines between actions', () {
@@ -55,8 +52,7 @@ void main() {
 
         tap "Action" button
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
 
     test(
@@ -74,8 +70,7 @@ void main() {
 
         
         ''';
-      final result = compileHoneyTalk(test);
-      expect(result.hasError, false);
+      expectNoError(test);
     });
   });
 }
