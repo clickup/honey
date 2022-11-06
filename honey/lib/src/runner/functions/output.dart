@@ -6,6 +6,7 @@ Future<EvaluatedExpr> output(
   Map<String, Expr> params,
 ) async {
   final value = await ctx.eval(params[pValue]);
-  ctx.message = value.toDisplayString();
-  return val(ctx.message);
+  final output = value.toDisplayString();
+  ctx.print(output);
+  return val(output);
 }

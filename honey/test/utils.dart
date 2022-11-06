@@ -51,7 +51,7 @@ Future<void> expectEval(
   EvaluatedExpr expected, {
   HoneyContext? context,
 }) async {
-  final ctx = context ?? RuntimeHoneyContext(Size.zero, {});
+  final ctx = context ?? RuntimeHoneyContext(customFunctions: {});
   final result = await ctx.eval(actual);
   expect(result, expected);
 }

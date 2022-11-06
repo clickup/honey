@@ -1,109 +1,74 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/src/consts/click_type.dart';
 import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 
+/// This class presents a set of methods that can be used by Honey function to
+/// interact with the application under test. It also allows evaluating
+/// expressions and accessing the values of variables.
 abstract class HoneyContext {
-  var _canceled = false;
-  bool get canceled => _canceled;
-
-  String message = '';
-
-  void cancel() {
-    _canceled = true;
-  }
-
-  Size get screenSize;
-
-  Rect get screenRect =>
-      Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
-
+  /// The current root semantics node of the accessibility tree.
   SemanticsNode get semanticsTree;
 
+  /// The [TestTextInput] instance that can be used to interact text input.
+  TestTextInput get testTextInput;
+
+  /// All the outputs of this context. Resets after each step.
+  String get output;
+
+  /// Get a variable by name. If the variable does not exist, an empty value is
+  /// returned.
   EvaluatedExpr getVariable(String name);
 
+  /// Set the content of a variable.
   void setVariable(String name, EvaluatedExpr expression);
 
+  /// Delete a variable.
   void deleteVariable(String name);
 
+  /// Check if a variable exists.
   bool hasVariable(String name);
 
+  /// Send a pointer event to Flutter.
   void dispatchPointerEvent(PointerEvent e);
 
-  void dispatchSemanticAction(Offset offset, SemanticsAction action);
+  /// Perform the given [action] on the given [node]. If [args] is provided, it
+  /// will be passed to the action.
+  void dispatchSemanticAction(
+    SemanticsNode node,
+    SemanticsAction action, [
+    Object? args,
+  ]);
 
+  /// Delay the execution of the current step by the given [duration].
   Future<void> delay(Duration duration);
 
+  /// Click on the given [widget]. Optionally, a click [type] and [offset] can
+  /// be provided.
   Future<void> click({
     WidgetExpr? widget,
     Offset? offset,
     ClickType type = ClickType.single,
-  }) async {
-    final rect = widget?.rect ?? screenRect;
-    var clickOffset = offset;
-    if (clickOffset != null) {
-      if (clickOffset.dx <= 1 && clickOffset.dy <= 1) {
-        clickOffset = Offset(
-          clickOffset.dx * rect.width,
-          clickOffset.dy * rect.height,
-        );
-      }
-      clickOffset = rect.shift(clickOffset).center;
-    }
+  });
 
-    final downEvent = PointerDownEvent(position: clickOffset ?? rect.center);
-    dispatchPointerEvent(downEvent);
-    const upEvent = PointerUpEvent();
-    dispatchPointerEvent(upEvent);
-  }
-
+  /// Scroll the given [widget] in the given [direction] by the given
+  /// [distance].
   Future<void> swipe({
     WidgetExpr? widget,
     Offset? offset,
     Direction direction = Direction.left,
     double distance = 0.0,
-  }) async {
-    final rect = widget?.rect ?? screenRect;
-    if (offset != null) {
-      if (offset.dx <= 1 && offset.dy <= 1) {
-        offset = Offset(offset.dx * rect.width, offset.dy * rect.height);
-      }
-      offset = rect.shift(offset).center;
-    }
+  });
 
-    offset ??= rect.center;
-    //we're doing swipe twice so we need to devide distance
-    final halfDistance = distance / 2;
-    final delta = Offset(
-      direction.xValue * (halfDistance != 0.0 ? halfDistance : rect.width),
-      direction.yValue * (halfDistance != 0.0 ? halfDistance : rect.height),
-    );
+  /// Add the given [line] to the step output buffer.
+  void print(String line);
 
-    dispatchPointerEvent(PointerDownEvent(position: offset));
-    dispatchPointerEvent(PointerMoveEvent(position: offset));
-    offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
-    dispatchPointerEvent(
-      PointerMoveEvent(
-        position: offset,
-        delta: delta,
-      ),
-    );
-    // ignore: parameter_assignments
-    offset = Offset(offset.dx + delta.dx, offset.dy + delta.dy);
-    dispatchPointerEvent(
-      PointerMoveEvent(
-        position: offset,
-        delta: delta,
-      ),
-    );
-    dispatchPointerEvent(const PointerUpEvent());
-  }
-
+  /// Evaluate the given [expression] and return the result.
   Future<EvaluatedExpr> eval(Expr? expression);
 
+  /// Clone this context. The step output buffer is not cloned.
   HoneyContext clone({WidgetExpr? referenceWidget});
 }
