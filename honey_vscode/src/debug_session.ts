@@ -8,7 +8,7 @@ import {
   TerminatedEvent,
 } from "vscode-debugadapter";
 import { DebugProtocol } from "vscode-debugprotocol";
-import { disposeAll, getOutputChannel } from "./utils";
+import { getOutputChannel } from "./utils";
 import { HoneyConnection } from "./honey_connection";
 
 export class HoneyDebugAdapterFactory
@@ -31,16 +31,11 @@ export class HoneyDebugAdapterFactory
 class HoneyDebugSession extends DebugSession {
   private channel: vs.OutputChannel;
   private connection: HoneyConnection;
-  private subscriptions: vs.Disposable[] = [];
 
   constructor(connection: HoneyConnection) {
     super();
     this.connection = connection;
     this.channel = getOutputChannel("Honey");
-  }
-
-  dispose() {
-    disposeAll(this.subscriptions);
   }
 
   sendEvent(event: DebugProtocol.Event) {
@@ -96,12 +91,15 @@ class HoneyDebugSession extends DebugSession {
     for (var i = 0; i < testUris.length; i++) {
       const testUri = testUris[i];
       const test = tests[i];
-      const [compilation, steps] = await this.connection.runTest(test);
-      this.sendEvent(new Event("honey.compiled", { testUri, compilation }));
+      const result = await this.connection.runTest(test);
 
-      if (steps) {
-        for await (const step of steps) {
-          this.sendEvent(new Event("honey.step", { testUri, step }));
+      if ("error" in result) {
+        this.sendEvent(new Event("honey.error", { testUri, error: result }));
+      } else if ("next" in result) {
+        var firstStep = true;
+        for await (const step of result) {
+          this.sendEvent(new Event("honey.step", { testUri, step, firstStep }));
+          firstStep = false;
           if (!step?.nextLine) {
             break;
           }

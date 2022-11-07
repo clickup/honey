@@ -1,29 +1,27 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:ui';
 
-import 'package:honey/honey.dart';
+import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/statement.dart';
+import 'package:honey/src/expression/value_expr.dart';
 import 'package:honey/src/expression/variable.dart';
-import 'package:honey/src/runner/context/runtime_honey_context.dart';
+import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
-import 'package:honey/src/runner/test_step.dart';
+import 'package:honey/src/test_step.dart';
 
 class TestRunner {
-  TestRunner(this.screenSize, this.customFunctions);
+  TestRunner({
+    required HoneyContext context,
+    required this.waitUntilSettled,
+  }) : _ctx = context;
 
-  final Size screenSize;
-  final Map<String, HoneyFunction> customFunctions;
+  final Future<void> Function(Duration timeout) waitUntilSettled;
 
-  late HoneyContext _ctx;
+  HoneyContext _ctx;
   var _canceled = false;
 
-  HoneyContext get context => _ctx;
-
   Stream<TestStep> executeStatements(List<Statement> statements) async* {
-    _ctx = RuntimeHoneyContext(screenSize, customFunctions);
-
     final queue = ListQueue.of(statements.reversed);
     while (queue.isNotEmpty && !_canceled) {
       final statement = queue.removeLast();
@@ -52,6 +50,7 @@ class TestRunner {
         step: statement.source,
         nextLine: finished ? null : queue.last.line,
         skipped: result is HoneyError && optional,
+        output: _ctx.stepOutput.isNotEmpty ? _ctx.stepOutput : null,
         error: result is HoneyError && !optional ? result.message : null,
       );
 
@@ -69,8 +68,7 @@ class TestRunner {
     final timeout = _ctx.getVariable(Variable.timeout.name).asNum;
     final stepDelay = _ctx.getVariable(Variable.stepDelay.name).asNum;
 
-    await HoneyWidgetsBinding.instance
-        .waitUntilSettled(Duration(milliseconds: settleTimeout.toInt()));
+    await waitUntilSettled(Duration(milliseconds: settleTimeout.toInt()));
     final startCtx = _ctx;
 
     final s = Stopwatch()..start();

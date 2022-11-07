@@ -7,7 +7,7 @@ Future<EvaluatedExpr> enter(
   Map<String, Expr> params,
 ) async {
   final value = await ctx.eval(params[pValue]);
-  final textInput = HoneyWidgetsBinding.instance.testTextInput;
+  final textInput = ctx.testTextInput;
   if (value is ValueExpr) {
     if (textInput.hasAnyClients) {
       textInput.enterText(value.value);

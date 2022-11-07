@@ -67,9 +67,7 @@ class _HoneyOverlayState extends State<HoneyOverlay>
       textDirection: TextDirection.ltr,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: widget.child,
-          ),
+          Positioned.fill(child: widget.child),
           Positioned.fill(
             child: ExcludeSemantics(
               child: GestureDetector(

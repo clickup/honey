@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:honey/honey.dart';
 import 'package:honey/src/compiler/compile.dart';
@@ -51,7 +49,7 @@ Future<void> expectEval(
   EvaluatedExpr expected, {
   HoneyContext? context,
 }) async {
-  final ctx = context ?? RuntimeHoneyContext(Size.zero, {});
+  final ctx = context ?? RuntimeHoneyContext(customFunctions: {});
   final result = await ctx.eval(actual);
   expect(result, expected);
 }

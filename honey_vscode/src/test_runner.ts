@@ -1,5 +1,5 @@
 import * as vs from "vscode";
-import { HoneyCompilation, HoneyStepResult } from "./honey_connection";
+import { HoneyError, HoneyStep } from "./honey_connection";
 import { TestDiscovery } from "./test_discovery";
 import { disposeAll, getOutputChannel } from "./utils";
 
@@ -17,35 +17,31 @@ export class TestRunner implements vs.Disposable {
     this.testController = testController;
     this.channel = getOutputChannel("Honey");
 
-    const startDisposable = vs.debug.onDidStartDebugSession(
+    vs.debug.onDidStartDebugSession(
       this.handleStartSession,
-      this
+      this,
+      this.disposables
     );
-    const terminateDisposable = vs.debug.onDidTerminateDebugSession(
+    vs.debug.onDidTerminateDebugSession(
       this.handleTerminateSession,
-      this
+      this,
+      this.disposables
     );
 
-    const receiveDisposable = vs.debug.onDidReceiveDebugSessionCustomEvent(
+    vs.debug.onDidReceiveDebugSessionCustomEvent(
       (e) => {
-        if (e.event === "honey.compiled") {
-          this.channel.appendLine("Test compilation received");
+        if (e.event === "honey.error") {
+          this.channel.appendLine("Test error received");
           this.channel.appendLine(JSON.stringify(e.body));
-          this.handleTestCompiled(e.body.testUri, e.body.compilation);
+          this.handleTestError(e.body.testUri, e.body.error);
         } else if (e.event === "honey.step") {
           this.channel.appendLine("Test step received");
           this.channel.appendLine(JSON.stringify(e.body));
           this.handleTestStep(e.body.testUri, e.body.step);
         }
-      }
-    );
-
-    this.createRunProfile();
-
-    this.disposables.push(
-      startDisposable,
-      terminateDisposable,
-      receiveDisposable
+      },
+      null,
+      this.disposables
     );
 
     this.channel.appendLine("Test runner initialized");
@@ -93,127 +89,47 @@ export class TestRunner implements vs.Disposable {
     this.channel.appendLine("Test run ended");
   }
 
-  private handleTestCompiled(testUri: string, compilation: HoneyCompilation) {
+  private handleTestError(testUri: string, error: HoneyError) {
     const testItem = this.testDiscovery.getTestItem(testUri);
     if (!testItem) {
       return;
     }
-    if (compilation.error) {
-      const markdown = new vs.MarkdownString();
-      markdown.appendText("Could not compile test\n");
-      markdown.appendText(compilation.error + "\n");
-      if (compilation.errorLine) {
-        markdown.appendText(`Line ${compilation.errorLine} `);
-      }
-      if (compilation.errorColumn) {
-        markdown.appendText(`Column ${compilation.errorColumn}`);
-      }
-      const message = new vs.TestMessage(markdown);
-      message.location = new vs.Location(
-        testItem.uri!,
-        new vs.Position(compilation.errorLine!, compilation.errorColumn!)
-      );
-      this.currentRun?.errored(testItem, message);
-    } else if (compilation.steps) {
-      testItem.children.replace([]);
-      for (var i = 0; i < compilation.steps.length; i++) {
-        const step = compilation.steps[i];
-        const item = this.testController.createTestItem(
-          step.line.toString(),
-          step.step,
-          vs.Uri.file(testUri)
-        );
-        item.range = new vs.Range(step.line, 0, step.line, step.step.length);
-        testItem.children.add(item);
-        if (i === 0) {
-          item.busy = true;
-        }
-        this.currentRun?.enqueued(item);
-      }
 
-      if (compilation.steps.length > 0) {
-        testItem.busy = true;
-        this.currentRun?.enqueued(testItem);
-      } else {
-        this.currentRun?.passed(testItem);
-      }
+    const markdown = new vs.MarkdownString();
+    markdown.appendText("Could not compile test\n");
+    markdown.appendText(error.error + "\n");
+    if (error.line) {
+      markdown.appendText(`Line ${error.line} `);
     }
+    if (error.column) {
+      markdown.appendText(`Column ${error.column}`);
+    }
+    const message = new vs.TestMessage(markdown);
+    message.location = new vs.Location(
+      testItem.uri!,
+      new vs.Position(error.line ?? 0, error.column ?? 0)
+    );
+    this.currentRun?.errored(testItem, message);
 
-    this.channel.appendLine("Test compilation handled");
+    this.channel.appendLine("Test error handled");
   }
 
-  private handleTestStep(testUri: string, step: HoneyStepResult) {
+  private handleTestStep(testUri: string, step: HoneyStep) {
     const testItem = this.testDiscovery.getTestItem(testUri);
     if (!testItem) {
       return;
     }
+    testItem.busy = true;
 
-    const testStepItem = testItem.children.get(step.line.toString());
-    if (!testStepItem) {
-      return;
-    }
-    testStepItem.busy = false;
-
-    if (step.error) {
-      testItem.children.forEach((child) => {
-        if (parseInt(child.id) > step.line) {
-          this.currentRun?.skipped(child);
-        }
-      });
+    if (!step.nextLine) {
       testItem.busy = false;
-      this.currentRun?.failed(testStepItem, new vs.TestMessage(step.error));
-    } else {
-      if (step.skipped) {
-        this.currentRun?.skipped(testStepItem);
+      if (step.error && !step.skipped) {
+        this.currentRun?.failed(testItem, new vs.TestMessage(step.error));
       } else {
-        this.currentRun?.passed(testStepItem);
-      }
-
-      if (step.nextLine) {
-        const nextStepItem = testItem.children.get(step.nextLine.toString());
-        nextStepItem!.busy = true;
-      } else {
-        testItem.busy = false;
         this.currentRun?.passed(testItem);
       }
     }
 
     this.channel.appendLine("Test step handled");
-  }
-
-  private createRunProfile() {
-    this.testController.createRunProfile(
-      "honey",
-      vs.TestRunProfileKind.Debug,
-      (request) => {
-        function getTestItems(items: readonly vs.TestItem[]): vs.TestItem[] {
-          return items.flatMap((item) => {
-            const children: vs.TestItem[] = [];
-            item.children.forEach((child) => {
-              children.push(child);
-            });
-            const childItems = getTestItems(children);
-            return [item, ...childItems];
-          });
-        }
-        const testItems = getTestItems(request.include ?? []);
-        const tests = testItems.flatMap((item) => {
-          if (!item.range) {
-            return item.uri!.fsPath;
-          } else {
-            return [];
-          }
-        });
-        vs.debug.startDebugging(undefined, {
-          type: "honey",
-          name: "honey",
-          request: "launch",
-          tests: tests,
-        });
-      },
-      true
-    );
-
-    this.channel.appendLine("Test run profile created");
   }
 }

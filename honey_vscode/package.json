@@ -47,19 +47,6 @@
                 "path": "honeytalk.tm.json"
             }
         ],
-        "commands": [
-            {
-                "command": "honey.selectDevice",
-                "title": "Select Device",
-                "category": "Honey"
-            },
-            {
-                "command": "honey.refreshTests",
-                "icon": "$(refresh)",
-                "title": "Refresh Tests",
-                "category": "Honey"
-            }
-        ],
         "configuration": {
             "title": "Honey",
             "properties": {
@@ -72,15 +59,6 @@
                     "description": "The source of the honey_cli package."
                 }
             }
-        },
-        "menus": {
-            "view/title": [
-                {
-                    "command": "honey.refreshTests",
-                    "when": "view == workbench.view.testing && !refreshingTests && !virtualWorkspace && shellExecutionSupported",
-                    "group": "navigation@0"
-                }
-            ]
         },
         "debuggers": [
             {

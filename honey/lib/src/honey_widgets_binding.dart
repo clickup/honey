@@ -5,15 +5,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:honey/src/debug_controller.dart';
-import 'package:honey/src/expression/expr.dart';
+import 'package:honey/src/controller/appium.dart';
+import 'package:honey/src/controller/debug.dart';
+import 'package:honey/src/honey_function.dart';
 import 'package:honey/src/overlay/honey_overlay.dart';
-import 'package:honey/src/runner/context/honey_context.dart';
 
-typedef HoneyFunction = Future<EvaluatedExpr> Function(
-  HoneyContext ctx,
-  Map<String, Expr> params,
-);
+enum HoneyMode {
+  debug,
+  appium,
+}
 
 class HoneyWidgetsBinding extends BindingBase
     with
@@ -25,11 +25,6 @@ class HoneyWidgetsBinding extends BindingBase
         RendererBinding,
         WidgetsBinding,
         TestDefaultBinaryMessengerBinding {
-  HoneyWidgetsBinding._(Map<String, HoneyFunction> customFunctions) {
-    pipelineOwner.ensureSemantics();
-    DebugController(customFunctions);
-  }
-
   static HoneyWidgetsBinding get instance =>
       BindingBase.checkInstance(_instance);
   static HoneyWidgetsBinding? _instance;
@@ -43,6 +38,8 @@ class HoneyWidgetsBinding extends BindingBase
 
   TestTextInput get testTextInput => _testTextInput;
 
+  Size get screenSize => window.physicalSize / window.devicePixelRatio;
+
   @override
   void initInstances() {
     super.initInstances();
@@ -51,10 +48,22 @@ class HoneyWidgetsBinding extends BindingBase
   }
 
   static void ensureInitialized({
+    HoneyMode mode = HoneyMode.debug,
     Map<String, HoneyFunction> customFunctions = const {},
   }) {
     if (_instance == null) {
-      HoneyWidgetsBinding._(customFunctions);
+      final instance = HoneyWidgetsBinding();
+      instance.pipelineOwner.ensureSemantics();
+
+      switch (mode) {
+        case HoneyMode.debug:
+          DebugController(customFunctions);
+          break;
+        case HoneyMode.appium:
+          instance._testing = true;
+          runFromClipboard(customFunctions);
+          break;
+      }
     }
   }
 
