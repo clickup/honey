@@ -4,17 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:honey/src/compiler/compile.dart';
+import 'package:honey/src/consts/marker.dart';
 import 'package:honey/src/honey_function.dart';
 import 'package:honey/src/honey_widgets_binding.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/test_runner.dart';
 import 'package:honey/src/test_error.dart';
-
-const honeyStepMarker = r'$_$HONEY_STEP';
-final honeyStepRegex = RegExp(r'\$_\$HONEY_STEP(.*)');
-
-const honeyErrorMarker = r'$_$HONEY_ERROR';
-final honeyErrorRegex = RegExp(r'\$_\$HONEY_ERROR(.*)');
 
 Future<void> runFromClipboard(
   Map<String, HoneyFunction> customFunctions,

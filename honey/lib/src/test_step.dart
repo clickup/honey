@@ -13,7 +13,7 @@ class TestStep {
         nextLine: json['nextLine'] as int?,
         step: json['step'] as String,
         skipped: json['skipped'] as bool,
-        output: json['output'] as String,
+        output: json['output'] as String?,
         error: json['error'] as String?,
       );
 

@@ -33,14 +33,6 @@ export async function activate(context: vs.ExtensionContext) {
     new HoneyDebugAdapterFactory(connection)
   );
 
-  const refreshTestsCommand = vs.commands.registerCommand(
-    "honey.refreshTests",
-    () => {
-      testDiscovery.discoverAll();
-    }
-  );
-  context.subscriptions.push(refreshTestsCommand);
-
   testDiscovery.startWatching();
 
   const channel = getOutputChannel("Honey");
