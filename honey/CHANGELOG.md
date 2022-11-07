@@ -1,3 +1,15 @@
+## 0.1.2
+
+### Enahncements
+
+- Support for appium execution
+- Improved VSCode step handling
+
+### Fixes
+
+- Fixed issue with whitespace in empty lines
+- Fixed Honey overlay not handling click events
+
 ## 0.1.1
 
 ### Enahncements
