@@ -6,7 +6,7 @@ import 'package:honey/honey.dart';
 import 'package:honey/src/compiler/compile.dart';
 import 'package:honey/src/runner/context/runtime_honey_context.dart';
 import 'package:honey/src/runner/test_runner.dart';
-import 'package:honey/src/test_output.dart';
+import 'package:honey/src/test_error.dart';
 
 class DebugController {
   DebugController(this.customFunctions) {
@@ -24,13 +24,13 @@ class DebugController {
       (_, params) {
         var output = <String, dynamic>{};
         if (_testRunner != null) {
-          output = const TestError(message: 'Test already running').toJson();
+          output = const TestError(error: 'Test already running').toJson();
         } else {
           final compilation = compileHoneyTalk(params['test']!);
           final statements = compilation.statements;
           if (statements == null) {
             output = TestError(
-              message: 'Could not compile Honey script',
+              error: 'Could not compile Honey script',
               line: compilation.errorLine,
               column: compilation.errorColumn,
             ).toJson();
@@ -39,10 +39,11 @@ class DebugController {
               context: RuntimeHoneyContext(customFunctions: customFunctions),
               waitUntilSettled: HoneyWidgetsBinding.instance.waitUntilSettled,
             );
+            HoneyWidgetsBinding.instance.reset(testing: true);
             _testRunner!.executeStatements(statements).forEach((element) {
-              postEvent('ext.honey.output', element.toJson());
+              postEvent('ext.honey.step', element.toJson());
             }).whenComplete(() {
-              postEvent('ext.honey.output', const TestFinished().toJson());
+              HoneyWidgetsBinding.instance.reset(testing: false);
               _testRunner = null;
             });
           }

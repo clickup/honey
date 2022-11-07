@@ -20,7 +20,7 @@ class SemanticsNodePainter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dataPainter = GestureDetector(
-      behavior: HitTestBehavior.opaque,
+      behavior: HitTestBehavior.translucent,
       child: SemanticsDataPainter(
         data: node.getSemanticsData(),
         color: node.honeyColor.withAlpha(128),

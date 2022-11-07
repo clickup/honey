@@ -13,22 +13,33 @@ export class TestDiscovery implements vs.Disposable {
   }
 
   public startWatching() {
-    const createDisposable = vs.workspace.onDidCreateFiles((e) => {
-      for (const uri of e.files) {
-        this.discoverAndAddItem(uri);
-      }
-    });
-    const renameDisposable = vs.workspace.onDidRenameFiles((e) => {
-      for (const file of e.files) {
-        this.renameItem(file.oldUri, file.newUri);
-      }
-    });
-    const deleteDisposable = vs.workspace.onDidDeleteFiles((e) => {
-      for (const uri of e.files) {
-        this.removeItem(uri);
-      }
-    });
-    this.disposables.push(createDisposable, renameDisposable, deleteDisposable);
+    vs.workspace.onDidCreateFiles(
+      (e) => {
+        for (const uri of e.files) {
+          this.discoverAndAddItem(uri);
+        }
+      },
+      null,
+      this.disposables
+    );
+    vs.workspace.onDidRenameFiles(
+      (e) => {
+        for (const file of e.files) {
+          this.renameItem(file.oldUri, file.newUri);
+        }
+      },
+      null,
+      this.disposables
+    );
+    vs.workspace.onDidDeleteFiles(
+      (e) => {
+        for (const uri of e.files) {
+          this.removeItem(uri);
+        }
+      },
+      null,
+      this.disposables
+    );
     this.discoverAll();
   }
 

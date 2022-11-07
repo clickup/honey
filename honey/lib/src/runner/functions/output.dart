@@ -7,6 +7,6 @@ Future<EvaluatedExpr> output(
 ) async {
   final value = await ctx.eval(params[pValue]);
   final output = value.toDisplayString();
-  ctx.print(output);
+  ctx.output(output);
   return val(output);
 }

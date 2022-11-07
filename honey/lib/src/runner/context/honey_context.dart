@@ -17,7 +17,7 @@ abstract class HoneyContext {
   TestTextInput get testTextInput;
 
   /// All the outputs of this context. Resets after each step.
-  String get output;
+  String get stepOutput;
 
   /// Get a variable by name. If the variable does not exist, an empty value is
   /// returned.
@@ -64,7 +64,7 @@ abstract class HoneyContext {
   });
 
   /// Add the given [line] to the step output buffer.
-  void print(String line);
+  void output(String line);
 
   /// Evaluate the given [expression] and return the result.
   Future<EvaluatedExpr> eval(Expr? expression);

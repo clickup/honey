@@ -8,7 +8,7 @@ import 'package:honey/src/expression/variable.dart';
 import 'package:honey/src/runner/context/honey_context.dart';
 import 'package:honey/src/runner/errors/honey_error.dart';
 import 'package:honey/src/runner/errors/unknown_error.dart';
-import 'package:honey/src/test_output.dart';
+import 'package:honey/src/test_step.dart';
 
 class TestRunner {
   TestRunner({
@@ -50,7 +50,7 @@ class TestRunner {
         step: statement.source,
         nextLine: finished ? null : queue.last.line,
         skipped: result is HoneyError && optional,
-        output: _ctx.output.isNotEmpty ? _ctx.output : null,
+        output: _ctx.stepOutput.isNotEmpty ? _ctx.stepOutput : null,
         error: result is HoneyError && !optional ? result.message : null,
       );
 

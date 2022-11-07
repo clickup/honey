@@ -60,6 +60,7 @@ class HoneyWidgetsBinding extends BindingBase
           DebugController(customFunctions);
           break;
         case HoneyMode.appium:
+          instance._testing = true;
           runFromClipboard(customFunctions);
           break;
       }

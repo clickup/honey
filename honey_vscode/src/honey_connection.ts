@@ -3,23 +3,18 @@ import { disposeAll, getOutputChannel, PromiseCompleter } from "./utils";
 import { VmServiceConnection } from "./vmservice";
 import { Channel } from "queueable";
 
-export type HoneyCompilation = {
-  error?: string;
-  errorLine?: number;
-  errorColumn?: number;
-  steps?: [
-    {
-      line: number;
-      step: string;
-    }
-  ];
+export type HoneyError = {
+  error: string;
+  line?: number;
+  column?: number;
 };
 
-export type HoneyStepResult = {
+export type HoneyStep = {
   line: number;
   nextLine?: number;
   step: string;
   skipped: boolean;
+  output?: string;
   error?: string;
 };
 
@@ -30,19 +25,23 @@ export class HoneyConnection implements vs.Disposable {
   private vmServiceUrl?: string;
   private vmService?: VmServiceConnection;
   private restartCompleter?: PromiseCompleter<void>;
-  private stepChannel?: Channel<HoneyStepResult | undefined>;
+  private stepChannel?: Channel<HoneyStep>;
 
   constructor() {
-    const disposable = vs.debug.onDidReceiveDebugSessionCustomEvent((e) => {
-      if (e.body.extension === "ext.flutter.connectedVmServiceUri") {
-        const url = e.body.value;
-        if (url !== this.vmServiceUrl) {
-          this.vmService?.close();
-          this.connect(url);
+    vs.debug.onDidReceiveDebugSessionCustomEvent(
+      (e) => {
+        if (e.body.extension === "ext.flutter.connectedVmServiceUri") {
+          const url = e.body.value;
+          if (url !== this.vmServiceUrl) {
+            this.vmService?.close();
+            this.connect(url);
+          }
         }
-      }
-    });
-    this.disposables.push(disposable);
+      },
+      null,
+      this.disposables
+    );
+
     this.channel = getOutputChannel("Honey");
     this.channel.appendLine("Honey connection initialized");
   }
@@ -55,9 +54,6 @@ export class HoneyConnection implements vs.Disposable {
       } else if (service === "step") {
         this.channel.appendLine("Step received");
         this.stepChannel?.push(data);
-      } else if (service == "finished") {
-        this.channel.appendLine("Finished received");
-        this.stepChannel?.push(undefined);
       }
     });
 
@@ -77,28 +73,26 @@ export class HoneyConnection implements vs.Disposable {
     return this.vmService !== undefined;
   }
 
-  async runTest(
-    test: string
-  ): Promise<[HoneyCompilation, Channel<HoneyStepResult | undefined>?]> {
+  async runTest(test: string): Promise<HoneyError | Channel<HoneyStep>> {
     this.restartCompleter = new PromiseCompleter();
     await (vs.commands.executeCommand("flutter.hotRestart") as Promise<void>);
     await this.restartCompleter.promise;
 
     this.stepChannel = new Channel();
-    const compilationPromise = this.vmService!.callService("test", { test });
-    const timeout = new Promise<HoneyCompilation>((_resolve, reject) => {
+    const resultPromise = this.vmService!.callService("test", { test });
+    const timeout = new Promise<HoneyError | {}>((_resolve, reject) => {
       setTimeout(() => reject("Timeout"), 3000);
     });
-    const compilation: HoneyCompilation = await Promise.race([
-      compilationPromise,
+    const result: HoneyError | {} = await Promise.race([
+      resultPromise,
       timeout,
     ]);
 
-    if (compilation.errorLine) {
-      return [compilation, undefined];
+    if ("error" in result) {
+      return result;
+    } else {
+      return this.stepChannel;
     }
-
-    return [compilation, this.stepChannel];
   }
 
   async cancelTest(): Promise<void> {

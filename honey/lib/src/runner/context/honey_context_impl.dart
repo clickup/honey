@@ -26,7 +26,7 @@ abstract class HoneyContextImpl extends HoneyContext {
   final variables = <String, EvaluatedExpr>{}.toCaseInsensitive();
 
   @override
-  String output = '';
+  String stepOutput = '';
 
   Size get screenSize;
 
@@ -142,11 +142,11 @@ abstract class HoneyContextImpl extends HoneyContext {
   }
 
   @override
-  void print(String line) {
-    if (output.isNotEmpty) {
-      output += '\n';
+  void output(String line) {
+    if (stepOutput.isNotEmpty) {
+      stepOutput += '\n';
     }
-    output += line;
+    stepOutput += line;
   }
 
   @override

@@ -85,7 +85,7 @@ class AppiumCommand extends Command<void> {
       final testFiles = Glob(testGlob).listSync();
       for (final testFile in testFiles) {
         if (testFile is File &&
-            testFile.path.endsWith('.ht') &&
+            testFile.path.endsWith('.honey') &&
             testFile.existsSync()) {
           yield testFile as File;
         }

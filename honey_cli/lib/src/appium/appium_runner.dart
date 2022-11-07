@@ -3,7 +3,8 @@
 import 'dart:convert';
 
 import 'package:honey/src/controller/appium.dart';
-import 'package:honey/src/test_output.dart';
+import 'package:honey/src/test_error.dart';
+import 'package:honey/src/test_step.dart';
 import 'package:honey_cli/src/appium/appium_session.dart';
 
 class AppiumRunner {
@@ -27,36 +28,41 @@ class AppiumRunner {
 
   Future<bool> runTest(String testName, String test) async {
     await _session!.logEvent('honey', 'Starting $testName');
-    await _session!.setClipboard('$honeyMarker $test');
+    await _session!.setClipboard(test);
     await _session!.resetApp();
 
     var error = false;
     while (true) {
       final log = await _session!.getLog();
       for (final line in log) {
-        final match = honeyRegex.firstMatch(line);
-        if (match != null) {
-          final fixed = match.group(1)!.replaceAll(r'\134', r'\');
-          final output = TestOutput.fromJson(
-            jsonDecode(fixed) as Map<String, dynamic>,
+        final stepMatch = honeyStepRegex.firstMatch(line);
+        final errorMatch = honeyErrorRegex.firstMatch(line);
+        if (stepMatch != null) {
+          final step = TestStep.fromJson(
+            jsonDecode(stepMatch.group(1)!) as Map<String, dynamic>,
           );
-          if (output is TestStep) {
-            if (output.skipped) {
-              await _session!.logEvent('honey', '${output.step} skipped');
-            }
-            if (output.error != null) {
-              await _session!.logEvent(
-                'honey',
-                '${output.step} failed: ${output.error}',
-              );
-              error = true;
-            } else {
-              await _session!.logEvent('honey', '${output.step} successful');
-            }
-          } else if (output is TestFinished) {
-            await _session!.logEvent('honey', '$testName finished');
+          if (step.skipped) {
+            await _session!.logEvent('honey', '${step.step} skipped');
+          }
+          if (step.error != null) {
+            await _session!.logEvent(
+              'honey',
+              '${step.step} failed: ${step.error}',
+            );
+            error = true;
+          } else {
+            await _session!.logEvent('honey', '${step.step} successful');
+          }
+          if (step.nextLine == null) {
+            await _session!.logEvent('honey', 'Test finished');
             return !error;
           }
+        } else if (errorMatch != null) {
+          final error = TestError.fromJson(
+            jsonDecode(errorMatch.group(1)!) as Map<String, dynamic>,
+          );
+          await _session!.logEvent('honey', 'Test failed: ${error.error}');
+          return false;
         }
       }
       await Future<void>.delayed(const Duration(seconds: 1));

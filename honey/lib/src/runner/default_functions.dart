@@ -1,5 +1,4 @@
 import 'package:honey/honey.dart';
-import 'package:honey/src/honey_function.dart';
 import 'package:honey/src/runner/functions/and.dart';
 import 'package:honey/src/runner/functions/click.dart';
 import 'package:honey/src/runner/functions/contains.dart';
