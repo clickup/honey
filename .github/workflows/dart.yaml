@@ -16,9 +16,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
-      - name: Check formatting
+      - name: Check honey formatting
         run: flutter format --dry-run . --set-exit-if-changed
         working-directory: honey
+      - name: Check honey_cli formatting
+        run: flutter format --dry-run . --set-exit-if-changed
+        working-directory: honey_cli
 
   lint:
     name: Check lints
@@ -31,11 +34,16 @@ jobs:
         run: pip install antlr4-tools
       - name: Generate parser
         run: sh honeytalk/generate_parser.sh
-      - name: Lint
+      - name: Check honey lints
         run: |
           flutter pub get
           flutter analyze
         working-directory: honey
+      - name: Check honey_cli lints
+        run: |
+          flutter pub get
+          flutter analyze
+        working-directory: honey_cli
 
   test:
     name: Run tests
