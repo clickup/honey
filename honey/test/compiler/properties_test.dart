@@ -63,8 +63,8 @@ void main() {
           })
         })
       });
-      expectExpr('clickk checkable "widget"', result);
-      expectExpr('clickk "widget" checkable ', result);
+      expectExpr('click checkable "widget"', result);
+      expectExpr('click "widget" checkable ', result);
     });
   });
 }
