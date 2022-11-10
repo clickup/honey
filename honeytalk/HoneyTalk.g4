@@ -107,7 +107,10 @@ widgetIdent:
     | (attr += ID)* name += literal ('or' name += literal)* widgetType
     | (attr += ID)* (caseSensitive | caseInsensitive | exactly)? widgetType (
         name += literal ('or' name += literal)*
-    )?;
+    )?
+    | (attr += ID)* name += literal ('or' name += literal)* (
+        attr += ID
+    )? widgetType?;
 
 widgetType:
     widget
