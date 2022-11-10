@@ -6,9 +6,9 @@ void main() {
   group('Error results:', () {
     test('One liner', () {
       expectError(
-        'tapp "MyWidget"',
+        'tap',
         errorLine: 1,
-        errorColumn: 15,
+        errorColumn: 3,
       );
     });
 
@@ -17,34 +17,34 @@ void main() {
         'if "MyWidget" is visible then\n'
         'tap "MyWidget"\n'
         'else\n'
-        'tapp "MyWidget"\n'
+        'tap"\n'
         'endif',
         errorLine: 4,
-        errorColumn: 15,
+        errorColumn: 3,
       );
     });
 
     test('If statement with error inside if', () {
       expectError(
         'if "MyWidget" is visible then\n'
-        'tapppp "MyWidget"\n'
+        'swipe\n'
         'else\n'
         'swipe "MyWidget" by 300\n'
         'endif',
         errorLine: 2,
-        errorColumn: 17,
+        errorColumn: 5,
       );
     });
 
     test('If statement with error in conditional statement', () {
       expectError(
-        'ifff "MyWidget" is visible then\n'
+        '"MyWidget" is visible then\n'
         'tap "MyWidget"\n'
         'else\n'
         'swipe left "MyWidget" by 300\n'
         'endif',
         errorLine: 1,
-        errorColumn: 16,
+        errorColumn: 22,
       );
     });
 
@@ -52,9 +52,9 @@ void main() {
       expectError(
         'tap "MyWidget"\n'
         'swipe left "MyWidget" by 300\n'
-        'verfy "MyWidget" is visible\n',
+        'verify "MyWidget is visible\n',
         errorLine: 3,
-        errorColumn: 17,
+        errorColumn: 7,
       );
     });
   });
