@@ -4,12 +4,16 @@ import 'package:honey/src/consts/property.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/value_expr.dart';
 
+/// A list of un-evaluated expressions.
 @immutable
 class ListExpr implements Expr {
+  /// Create a list expression from the given [list].
   const ListExpr(List<Expr> list) : _list = list;
 
   final List<Expr> _list;
 
+  /// Access the [index]th element of this list. Returns `empty()` if the index
+  /// is out of bounds.
   Expr operator [](int index) {
     if (_list.length > index) {
       return _list[index];
@@ -18,6 +22,7 @@ class ListExpr implements Expr {
     }
   }
 
+  /// Get the length of this list.
   int get length => _list.length;
 
   @override
@@ -32,8 +37,10 @@ class ListExpr implements Expr {
   String toString() => 'ListExpr(list: $_list)';
 }
 
+/// Shortcut for creating a [ListExpr].
 ListExpr list(List<Expr> list) => ListExpr(list);
 
+/// A list of evaluated expressions.
 @immutable
 class EvaluatedListExpr extends ListExpr with EvaluatedExpr {
   // ignore: use_super_parameters
@@ -84,5 +91,6 @@ class EvaluatedListExpr extends ListExpr with EvaluatedExpr {
   }
 }
 
+/// Shortcut for creating an [EvaluatedListExpr].
 EvaluatedListExpr eList(List<EvaluatedExpr> list, {bool retry = false}) =>
     EvaluatedListExpr(list, retry: retry);

@@ -3,14 +3,20 @@ import 'package:flutter/foundation.dart';
 import 'package:honey/src/consts/function.dart';
 import 'package:honey/src/expression/expr.dart';
 
+/// Function expressions are the only expressions that can contain logic. You
+/// can either use built-in functions or create your own.
 @immutable
 class FunctionExpr implements Expr {
+  /// Create a new built-in function expression.
   FunctionExpr(F function, this.params) : function = function.name;
 
+  /// Create a new custom function expression.
   const FunctionExpr.custom(this.function, this.params);
 
+  /// The name of the function.
   final String function;
 
+  /// The parameters to the function.
   final Map<String, Expr> params;
 
   @override
@@ -27,5 +33,6 @@ class FunctionExpr implements Expr {
   String toString() => 'FunctionExp(function: $function, params: $params)';
 }
 
+/// Shortcut for creating a [FunctionExpr].
 FunctionExpr func(F function, Map<String, Expr> params) =>
     FunctionExpr(function, params);

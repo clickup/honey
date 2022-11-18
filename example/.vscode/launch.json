@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "dart",
+            "request": "launch",
+            "name": "Honey Mode",
+            "toolArgs":["--dart-define", "HONEY=true"]
+        }
+    ]
+}

@@ -11,14 +11,20 @@ footer: Apache Licensed | Copyright © 2022 ClickUp
 ---
 
 ```honeytalk
-# Simple HoneyTalk test testing the counter app
+# Sample HoneyTalk test
 
-look at "You have pushed the button this many times:"
-verify that "0" is visible
+verify that "Honey Test Framework" is visible
 
-tap the "Increment" button
-make sure that "1" is visible
+put the value of the "Likes" text field into $likes
 
-tap the "Increment" button
-assert that "2" is visible
+if $likes are greater than or equal to 1000 then
+  output "Thanks for the likes!"
+else
+  smash the "Like" button
+  check that the value of the "Likes" text field is equal to $likes + 1
+endif
+
+optionally verify that isLoggedIn() == true
+
+tap the "Let's Get Started!" button
 ```

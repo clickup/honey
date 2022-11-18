@@ -13,6 +13,7 @@ extension SemanticsNodeX on SemanticsNode {
         tags?.firstWhereOrNull((t) => t.name.startsWith('__honey'));
     if (honeyTag != null) {
       properties =
+          // ignore: invalid_use_of_protected_member
           HoneyWidgetsBinding.instance.getSemanticsProperties(honeyTag);
     }
     return WidgetExpr(

@@ -1,0 +1,11 @@
+android/
+ios/
+linux/
+macos/
+web/
+windows/
+test/
+
+.metadata
+analysis_options.yaml
+!.vscode/

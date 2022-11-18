@@ -89,11 +89,13 @@ class _SemanticsWidgetState extends State<SemanticsWidget> {
 
   void _updateTag() {
     HoneyWidgetsBinding.instance
+        // ignore: invalid_use_of_protected_member
         .updateSemanticsProperties(_tag, widget.properties);
   }
 
   @override
   void dispose() {
+    // ignore: invalid_use_of_protected_member
     HoneyWidgetsBinding.instance.updateSemanticsProperties(_tag, null);
     super.dispose();
   }

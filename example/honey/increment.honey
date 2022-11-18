@@ -1,0 +1,10 @@
+verify that "0" is visible
+
+tap the "Increment" button
+
+verify that "1" is visible
+
+tap the "Increment" button
+
+verify that "2" is visible
+

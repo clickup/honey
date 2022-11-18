@@ -29,6 +29,7 @@ Future<void> runFromClipboard(
   } else {
     final testRunner = TestRunner(
       context: RuntimeHoneyContext(customFunctions: customFunctions),
+      // ignore: invalid_use_of_protected_member
       waitUntilSettled: HoneyWidgetsBinding.instance.waitUntilSettled,
     );
 

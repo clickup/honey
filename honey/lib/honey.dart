@@ -12,6 +12,7 @@ export 'src/expression/widget_expr.dart';
 export 'src/honey_function.dart';
 export 'src/honey_widgets_binding.dart';
 export 'src/runner/context/honey_context.dart';
+export 'src/runner/errors/honey_error.dart';
 
 export 'src/semantics/semantics_button.dart';
 export 'src/semantics/semantics_checkbox.dart';

@@ -10,11 +10,17 @@ import 'package:honey/src/controller/debug.dart';
 import 'package:honey/src/honey_function.dart';
 import 'package:honey/src/overlay/honey_overlay.dart';
 
+/// The Honey test mode.
 enum HoneyMode {
+  /// Test debug mode. Tries to connect to the VSCode extension to execute
+  /// tests.
   debug,
+
+  /// Test appium mode. Tries to connect to the Appium server to execute tests.
   appium,
 }
 
+/// Flutter widgets binding for Honey tests. Only use this binding during tests.
 class HoneyWidgetsBinding extends BindingBase
     with
         GestureBinding,
@@ -36,8 +42,12 @@ class HoneyWidgetsBinding extends BindingBase
   Widget? _rootWidget;
   late TestTextInput _testTextInput;
 
+  /// @nodoc
+  @protected
   TestTextInput get testTextInput => _testTextInput;
 
+  /// @nodoc
+  @protected
   Size get screenSize => window.physicalSize / window.devicePixelRatio;
 
   @override
@@ -47,6 +57,12 @@ class HoneyWidgetsBinding extends BindingBase
     _testTextInput = TestTextInput();
   }
 
+  /// Initializes the Honey binding. Should be called before everything else.
+  ///
+  /// [HoneyMode.debug] allows running tests using the VSCode extension. Use
+  /// [HoneyMode.appium] to run Appium tests in a CI environment.
+  ///
+  /// By providing [customFunctions] you can extend or alter the Honey language.
   static void ensureInitialized({
     HoneyMode mode = HoneyMode.debug,
     Map<String, HoneyFunction> customFunctions = const {},
@@ -79,6 +95,8 @@ class HoneyWidgetsBinding extends BindingBase
     super.scheduleAttachRootWidget(widget);
   }
 
+  /// @nodoc
+  @protected
   Future<void> waitUntilSettled(Duration timeout) async {
     final s = Stopwatch()..start();
     do {
@@ -87,6 +105,8 @@ class HoneyWidgetsBinding extends BindingBase
     } while (hasScheduledFrame && s.elapsed < timeout);
   }
 
+  /// @nodoc
+  @protected
   void updateSemanticsProperties(
     SemanticsTag tag,
     Map<String, String>? properties,
@@ -98,10 +118,14 @@ class HoneyWidgetsBinding extends BindingBase
     }
   }
 
+  /// @nodoc
+  @protected
   Map<String, String>? getSemanticsProperties(SemanticsTag tag) {
     return _semanticTagProperties[tag];
   }
 
+  /// @nodoc
+  @protected
   void reset({required bool testing}) {
     _testing = testing;
     resetGestureBinding();

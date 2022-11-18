@@ -6,7 +6,7 @@ import 'package:honey/src/consts/direction.dart';
 import 'package:honey/src/expression/expr.dart';
 import 'package:honey/src/expression/widget_expr.dart';
 
-/// This class presents a set of methods that can be used by Honey function to
+/// This class presents a set of methods that can be used by Honey functions to
 /// interact with the application under test. It also allows evaluating
 /// expressions and accessing the values of variables.
 abstract class HoneyContext {

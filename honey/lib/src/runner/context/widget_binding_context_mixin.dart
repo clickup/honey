@@ -10,6 +10,7 @@ mixin WidgetBindingContextMixin {
       WidgetsBinding.instance.window.physicalSize /
       WidgetsBinding.instance.window.devicePixelRatio;
 
+  // ignore: invalid_use_of_protected_member
   TestTextInput get testTextInput => HoneyWidgetsBinding.instance.testTextInput;
 
   SemanticsNode get semanticsTree {

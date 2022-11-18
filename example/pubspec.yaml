@@ -1,0 +1,14 @@
+name: example
+description: Honey Example project
+publish_to: "none"
+
+environment:
+  sdk: ">=2.18.4 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  honey: any
+
+flutter:
+  uses-material-design: true

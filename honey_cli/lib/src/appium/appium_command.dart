@@ -14,7 +14,7 @@ class AppiumCommand extends Command<void> {
         'url',
         abbr: 'u',
         help: 'Url to the appium host.',
-        //mandatory: true,
+        mandatory: true,
       )
       ..addMultiOption(
         'capability',
@@ -37,7 +37,7 @@ class AppiumCommand extends Command<void> {
 
     if (testFiles.isEmpty) {
       print('No tests to run');
-      exit(0);
+      exit(1);
     }
 
     final runner = AppiumRunner(url: url, capabilities: capabilities);
