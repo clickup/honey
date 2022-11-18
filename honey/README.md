@@ -118,6 +118,20 @@ From HoneyTalk you can then call the function:
 
 You can also overwrite built-in Honey functions. You could override the `F.add` function to modify how addition works.
 
+## Open Sourced by ClickUp 💙
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/clickup/honey/main/.github/assets/clickup-logo-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/clickup/honey/main/.github/assets/clickup-logo-light.svg">
+  <img alt="ClickUp Logo" src="https://raw.githubusercontent.com/clickup/honey/main/.github/assets/clickup-logo-light.svg">
+</picture>
+
+> Saving people time by making the world more productive.
+
+We're looking for experienced developers.
+
+Be Part of Something Great and [Join Us](https://clickup.com/careers)!
+
 ### License
 
 ```
