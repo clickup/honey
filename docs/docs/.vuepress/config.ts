@@ -14,7 +14,7 @@ export default defineUserConfig({
   },
   bundler: viteBundler({}),
   theme: defaultTheme({
-    logo: "/isar.svg",
+    logo: "logo.svg",
     repo: "clickup/honey",
     docsRepo: "clickup/honey",
     docsDir: "docs/docs",

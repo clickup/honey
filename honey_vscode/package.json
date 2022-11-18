@@ -1,105 +1,106 @@
 {
-    "name": "honey",
-    "displayName": "Honey",
-    "description": "Visual Studio Code Extension for the Honey test framwork.",
-    "publisher": "honey",
-    "version": "0.1.2",
-    "author": {
-        "name": "Simon Leier"
-    },
-    "engines": {
-        "vscode": "^1.72.0"
-    },
-    "activationEvents": [
-        "*"
+  "name": "honey",
+  "displayName": "Honey",
+  "description": "Visual Studio Code Extension for the Honey test framwork.",
+  "publisher": "honey",
+  "version": "0.1.2",
+  "author": {
+    "name": "Simon Leier"
+  },
+  "engines": {
+    "vscode": "^1.72.0"
+  },
+  "icon": "logo.png",
+  "activationEvents": [
+    "*"
+  ],
+  "categories": [
+    "Testing",
+    "Programming Languages",
+    "Debuggers"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leisim/honey.git"
+  },
+  "main": "./dist/extension.js",
+  "extensionDependencies": [
+    "Dart-Code.flutter"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "honeytalk",
+        "aliases": [
+          "HoneyTalk",
+          "honeytalk"
+        ],
+        "extensions": [
+          ".honey"
+        ],
+        "configuration": "./language-configuration.json"
+      }
     ],
-    "categories": [
-        "Testing",
-        "Programming Languages",
-        "Debuggers"
+    "grammars": [
+      {
+        "language": "honeytalk",
+        "scopeName": "source.honey",
+        "path": "honeytalk.tm.json"
+      }
     ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/leisim/honey.git"
+    "configuration": {
+      "title": "Honey",
+      "properties": {
+        "honey.cliSource": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "The source of the honey_cli package."
+        }
+      }
     },
-    "main": "./dist/extension.js",
-    "extensionDependencies": [
-        "Dart-Code.flutter"
-    ],
-    "contributes": {
+    "debuggers": [
+      {
+        "type": "honey",
         "languages": [
-            {
-                "id": "honeytalk",
-                "aliases": [
-                    "HoneyTalk",
-                    "honeytalk"
-                ],
-                "extensions": [
-                    ".honey"
-                ],
-                "configuration": "./language-configuration.json"
-            }
+          "honeytalk"
         ],
-        "grammars": [
-            {
-                "language": "honeytalk",
-                "scopeName": "source.honey",
-                "path": "honeytalk.tm.json"
-            }
-        ],
-        "configuration": {
-            "title": "Honey",
-            "properties": {
-                "honey.cliSource": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "default": null,
-                    "description": "The source of the honey_cli package."
-                }
-            }
-        },
-        "debuggers": [
-            {
-                "type": "honey",
-                "languages": [
-                    "honeytalk"
-                ],
-                "label": "Honey Debug",
-                "initialConfigurations": [
-                    {
-                        "type": "honey",
-                        "request": "launch",
-                        "name": "Honey"
-                    }
-                ]
-            }
+        "label": "Honey Debug",
+        "initialConfigurations": [
+          {
+            "type": "honey",
+            "request": "launch",
+            "name": "Honey"
+          }
         ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run package",
-        "compile": "webpack",
-        "package": "webpack --mode production --devtool hidden-source-map",
-        "lint": "eslint src --ext ts"
-    },
-    "devDependencies": {
-        "@types/js-yaml": "^4.0.5",
-        "@types/node": "14.x",
-        "@types/vscode": "^1.72.0",
-        "@types/ws": "^8.5.3",
-        "@typescript-eslint/eslint-plugin": "^5.1.0",
-        "@typescript-eslint/parser": "^5.1.0",
-        "eslint": "^8.1.0",
-        "js-yaml": "^4.1.0",
-        "ts-loader": "^9.2.5",
-        "typescript": "^4.4.4",
-        "vscode-debugadapter": "^1.50.0",
-        "webpack": "^5.52.1",
-        "webpack-cli": "^4.9.1",
-        "ws": "^8.10.0",
-        "bufferutil": "^4.0.7",
-        "utf-8-validate": "^5.0.10",
-        "queueable": "^4.1.4"
-    }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.72.0",
+    "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "eslint": "^8.1.0",
+    "js-yaml": "^4.1.0",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.4",
+    "vscode-debugadapter": "^1.50.0",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.9.1",
+    "ws": "^8.10.0",
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^5.0.10",
+    "queueable": "^4.1.4"
+  }
 }
