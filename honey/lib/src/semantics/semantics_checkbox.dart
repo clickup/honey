@@ -28,8 +28,8 @@ class SemanticsCheckbox extends StatelessWidget {
   /// An optional semantic tooltip for the checkbox.
   final String? tooltip;
 
-  /// An optional callback that is called when the checkbox is tapped. If this is
-  /// not provided, the checkbox will be considered disabled.
+  /// An optional callback that is called when the checkbox is tapped. If this
+  /// is not provided, the checkbox will be considered disabled.
   final VoidCallback? onTap;
 
   /// Additional custom properties to pass to the underlying [Semantics] widget.
