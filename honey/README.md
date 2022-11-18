@@ -82,9 +82,11 @@ And of course, Honey allows you to use conditions in your tests (although we rec
 
 ## Accessibility Overlay
 
+<img src="https://raw.githubusercontent.com/clickup/honey/main/.github/assets/honey-overlay.png" height="500px" align="left">
+
 Honey relies on the accessibility tree to find widgets on the screen. To make testing reliable and fun you should make sure that your app is accessible. Honey comes with the "Honey Overlay" to help you with that. You don't need to configure anything, just run your app with Honey enabled and you will see the overlay on top of your app. It allows you to inspect widgets and see their accessibility information.
 
-[![Honey Overlay](https://raw.githubusercontent.com/clickup/honey/main/.github/assets/honey-overlay.png)](#)
+<br clear="left"/>
 
 ## Honey VSCode Extension
 
