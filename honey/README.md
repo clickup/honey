@@ -90,7 +90,7 @@ Honey relies on the accessibility tree to find widgets on the screen. To make te
 
 ## Honey VSCode Extension
 
-Honey comes with a [VSCode extension]() that allows you to run tests directly from the editor. It also provides syntax highlighting.
+Honey comes with a [VSCode extension](https://marketplace.visualstudio.com/items?itemName=honey.honey) that allows you to run tests directly from the editor. It also provides syntax highlighting.
 
 After installing the VSCode extension, just create a `your_test.honey` file and run your Flutter app in test mode. You can either run your test from the "Run and Debug" panel or the "Testing" tree in VSCode.
 
