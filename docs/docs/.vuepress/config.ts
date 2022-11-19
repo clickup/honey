@@ -36,7 +36,7 @@ export default defineUserConfig({
           },
           {
             text: "SAMPLES",
-            link: "https://github.com/clickup/honey/tree/main/examples",
+            link: "https://github.com/clickup/honey/tree/main/example",
           },
           {
             text: "CHANGELOG",
