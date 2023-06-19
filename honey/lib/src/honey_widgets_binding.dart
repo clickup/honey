@@ -35,9 +35,9 @@ class HoneyWidgetsBinding extends BindingBase
       BindingBase.checkInstance(_instance);
   static HoneyWidgetsBinding? _instance;
 
+  final _key = GlobalKey();
   final _semanticTagProperties = <String, Map<String, String>>{};
 
-  final _key = GlobalKey();
   var _testing = false;
   Widget? _rootWidget;
   late TestTextInput _testTextInput;
