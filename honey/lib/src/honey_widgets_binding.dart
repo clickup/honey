@@ -35,9 +35,9 @@ class HoneyWidgetsBinding extends BindingBase
       BindingBase.checkInstance(_instance);
   static HoneyWidgetsBinding? _instance;
 
-  final _key = GlobalKey();
   final _semanticTagProperties = <String, Map<String, String>>{};
 
+  final _key = GlobalKey(debugLabel: 'HoneyWidgetBindingKey');
   var _testing = false;
   Widget? _rootWidget;
   late TestTextInput _testTextInput;
@@ -68,7 +68,7 @@ class HoneyWidgetsBinding extends BindingBase
     Map<String, HoneyFunction> customFunctions = const {},
   }) {
     if (_instance == null) {
-      final instance = HoneyWidgetsBinding();
+      _instance = HoneyWidgetsBinding();
       instance.pipelineOwner.ensureSemantics();
 
       switch (mode) {
@@ -85,9 +85,14 @@ class HoneyWidgetsBinding extends BindingBase
 
   @override
   void scheduleAttachRootWidget(Widget rootWidget) {
-    _rootWidget = rootWidget;
+    if (_rootWidget?.key != rootWidget.key) {
+      _rootWidget = rootWidget;
+    } else {
+      final view = rootWidget as View;
+      _rootWidget = rootWidget.child;
+    }
 
-    Widget widget = KeyedSubtree(key: _key, child: rootWidget);
+    Widget widget = KeyedSubtree(key: _key, child: _rootWidget!);
     if (!_testing) {
       widget = HoneyOverlay(child: widget);
     }

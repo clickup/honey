@@ -12,7 +12,7 @@ abstract class Expr {}
 /// A honey expression that has been evaluated to either a value, list or
 /// widget.
 @immutable
-abstract class EvaluatedExpr implements Expr {
+abstract mixin class EvaluatedExpr implements Expr {
   /// Should this expression be re-evaluated if something goes wrong?
   bool get retry;
 
