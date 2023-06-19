@@ -37,7 +37,7 @@ class HoneyWidgetsBinding extends BindingBase
 
   final _semanticTagProperties = <String, Map<String, String>>{};
 
-  final _key = GlobalKey(debugLabel: 'HoneyWidgetBindingKey');
+  final _key = GlobalKey();
   var _testing = false;
   Widget? _rootWidget;
   late TestTextInput _testTextInput;
