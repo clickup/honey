@@ -1,3 +1,9 @@
+## 0.1.3
+
+### Enahncements
+
+- Flutter 3.10 support
+
 ## 0.1.2
 
 ### Enahncements
