@@ -68,7 +68,7 @@ class HoneyWidgetsBinding extends BindingBase
     Map<String, HoneyFunction> customFunctions = const {},
   }) {
     if (_instance == null) {
-      final instance = HoneyWidgetsBinding();
+      _instance = HoneyWidgetsBinding();
       instance.pipelineOwner.ensureSemantics();
 
       switch (mode) {
@@ -85,9 +85,21 @@ class HoneyWidgetsBinding extends BindingBase
 
   @override
   void scheduleAttachRootWidget(Widget rootWidget) {
-    _rootWidget = rootWidget;
+    /// In old flutter versions, when we passed MyApp to a 'runApp' method, it
+    /// was being passed here. Then when we called runApp again in [reset]
+    /// method, it was being passed here again constantly.
+    /// Now after flutter upgrade to 3.10 after calling runApp in [reset]
+    /// method, the rootWidget is being passed wrapped with View widget
+    /// so we need to unwrap it here.
+    /// Otherwise it causes an error with accessing the inactive element.
+    if (_rootWidget?.key != rootWidget.key) {
+      _rootWidget = rootWidget;
+    } else if (_rootWidget != rootWidget) {
+      final view = rootWidget as View;
+      _rootWidget = view.child;
+    }
 
-    Widget widget = KeyedSubtree(key: _key, child: rootWidget);
+    Widget widget = KeyedSubtree(key: _key, child: _rootWidget!);
     if (!_testing) {
       widget = HoneyOverlay(child: widget);
     }
