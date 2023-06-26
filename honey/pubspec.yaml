@@ -1,6 +1,6 @@
 name: honey
 description: The sweet side of testing. An end to end testing framework for Flutter.
-version: 0.1.3
+version: 0.2.1
 homepage: https://honey.dev
 repository: https://github.com/clickup/honey
 
